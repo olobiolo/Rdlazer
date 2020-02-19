@@ -3,6 +3,9 @@
 \name{Romani}
 \alias{Romani}
 \alias{Romanes}
+\alias{Romansgohome}
+\alias{Brian}
+\alias{gohome}
 \title{Defacing the palace.}
 \description{
 In order to stick it to the Romans, Brian is sent on a night mission

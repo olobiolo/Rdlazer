@@ -26,11 +26,11 @@
 #' }
 #'
 #' @name Romani
-#' @aliases Romanes
+#' @aliases Romanes Romansgohome Brian gohome
 #'
 NULL
 
-#' @export
+# #' @export
 Brian <- 'Romanes eunt domus'
-#' @export
+# #' @export
 Cleese <- 'Romani ite domum'
