@@ -3,3 +3,5 @@
 export(goBrian)
 export(grade)
 export(hint)
+export(solution)
+export(solution.check)

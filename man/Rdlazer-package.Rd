@@ -9,6 +9,9 @@
 This package contains resources used in my course inr for for extreme beginners.
 The major feature is the Romani ite domum debacle.
 }
+\details{
+There are also homeworks: \code{\link[Rdlazer]{homework}}.
+}
 \author{
 \strong{Maintainer}: Aleksander Chlebowski \email{olobiolo@gmail.com}
 
