@@ -14,7 +14,7 @@ If you're stuck, use the \code{hint} function.
 As a rule, solutions will not be provided unless I feel the exercises become too difficult or tedious.
 }
 
-\section{For part One}{
+\section{For Part One}{
 
 The lecture and notes should be sufficient to solve all these problems.
 When in doubt, feel free to use the help

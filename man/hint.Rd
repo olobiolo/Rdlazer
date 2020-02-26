@@ -14,10 +14,10 @@ Get a hint for a homework assignment.
 }
 \details{
 When you request a hint, you must specify the \code{topic}.
-This can be a single esercise, a specific hint for a specific esercise,
-or all hints for all esercises for a specific part of the course.
+This can be a single exercise, a specific hint for a specific exercise,
+or all hints for all exercises for a specific part of the course.
 In every case \code{topic} contains the index of the hint(s) you request
-in the form of \code{"<part>.<esercise>.<hint>"}.
+in the form of \code{"<part>.<exercise>.<hint>"}.
 
 Remember, the hints are there to guide you, not constraint you.
 You should use them as advice, not as imperative statements.
