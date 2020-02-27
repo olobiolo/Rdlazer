@@ -1,0 +1,243 @@
+---
+title: "Notes For Part One"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Notes For Part One}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+##RStudio basics:
+-	the Console is on the bottom left and that is where the magic happens
+-	the upper left is the Source, or script, from where we can execute consecutive lines of code
+-	the upper right shows the contents of the Global Environment, which can be useful
+-	help and plots will appear on the bottom right
+
+\newline
+
+-	use Ctrl+1 to go to Source and Ctrl+2 to go to Console (and Ctrl+3 to go to the help tab)
+-	when in source, use Ctrl+Enter to execute the current line of code
+-	use Ctrl+Enter to execute a highlighted block of code: several lines or part of a line
+
+\newline
+
+-	workspace and console history can be saved and loaded between sessions; I myself never do it
+
+##Console basics:
+-	execute a statement with Enter
+-	use Up and Down arrows to navigate console history
+-	use Ctrl+L to clear the console (does not affect history)
+-	call for help like this:
+```{r help, eval=FALSE, include=TRUE}
+?Rdlazer
+help(Rdlazer)
+help("Rdlazer")
+```
+
+-	each statement is executed separately
+-	by convention each statement is put in a single separate line
+-	each line may, but need not, end with a semicolon (;)
+-	a single line can hold multiple statements, provided they are separated by semicolons
+-	a single statement can span multiple lines; in some cases, this can improve intelligibility
+-	a block of code contained within braces will be executed in its entirety
+-	when the cursor is on or after a close\* sign, the appropriate open\* sign is highlighted
+-	this goes for **parentheses** ( **(** ), **brackets** ( **[** ) and **braces** ( **{** )
+
+##comments
+- the pound sign (**#**) is a comment sign
+- everything right of a # in a line is considered a comment and not code and will not executed
+- commenting code is very helpful for other people to understand code
+- other people include yourself some (surprisingly short) time in the future
+
+
+
+\newpage
+##basic programming from an R perspective:
+-	there are four basic **types** of data: **logical**, **character**, **integer** and **double**
+-	there are other types in R but that is deep lore and we don’t need it here
+-	integer and double are much the same for most purposes, so they are both treated as **numeric**
+
+####character strings
+-	character strings are delineated by **quote marks**, single or double
+-	to place a quote mark in a string you must **escape** it by preceding it with **\\**
+-	whitespace can be encoded in strings with **special characters**: **\\t** for tab, **\\n** for new line
+-	in these cases the backslash bestows special meaning rather than removes it as with quotes
+
+<h4> Boolean logic <br> 
+<font size = "1"> 
+*named after British mathematician George Bool; it is said he died because he was set to FALSE* 
+</font></h4>
+
+-	logical values can be **TRUE** or **FALSE**; these are reserved words (you cannot use them as names)
+-	**T** and **F** are aliases for TRUE and FALSE; these are not reserved
+-	logical values can be interpreted as integers with 1 for TRUE and 0 for FALSE
+-	logical operators are:
+    - **==**	&nbsp;&nbsp;&nbsp;&nbsp; test identity; is this the same as that?
+    - **!**		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; negate; reverse a logical value
+    - **!=**	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; test difference; is this different to that?
+    - **&**   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AND; are both items TRUE; analogous to multiplication
+    - **|**		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OR; is any of the two items TRUE; analogous to addition
+
+####simple maths
+-	most arithmetic operations are implemented as operators:
+    - **+**, **-**, **\***, **/**, **^**	&nbsp;&nbsp;&nbsp;&nbsp; add, subtract, multiply, divide, raise to power
+    -	**%%**, **%/%**		                  &nbsp;&nbsp;&nbsp;&nbsp; division remainder, modulus
+-	numeric values can be compared by operators:
+    -	**==**, **!=**  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; test equality/inequality
+    -	**>**, **<**, **>=**, **<=**  &nbsp; greater than, less than, greater or equal, less or equal
+    -	operation precedence is as usual, including parentheses
+
+####variables
+-	a **variable** is a **binding** of a **value** to a **name** (a.k.a. **symbol**)
+-	a variable is **created** or **declared** by **assigning** a value to a name
+-	a variable, as well as a binding, exists in an **environment** (more on environments later)
+-	variables can be created by **<-**, **->** and **=** (name on left and value on right)
+-	it is good style to always use **<-**, with spaces around it for intelligibility
+-	**<<-** and **->>** also assign variables but do not use them unless you have to (more on this later)
+-	when creating a variable, its type is determined automatically (unlike in, say, Java or C)
+-	a new value can be assigned to an existing symbol, overwriting the previous value
+
+\newpage
+####functions
+-	where a variable is a thing that ***is***, a function is a thing that ***does***
+-	a function is a block of code that can and will perform a sequence of operations
+-	some functions consist of R code but many are written in C for efficiency and cannot be read
+-	functions are stored in memory as a special type of object called **closure**
+-	a function will usually take input, possibly some existing variables/objects
+-	a variable that is used by a function is said to be **passed** to a function as an argument, see below
+-	variables passed to a function remain unaffected
+-	a function will usually produce output
+-	the output value is **returned**
+-	an instance of a function’s action is a **function call**
+-	a function’s behavior can be modified; this is done by setting **arguments**, a.k.a. **parameters**
+-	a function is **called** by writing its name followed by parentheses containing arguments: `foo(x, y)`
+-	a function’s definition contains a list of arguments in a particular order
+-	some arguments have default values (given in the definition) and can be omitted from a call
+-	there are three ways of matching a value to an argument:
+    -	by name: arguments in a call are provided as *name = value* pairs
+    -	by partial name: the name need not be complete as long as it can be matched uniquely
+    -	by position: unnamed values are matched in the order they appear in the function definition
+-	again, passing a variable as an argument does not alter that variable
+-	some functions work as **infix operators**: the call is structured `x op y` rather than `foo(x, y)`
+-	examples of this are: `%in%` or `+` or `<-`
+
+\newpage
+####flow control
+several special constructs allow for controlling code behavior
+
+######1. perform actions conditionally with **if** and **else**:
+
+-	the **if statement** consists of a condition and an expression:
+
+```{r if, eval=FALSE, include=TRUE}
+if (condition) {
+  expression
+}
+
+```
+
+- **expression** (the block of code within the braces) is only executed if condition is TRUE
+
+\newline
+
+- if statements can be nested:
+```{r if-nest, eval=FALSE, include=TRUE}
+if (condition1) {
+  if (condition2) {
+    expression1
+  } else {
+    expression2
+  } else {
+    expression3
+  }
+}
+```
+- expression1 will be executed only if both conditions are TRUE
+- condition2 is tested only if condition1 is TRUE
+
+\newline
+
+-	an if statement can be followed by an **else statement**, which contains an alternative expression:
+```{r if-else, eval=FALSE, include=TRUE}
+if (condition) {
+  expression1
+} else {
+  expression2
+}
+
+```
+-	the alternative expression will only be executed if the condition is FALSE
+
+\newline
+
+-	else and if can be used to build a sequence of alternatives with multiple conditions:
+```{r if-else-mult, eval=FALSE, include=TRUE}
+if (condition1) {
+  exrpession1
+} else if (condition2) {
+  exrpession2
+} else if (condition3) {
+  exrpession3
+} else {
+  exrpession4
+}
+
+```
+
+-	after one condition is found to be TRUE, the others are not tested
+-	only the first block of code for which the condition is TRUE will be executed
+-	*WARNING: never brake a line before an else!*
+
+\newline
+
+######2. perform actions iteratively with **loops**:
+
+-	a loop will execute a set of expressions (the **body**) iteratively
+-	the **next** command will interrupt an iteration and move the loop on to the next one
+-	the **break** command will terminate the loop immediately
+
+\newline
+
+-	a **for** loop: 		
+```{r for, eval=FALSE, include=TRUE}
+for (iterator in sequence) {
+  expression1
+  expression2
+  expression...
+  }
+```
+
+\newline
+
+-	the **iterator** takes on the values of consecutive items in the sequence in each iterations
+-	the expressions in the body of the loop can make use of the iterator, e.g. pass it to functions
+
+-	a **repeat** loop: 	
+```{r repeat, eval=FALSE, include=TRUE}
+repeat {
+  expression1
+  expression2
+  expression...
+}
+```
+
+-	the body of the loop will be repeated over and over until a break is encountered
+
+\newline
+
+-	a **while** loop:	
+```{r while, eval=FALSE, include=TRUE}
+while(condition) {
+  expression1
+  expression2
+  expression...
+}
+```
+-	the condition is tested before every iteration and the loop runs as long as it is TRUE
