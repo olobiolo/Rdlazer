@@ -19,7 +19,7 @@
 #' \enumerate{
 # 1
 #'   \item{
-#'   Create and a character string describing the current date like 25th February 2020.
+#'   Create and print a character string describing the current date like 25th February 2020.
 #'   }
 # 2
 #'   \item{
@@ -64,7 +64,7 @@
 #'   \item{
 #'   This is a hard one.
 #'
-#'   Repeat excersize 8 but also add week days: 25th February 2020 Tuesday.
+#'   Repeat exercise 8 but also add week days: 25th February 2020 Tuesday.
 #'   2000 started on a Saturday, 2010 on a Friday, and 2020 - on a Wednesday.
 #'
 #'   Even though we did cover it, you don't need subsetting to do this, so don't.

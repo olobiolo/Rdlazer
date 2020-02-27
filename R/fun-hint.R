@@ -62,7 +62,7 @@ hintlist <- function() {
 
   hints['1.1.1'] <- 'strings are created with quote marks'
 
-  hints['1.2.1'] <- 'assignment is done with <-'
+  hints['1.2.1'] <- 'assignment is (best) done with <-'
 
   hints['1.3.1'] <- 'use the paste function to concatenate strings'
 
