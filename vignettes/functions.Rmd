@@ -1,0 +1,210 @@
+---
+title: "Commonly Used Functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Commonly Used Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+**SESSION**
+
+- ***install.packages***: install package
+- ***uninstall.packages***: uninstall package
+- ***search***: display search path of the current session
+- ***library***: attach package to current session
+- ***detach***: remove item from search list; detach(“package:packagename”)
+- ***getwd***: get working directory 
+- ***setwd***: set working directory; invisibly returns current
+- ***ls***: list bindings in environment; returns character vector
+- ***rm***: remove binding
+
+\newline
+
+**FILES**
+
+- ***getwd***: get working directory 
+- ***setwd***: set working directory; invisibly returns current
+- ***list.files***: get list of files in directory; returns character vector
+- ***file.exists***: test if file exists; returns logical vector
+- ***file.copy***: copy file; returns logical vector as report
+- ***file.remove***: delete file; returns logical vector as report
+- ***file.rename***: rename file; can move files; returns logical vector as report
+- ***dir.exists***: test if directory exists; returns logical vector
+- ***dir.create***: create directory
+- ***unlink***: delete file or directory
+
+\newline
+
+**GENERAL**
+
+- ***name <- value***: create binding, i.e. define variable , i.e. assign value to name
+- ***assign***: create binding, i.e. assign value to name
+- ***exists***: take string and test if object with that name exists
+- ***get***: take string and return object with that name
+- ***rm***: remove binding
+- ***print***: print object (explicit)
+- ***names***: get/set names
+- ***head***: print a few first elements of object
+- ***str***: describe structure of object
+- ***ifelse***: create vector of two alternative values based on a logical vector
+- ***round***: round a number
+- ***attributes***: list object attributes
+- ***attr***: get/set object attribute
+- ***class***: get/set class attribute
+- ***table***: create contingency table of a number of factors
+- ***summary***: print summary of object
+- ***seq***: generate sequence of numbers; returns numeric vector
+- ***rep***: replicate vector elements
+- ***apply***: apply function to array, splitting along selected dimensions
+- ***lapply***: apply function to list/vector; returns list
+- ***sapply***: like lapply but attempts to simplify result, e.g. list of length 1 vectors to vector, list of length 2 vectors to matrix
+- ***vapply***: like lapply but type of function result must be defined, e.g. length 1 character; for use in programming
+- ***mapply***: like sapply but cycles over multiple vectors in parallel
+- ***tapply***: run function on vector split according to another vector
+- ***split***: split object according to factor(s)
+- ***by***: run function on object split according to factor(s)
+- ***do.call***: call a function, passing arguments as a list
+
+\newline
+
+**VECTORS**
+
+- ***c***: build vector (concatenate)
+- ***append***: append elements to vector
+- ***length***: get length of vector
+- ***typeof***: get object type (integer/double/logical/character)
+- ***is.numeric***: test if object is a numeric vector
+- ***is.character***: test if object is a character vector
+- ***is.factor***: test if object is a factor
+- ***as.character***: convert to character
+- ***as.factor***: convert to factor
+- ***names***: get/set names
+- ***levels***: get/set factor levels
+- ***which***: which element of vector satisfies logical predicate; returns integer vector
+- ***rev***: reverse order of vector
+- ***sort***: sort vector
+- ***order***: get order of vector elements that would result in a sorted vector; returns integer vector
+- ***duplicated***: test whether elements of argument are duplicated; returns logical vector
+- ***anyDuplicated***: test if any elements of argument are duplicated; returns single integer
+- ***unique***: get unique values
+- ***setNames***: set object names; returns copy of object
+- ***is.element***: test if elements of one vector are elements of another; returns logical vector
+- ***%in%***: infix operator for is.element
+
+\newline
+
+**LOGIC**
+
+- ***all***: test if all elements of logical vector are TRUE; returns single TRUE/FALSE
+- ***any***: test if any element of logical vector is TRUE; returns single TRUE/FALSE
+- ***identical***: test if objects are identical; returns single TRUE/FALSE
+- ***all.equal***: test if all elements of two vectors are equal (within rounding error); returns TRUE or a summary of differences
+- ***is.na***: test if elements of argument are NA; returns logical vector
+- ***anyNA***: test if argument contains NAs; returns single TRUE/FALSE
+
+\newline
+
+**LISTS**
+
+- ***list***: create a list
+- ***as.list***: convert to list
+- ***unlist***: convert list to vector
+- ***names***: get/set names
+
+\newline
+
+**SETS**
+
+- ***is.element***: test if elements of one vector are elements of another; returns logical vector
+- ***%in%***: infix operator for is.element
+- ***union***: union of two sets; returns a vector of all elements of both sets
+- ***setdiff***: (asymmetric) difference between sets; returns vectors of items that are elements of one set but not the other
+- ***intersect***: intersection of two sets; returns vector of items that are elements of both sets
+- ***setequal***: test if sets contain the same elements; returns single logical
+
+\newline
+
+**DATA**
+
+- ***read.table***: load data from tabular file
+- ***write.table***: save data in tabular file
+- ***save***: save objects in binary file
+- ***load***: load contents of binary file
+- ***cbind***: bind columns; add one table to the right of another
+- ***rbind***: bind rows; add one table at the bottom of another
+- ***names***: get/set (column) names in data.frame
+- ***colnames***: get/set column names
+- ***rownames***: get/set row names
+- ***setNames***: set object names (column names for data.frames); returns copy of object
+- ***head***: print a few first elements of object
+- ***dim***: get object dimensions
+- ***str***: describe structure of object
+- ***duplicated***: test whether elements of argument are duplicated; returns logical vector
+- ***anyDuplicated***: test if any elements of argument are duplicated; returns single integer
+- ***unique***: get unique values
+- ***complete.cases***: which cases have no missing values; returns logical vector
+- ***summary***: print summary of object
+
+\newline
+
+**STRINGS**
+
+- ***nchar***: get number of characters in string
+- ***tolower***: convert string lo lowercase
+- ***toupper***: convert string lo uppercase
+- ***paste***: concatenate strings
+- ***substring***: get substring
+- ***strsplit***: split strings; returns list
+- ***startsWith***: test whether string starts with string
+- ***endsWith***: test whether string ends with string
+- ***grep***: test which elements of vector contain regex; returns numeric vector or character vector
+- ***grepl***: test which elements of vector contain regex; returns logical vector
+- ***gsub***: substitute all occurrences of regex in vector with string
+- ***sub***: substitute first occurrence of regex in each element of vector with string
+
+\newline
+
+**STATISTICS**
+
+- ***sum***: add elements of vector; returns single numeric
+- ***mean***: average elements of vector; returns single numeric
+- ***median***: compute median of vector; returns single numeric
+- ***max***: get highest value in vector
+- ***min***: get lowest value in vector
+- ***summary***: returns Tukey five of numeric vector
+- ***rnorm***: generate a sample from a normal distribution
+- ***runif***: generate a sample from a uniform distribution
+- ***sample***: randomly select elements of vector
+- ***lm***: build linear model
+- ***coef***: get coefficients of linear model
+- ***residuals***: get residuals of model
+- ***predict***: generate prediction based on a model
+- ***shapiro.test***: test it sample comes from normal distribution
+- ***t.test***: run Student’s test for difference of mean
+- ***wilcox.test***: run Mann-Whitney-Wilcoxon test for difference of mean
+- ***qqplot***: generate quantile-quantile plot to compare two samples’ parent distributions
+
+\newline
+
+**PLOTTING**
+
+- ***plot***: draw a new plot
+- ***points***: add points to existing plot
+- ***lines***: add lines to existing plot
+- ***abline***: add a/b line to existing plot
+- ***hist***: draw histogram
+- ***barplot***: draw barplot
+- ***boxplot***: draw boxplot
+- ***layout***: change layout of graphics device
+- ***png/jpg/tif/pdf***: initialize graphics device
+- ***dev.off***: shut down a graphics device
+
+\newline

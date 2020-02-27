@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-##RStudio basics:
+## I RStudio basics:
 -	the Console is on the bottom left and that is where the magic happens
 -	the upper left is the Source, or script, from where we can execute consecutive lines of code
 -	the upper right shows the contents of the Global Environment, which can be useful
@@ -30,7 +30,7 @@ knitr::opts_chunk$set(
 
 -	workspace and console history can be saved and loaded between sessions; I myself never do it
 
-##Console basics:
+## II Console basics:
 -	execute a statement with Enter
 -	use Up and Down arrows to navigate console history
 -	use Ctrl+L to clear the console (does not affect history)
@@ -50,16 +50,17 @@ help("Rdlazer")
 -	when the cursor is on or after a close\* sign, the appropriate open\* sign is highlighted
 -	this goes for **parentheses** ( **(** ), **brackets** ( **[** ) and **braces** ( **{** )
 
-##comments
+## III comments
 - the pound sign (**#**) is a comment sign
 - everything right of a # in a line is considered a comment and not code and will not executed
+- comments are put in source rather than the console; you want the console to do things, after all
 - commenting code is very helpful for other people to understand code
 - other people include yourself some (surprisingly short) time in the future
 
 
 
 \newpage
-##basic programming from an R perspective:
+## IV basic programming from an R perspective:
 -	there are four basic **types** of data: **logical**, **character**, **integer** and **double**
 -	there are other types in R but that is deep lore and we don’t need it here
 -	integer and double are much the same for most purposes, so they are both treated as **numeric**
