@@ -22,16 +22,19 @@ Once installed:
 library(Rdlazer)
 ```
 <br>
+
 - view homework assignments:
 ```
 ?homework
 ```
 <br>
+
 - see how homework hints work:
 ```
 ?hint
 ```
 <br>
+
 - view notes:
 ```
 browseVignettes("Rdlazer")
