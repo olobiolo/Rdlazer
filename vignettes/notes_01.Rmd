@@ -14,6 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+![Rdlazer][typingcat]
+
+
 ## I RStudio basics:
 -	the Console is on the bottom left and that is where the magic happens
 -	the upper left is the Source, or script, from where we can execute consecutive lines of code
@@ -242,3 +245,6 @@ while(condition) {
 }
 ```
 -	the condition is tested before every iteration and the loop runs as long as it is TRUE
+
+
+[typingcat]: ../images/typingcat.gif
