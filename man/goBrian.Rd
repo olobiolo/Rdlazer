@@ -4,8 +4,7 @@
 \alias{goBrian}
 \title{Biarn's mission}
 \usage{
-goBrian(slogan = "Romani ite domum", times = 100, freq = 0.3,
-  upto = 3)
+goBrian(slogan = "Romani ite domum", times = 100, freq = 0.3, upto = 3)
 }
 \arguments{
 \item{slogan}{sign that Brian will try to write}

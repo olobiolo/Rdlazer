@@ -40,7 +40,7 @@ solution.build <- function(skip, end, weekdays) {
         if (m %in% c('April', 'June', 'September', 'November')) {
           if (d == '31st') next
         } else if (m == 'February') {
-          if (y %% 4 == 0 & y %% 400 != 0) {
+          if ((y %% 4 == 0 & y %% 100 != 0) | y %% 400 == 0) {
             if (d %in% c('30th', '31st')) next
           } else {
             if (d %in% c('29th', '30th', '31st')) next
