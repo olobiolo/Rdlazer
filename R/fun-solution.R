@@ -62,13 +62,13 @@ solution.build <- function(skip, end, weekdays) {
           date <- paste(d, m, y)
         }
 
+        if (!is.null(skip)) {if (any(grepl(skip, date))) next}
         dates <- c(dates, date)
-        if (!is.null(skip)) {if (any(grepl(date, skip))) next}
-        if (!is.null(end)) {if (date == end) break}
+        if (!is.null(end)) {if (any(grepl(end, date))) break}
       }
-      if (!is.null(end)) {if (date == end) break}
+      if (!is.null(end)) {if (any(grepl(end, date))) break}
     }
-    if (!is.null(end)) {if (date == end) break}
+    if (!is.null(end)) {if (any(grepl(end, date))) break}
   }
   return(dates)
 }

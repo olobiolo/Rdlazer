@@ -23,7 +23,7 @@ goBrian <- function(slogan = 'Romani ite domum', times = 100, freq = 0.3, upto =
   slogan <- sub('^ | $', '', slogan)
   # generate sets of good and bad slogans, based on frequency
   good <- rep(slogan, ceiling(times * (1-freq)))
-  bad <- replicate(floor(times * freq), make_mistake(slogan), simplify = TRUE)
+  bad <- unlist(replicate(floor(times * freq), make_mistake(slogan)))
   ans <- sample(c(good, bad))
   return(ans)
 }

@@ -29,6 +29,7 @@
 
 hint <- function(topic) {
   if (length(topic) != 1) stop('topic must be a single character string')
+  if (topic == '') stop('topic must not be an empty string')
 
   hints <- hintlist()
   hints.now <- grep(paste0('^', topic), names(hints), value = TRUE)
