@@ -1,0 +1,226 @@
+---
+title: "Notes For Part Two"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Notes For Part Two}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Data Structures And Their Properties
+
+## Vector
+- a **vector** is a sequence of items in a certain order
+- it is a 1-dimensional structure of any **length** (number of items)
+- a vector is the simplest data structure in R, hence it is called **atomic**
+- virtually every data object is some kind of vector
+- even a single data point, e.g. a `TRUE`, is actually a vector of length 1
+- a vector can store only one type of data, e.g. logical or character, thus it has a type
+- vectors are created with the function `vector`: it can create any type (mode) of vector of any length
+- constructors for particular types exist: `logical`, `numeric`, `character`
+- functions exist for testing and converting types: `is.character`, `as.character`, etc.
+
+\newline
+
+- vectors are most commonly built by concatenating/merging vectors with the function `c`
+```{r}
+# merge two character vectors of length one
+c('one', 'two')
+```
+- types will often be changed to suit a called function: this is called **coercion**
+```{r}
+# merge a character vector with a numeric one
+c('one', 1)
+# the numeric was (silently!) coerced to character
+```
+
+```{r}
+# concatenate existing vectors (variables) with one created ad hoc
+v1 <- c('one', 'two')
+v2 <- c(1, 2)
+v3 <- c(v1, v2, c(FALSE, TRUE))
+v3
+```
+- a vector can be treated as a set
+- use `%in%` to test if something is an element of a vector:
+```{r}
+'one' %in% v3
+```
+- a vector can contain duplicated elements
+- use `anyDuplicated` to test if that is the case
+- use `unique` to get unique elements of a vector
+
+\newline
+
+- a vector can have additional features, such as properties or information
+- these are called **attributes**
+- all attributes of an object can be viewed with the function `attributes`
+- a specific attribute can be viewed with `attr`
+- a frequently encountered attribute is **names**: unique character strings associated with each item
+- a vector that has a names attribute is a **named vecotr**
+- see `.romans` for a named vector of Roman numerals
+- names can be viewed with `names(x)` and set with `names(x) <- [vector of names]`, much like assigning a variable
+- this would be equivalent to `attr(x, 'names')`; `names` exists for convenience, as messing with names is such a common action
+```{r}
+# get names
+names(v2)
+
+#set names
+names(v2) <- c('first', 'second')
+names(v2)
+
+# remove names
+names(v2) <- NULL
+names(v2)
+```
+- a vector can also be created with names when using `c`
+- elements are given as `name = value` pairs
+```{r}
+v4 <- c('first' = 1, 'second' = 2, 'third' = 3)
+names(v4)
+
+# the names need not be quoted
+v4 <- c(first = 1, second = 2, third = 3)
+```
+
+- we will discuss more attributes when appropriate but names will keep coming back
+- the function `as.vector` will strip all atributes, leaving a bare vector
+
+#### Every vector has a type and a length. It can also have attributes.
+
+
+
+## Vectorized Operations
+
+## Indexing And Subsetting
+
+
+## Matrix
+- a matrix is a 2-dimensional data structure
+- it has rows (dimension 1) and columns (dimension 2)
+- a matrix is created with the function `matrix`
+```{r}
+m <- matrix(1:12, nrow = 3, ncol = 4)
+m
+```
+- by default a matrix is filled **by columns**, i.e. 1st column from 1st to last row, then 2nd column, etc.; this can be modified wyth the `byrow` argument of `matrix`
+- a matrx can be transposed with the funcion `t`
+```{r}
+t(m)
+```
+- we can check the number of rows and columns with `nrow` and `ncol`, respectively
+
+\newline
+
+- a matrix is not a special atomic type with unique properties
+- it is merely a vector with an attribute **dim**
+- dim can be viewed or set with a special function `dim`
+```{r}
+# get dimensions
+dim(m)
+# the first number is the number of rows and the second is the number of columns
+
+# the attribute can be modified as will, even removed
+dim(m) <- NULL
+m
+# note that the matrix is dismantled in the same way is is built by default:
+# column after column
+
+# dim can be set on any vector as long as the grid size matches its length
+dim(m) <- c(4,3)
+m
+# note that, again, the matrix is build in the default order
+```
+- since a matrix is basically a vector, it can hold only one type of data
+- it also has a length:
+```{r}
+length(m)
+```
+
+#### Subsetting a matrix
+- when subsetting a matrix, we must account for it having two dimensions
+- specify the range of each dimension and separate them with a comma:
+```{r}
+m[1,3]
+m[1:2, 2:3]
+```
+- leaving one index empty will yield a whole row/column
+- be aware this returns a vector, not a 1 row matrix!
+```{r}
+m1 <- m[1, ]
+is.matrix(m1)
+is.vector(m1)
+```
+- in order to preserve tha matrix nature of the result, we must set the `drop` argument to FALSE:
+```{r}
+m2 <- m[1, , drop = FALSE]
+# mind the empty second dimension!
+```
+- since it is a vector, we can also subset using a single index, bypassing the dimensions:
+```{r}
+m[1]
+m[7]
+```
+
+\newline
+
+- a matrix can be extended by adding rows or columns with `rbind` and `cbind`, respectively:
+```{r}
+rbind(m, 101:103)
+cbind(m, letters[1:4])
+# note the coercion
+```
+- `c` would do no good here as it strips attributes other than names
+```{r}
+c(m, m)
+cbind(m,m)
+```
+
+\newline
+
+- a matrix's dimensions can be named:
+```{r}
+rownames(m) <- letters[1:4]
+colnames(m) <- LETTERS[1:3]
+m
+```
+- we can now use the names for subsetting
+```{r}
+m['a', 'B']
+m['a', c('A', 'B'), drop = FALSE]
+m[c('a', 'b'), c('A', 'B')]
+```
+- the row and column names are stored a single attribute **dimnames**
+- dimanmes can be viewed or set with the function `dimnames`
+- it is structured as a list (more on lists below)
+
+
+
+## List
+
+## Data Frame
+
+
+
+
+
+
+
+```{r ntoes}
+# ###### vector functions
+# - `c`: build a vector from existing elements
+# - `vector`, `character`, etc.: create vectos with default values (e.g. 0)
+# - `is.character`, etc: test vector type
+# - `length`: get length (number of items) of a vector
+# - `%in%`/`is.element`: test if an item is an element of a vector
+# - `anyDuplicated`: test whether vector contains duplicates
+# - `unique` get unique elements of a vector
+```
+

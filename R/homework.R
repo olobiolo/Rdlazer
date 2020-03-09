@@ -80,6 +80,17 @@
 # #' @section For Part Two:
 # #' Use only base R when solving these problems (no added packages allowed).
 # #' \enumerate{
+# #' # 1  \item{
+# #'   Write an \code{if-else} statement that will test wheter a vector is named and print "found names" if yes, and "no names" if not.
+# #'   }
+# #'   \item{
+# #'   }
+# #'
+#'
+#'
+#'
+#'
+#'
 # #'   \item{
 # #'   They are attached to every R session and reside in the datasets package.
 # #'   Find out which of them are data frames that contain at least two columns that are factors.
@@ -91,7 +102,7 @@
 # #'   \item{
 # #'   Obtain a data frame like Iris, with 5 random irises from every species in the iris data set.
 # #'   }
-# #' }
+#' }
 
 # #' @section For Part Three:
 # #' \enumerate{
