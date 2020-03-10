@@ -14,12 +14,18 @@ knitr::opts_chunk$set(
 )
 ```
 
+![Rdlazer][confusedcat]
+
 # Data Structures And Their Properties
 
-## Vector
+\newline
+
+## I Vector
+
 - a **vector** is a sequence of items in a certain order
 - it is a 1-dimensional structure of any **length** (number of items)
 - a vector is the simplest data structure in R, hence it is called **atomic**
+- an example of a vector is `letters`
 - virtually every data object is some kind of vector
 - even a single data point, e.g. a `TRUE`, is actually a vector of length 1
 - a vector can store only one type of data, e.g. logical or character, thus it has a type
@@ -56,6 +62,13 @@ v3
 - a vector can contain duplicated elements
 - use `anyDuplicated` to test if that is the case
 - use `unique` to get unique elements of a vector
+
+\newline
+
+- inspect the beginning or end of a vector with `head` or `tail`, respectively
+- sort a vector with `sort`
+- reverse the item order with `rev`
+- replicate a vecotr with `rep`
 
 \newline
 
@@ -97,12 +110,120 @@ v4 <- c(first = 1, second = 2, third = 3)
 
 
 
-## Vectorized Operations
+\newline
 
-## Indexing And Subsetting
+## II Vectorized Operations
+
+- most operations in R are vectorized
+- they are applied to each vector element separately and return a vector of the same length
+```{r}
+n <- 1:10
+
+# mathematical operation
+n + 1
+
+# change case
+toupper(letters)
+```
+- operations involving two vectors are done item by item, by matching indices (1st with 1st, etc.)
+```{r}
+n1 <- 1:4
+n2 <- 4:1
+
+n1
+n2
+n1 + n2
+n1 / n2
+```
+- when the lengths of the vectors do not match, the shorter vector is **recycled**
+- this can lead to unexpected results, so watch out
+```{r}
+n3 <- rep(4, 4)
+n4 <- 1:2
+
+n3 + n4
+
+l1 <- c(TRUE, FALSE)
+paste(n3, l1)
+```
+
+\newline
+
+- of course, some operations do not deal with every element of a vector separately
+```{r}
+s1 <- names(v4)
+s1
+
+length(s1)
+```
+- but many do
+```{r}
+nchar(s1)
+```
 
 
-## Matrix
+
+\newline
+
+## III Subsetting
+
+- **subsetting** is when we pick out a subset of a vector
+- any language allows for subsetting an element from a sequence
+- R is especially robust and flexible with it
+- subsetting is done with the `[` operator
+
+\newline
+
+- this simplest case is getting the *n*-th element of a vector
+```{r}
+v3[1]
+```
+- the index (the number in the brackets) is not a number - it is a vector of length 1
+- it may be longer
+```{r}
+ind <- c(1,3)
+v3[ind]
+```
+- **the indices need not be unique**
+```{r}
+ind <- c(1, 1, 3, 4, 6, 6)
+v3[ind]
+```
+- if a vector is named, names can be used as indices
+```{r}
+v4['first']
+ind <- c('first', 'second', 'first', 'first')
+v4[ind]
+```
+- subsetting can also be done with a logical vector, typically of the same length
+```{r}
+ind <- c(T, T, F, T, F, F)
+v3[ind]
+```
+- a logical vector does not refer to indices and therefore its length matters
+```{r}
+ten <- 1:10
+x <- letters[ten]
+x
+
+# too long an index produces NAs
+ind <- rep(T, 11)
+x[ind]
+
+# too short an index is recycled
+ind <- c(T, T, F)
+x[ind]
+
+ind <- TRUE
+x[ind]
+```
+
+
+
+\newline
+
+## IV Matrix
+
 - a matrix is a 2-dimensional data structure
 - it has rows (dimension 1) and columns (dimension 2)
 - a matrix is created with the function `matrix`
@@ -144,7 +265,7 @@ m
 length(m)
 ```
 
-#### Subsetting a matrix
+#### subsetting a matrix
 - when subsetting a matrix, we must account for it having two dimensions
 - specify the range of each dimension and separate them with a comma:
 ```{r}
@@ -203,24 +324,102 @@ m[c('a', 'b'), c('A', 'B')]
 
 
 
-## List
+\newline
 
-## Data Frame
+## V List
+
+- a list is a special type of vector
+- in a list any item can be of **any type** - including a list
+- this is called a **recursive** object
+- look at `state.center` and `ability.cov` for examples of lists
+
+\newline
+
+- a list is constructed with the function `list`
+- much like `c`, `list` takes a number of objects and returns a list object
+- concatenate lists with `c` ro `append`
+- using `list` to add items to a list will take your list and put it in a higher order list
+- turn a vector into a list with `as.list` and do the reverse with `unlist`
+- a list can be named just like any other vector
 
 
+<h4>subsetting a list <br>
+<font size = 1> it's a bit of a mess... </font>
+</h4>
 
+- like any vector, a list can be subsetted
+- however, the special structure of a list calls for special measures
 
+\newline
 
+- using the normal, **single bracket** returns a subset of the list
+- all normal rules apply
+- the result is always a list
+```{r}
+# subset with numeric index
+ability.cov[2]
+ind <- 2:3
+ability.cov[ind]
 
+# subset with names
+ind <- 'n.obs'
+ability.cov[ind]
 
-```{r ntoes}
-# ###### vector functions
-# - `c`: build a vector from existing elements
-# - `vector`, `character`, etc.: create vectos with default values (e.g. 0)
-# - `is.character`, etc: test vector type
-# - `length`: get length (number of items) of a vector
-# - `%in%`/`is.element`: test if an item is an element of a vector
-# - `anyDuplicated`: test whether vector contains duplicates
-# - `unique` get unique elements of a vector
+# subset with logical vector
+ind <- c(T, F, F)
+ability.cov[ind]
+
+# it's a list
+x <- ability.cov[1]
+x
+is.list(x)
 ```
 
+- using a **double bracket** will return the contents of that level of the list
+- a single bracket accepts only **single indices**
+- logically, how else would you return two items of a list other than as a list?
+```{r}
+# numeric
+ability.cov[[3]]
+
+# names
+ability.cov[['n.obs']]
+
+# it's not a list
+x <- ability.cov[[1]]
+x
+is.list(x)
+is.matrix(x)
+```
+
+- there is a special **dollar** operator for subsetting lists: `$`
+- it only accepts bare names of list elements: `ablity.cov$center`
+- it does exactly the same thing as a double bracket
+```{r}
+state.center$x
+```
+
+<h4> A list is a kind of vector that can hold any item. <br>
+Subsetting a list with `[` yields a list of any length. Using `[[` or `$` yields a single list item.
+<h4>
+
+
+```{r eval=FALSE, include=FALSE}
+
+\newline
+
+## VI R's syntactic flexibility
+
+
+
+
+
+
+
+
+# ## VII Data Frame
+# - the data frame is pehaps the most often used data structure
+
+```
+
+[confusedcat]: ../images/confused.png

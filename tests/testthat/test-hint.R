@@ -1,6 +1,9 @@
 
 test_that("hints work", {
-  expect_identical(hint('0.1.1'), 'first practice hint')
+  expect_output(hint('0.1'), ':\tfirst practice hint')
+  expect_output(hint('0.1.1'), ':\tfirst practice hint')
+  expect_output(hint('0.1.2'), ':\tsecond practice hint')
+
 })
 
 test_that("errors work", {

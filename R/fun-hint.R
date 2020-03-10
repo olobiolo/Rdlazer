@@ -38,7 +38,8 @@ hint <- function(topic) {
   if (length(hints.now) == 0) {
     stop('sorry, no such hint')
   } else if (length(hints.now) == 1) {
-    return(as.vector(hints.now[topic]))
+    cat(names(hints.now), ':', '\t', hints.now, '\n', sep = '')
+    #return(as.vector(hints.now[topic]))
   } else {
     lastname <- names(hints.now[length(hints.now)])
     for (h in names(hints.now)) {
@@ -108,10 +109,10 @@ hintlist <- function() {
   hints[next.hint()] <- 'read the help page for rm carefully'
   hints[next.hint()] <- 'use ls to discover the contents of GlobalEnv'
 
-  next.part(2)
-  hints[next.hint()] <- 'see what anmes returns when run on an unnamed vector'
-  hints[next.hint()] <- 'try to think of a function that tests for this kind of object'
-  hints[next.hint()] <- 'try help("NULL") or ?`NULL` (mind the backquotes with ?)'
+  # next.part(2)
+  # hints[next.hint()] <- 'see what anmes returns when run on an unnamed vector'
+  # hints[next.hint()] <- 'try to think of a function that tests for this kind of object'
+  # hints[next.hint()] <- 'try help("NULL") or ?`NULL` (mind the backquotes with ?)'
 
   # hints['2.1.1'] <- 'use the ls function to list all objects in a package namespace'
   # hints['2.1.2'] <- 'use is.data.frame and is.factor to test the class of a data set and a column'
