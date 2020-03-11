@@ -68,6 +68,11 @@ help("Rdlazer")
 -	there are four basic **types** of data: **logical**, **character**, **integer** and **double**
 -	there are other types in R but that is deep lore and we don’t need it here
 -	integer and double are much the same for most purposes, so they are both treated as **numeric**
+<font color = 'blue'>
+- missing values are called `NA` for not available
+- NAs are not absent! they are there, they are just unknown
+- a lack of anything is represented by `NULL`, a "nothing" object
+</font>
 
 #### character strings
 -	character strings are delineated by **quote marks**, double (`"`) or single (`'`)
@@ -89,6 +94,7 @@ help("Rdlazer")
     - `!=`	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; test difference; is this different to that?
     - `&`   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AND; are both items TRUE; analogous to multiplication
     - `|`		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OR; is any of the two items TRUE; analogous to addition
+- NAs cannot be compared to anything, so comparing an NA always yields an NA
 
 #### simple maths
 -	most arithmetic operations are implemented as operators:

@@ -14,50 +14,60 @@ knitr::opts_chunk$set(
 )
 ```
 
-![Rdlazer][confusedcat]
+![a tour of R][confusedcat]
 
-# Data Structures And Their Properties
+# Data Structures And *Language Properties*
+<font size = 1> **with some function vocabulary** </font>
 
-\newline
+
+
+
 
 ## I Vector
 
-- a **vector** is a sequence of items in a certain order
-- it is a 1-dimensional structure of any **length** (number of items)
+- a **vector** is 1-dimensional sequence of items in a particular order
+- the number of elements it the vector's **length**
+- a vector's length can be checked with `length`
 - a vector is the simplest data structure in R, hence it is called **atomic**
-- an example of a vector is `letters`
+- a vector can store only one type of data, e.g. logical or character, thus it has a **type**
 - virtually every data object is some kind of vector
 - even a single data point, e.g. a `TRUE`, is actually a vector of length 1
-- a vector can store only one type of data, e.g. logical or character, thus it has a type
-- vectors are created with the function `vector`: it can create any type (mode) of vector of any length
+- vectors can be created with the function `vector`: it can create any type (mode) of vector of any length
 - constructors for particular types exist: `logical`, `numeric`, `character`
+- when created with a constructor, all elements will be `FALSE` or `0` or `""` (empty string)
 - functions exist for testing and converting types: `is.character`, `as.character`, etc.
+- any vector can contain NAs
 
 \newline
 
-- vectors are most commonly built by concatenating/merging vectors with the function `c`
+- an example of a character vector is `letters`
+
+\newline
+
+- vectors are most commonly built by concatenating (merging) vectors with the function `c`
 ```{r}
 # merge two character vectors of length one
 c('one', 'two')
 ```
-- types will often be changed to suit a called function: this is called **coercion**
+- when concatenating vectors of different types, some of them will be coerced to a type that can represent all the vectors in question
 ```{r}
 # merge a character vector with a numeric one
 c('one', 1)
-# the numeric was (silently!) coerced to character
+# the numeric is (silently!) coerced to character as a vector can only hold a single type
 ```
 
 ```{r}
-# concatenate existing vectors (variables) with one created ad hoc
+# concatenate existing vectors (variables)
 v1 <- c('one', 'two')
 v2 <- c(1, 2)
-v3 <- c(v1, v2, c(FALSE, TRUE))
-v3
+v3 <- c(FALSE, TRUE)
+v4 <- c(v1, v2, v3)
+v4
 ```
 - a vector can be treated as a set
-- use `%in%` to test if something is an element of a vector:
+- use `%in%` ro `is.element` to test if something is an element of a vector:
 ```{r}
-'one' %in% v3
+'one' %in% v4
 ```
 - a vector can contain duplicated elements
 - use `anyDuplicated` to test if that is the case
@@ -65,22 +75,30 @@ v3
 
 \newline
 
-- inspect the beginning or end of a vector with `head` or `tail`, respectively
+- inspect the beginning or end of a vector with `head` or `tail`, respectively (6 elements by default)
 - sort a vector with `sort`
 - reverse the item order with `rev`
-- replicate a vecotr with `rep`
+- replicate a vector with `rep`
+- create a vector of integers from i1 through i2 with the infix operator `i1 : i2`
+- use `seq` for more options for numeric sequences
+- use `seq_along(x)` to obtain a sequence of integers from 1 through `length(x)`
 
 \newline
 
-- a vector can have additional features, such as properties or information
-- these are called **attributes**
+- a vector can have **attributes**
+- an attribute is an additional feature of a vector, e.g. properties or information
+- the definition of attributes is necessarily vague as they can be anything, really
 - all attributes of an object can be viewed with the function `attributes`
 - a specific attribute can be viewed with `attr`
-- a frequently encountered attribute is **names**: unique character strings associated with each item
-- a vector that has a names attribute is a **named vecotr**
+- a frequently encountered attribute is **names**: a vector of character strings associated with each item
+- names must be unique, unless they are `NA` or `""`
+- a vector that has a names attribute is a **named vector**
 - see `.romans` for a named vector of Roman numerals
-- names can be viewed with `names(x)` and set with `names(x) <- [vector of names]`, much like assigning a variable
-- this would be equivalent to `attr(x, 'names')`; `names` exists for convenience, as messing with names is such a common action
+- names can be viewed and set with `names(x)`
+- `names(x)` returns names of x
+- `names(x) <- [vector of names]` sets names of x, much like assigning a variable
+- an equivalent method would be to use `attr(x, "names")`
+- `names` exists for convenience, as messing with names is such a common action
 ```{r}
 # get names
 names(v2)
@@ -96,11 +114,11 @@ names(v2)
 - a vector can also be created with names when using `c`
 - elements are given as `name = value` pairs
 ```{r}
-v4 <- c('first' = 1, 'second' = 2, 'third' = 3)
-names(v4)
+v5 <- c('first' = 1, 'second' = 2, 'third' = 3)
+names(v5)
 
 # the names need not be quoted
-v4 <- c(first = 1, second = 2, third = 3)
+v5 <- c(first = 1, second = 2, third = 3)
 ```
 
 - we will discuss more attributes when appropriate but names will keep coming back
@@ -110,22 +128,25 @@ v4 <- c(first = 1, second = 2, third = 3)
 
 
 
-\newline
 
-## II Vectorized Operations
+
+## II *Vectorized Operations*
 
 - most operations in R are vectorized
 - they are applied to each vector element separately and return a vector of the same length
 ```{r}
-n <- 1:10
+n <- 1:6
 
 # mathematical operation
 n + 1
 
 # change case
 toupper(letters)
+
+# compare numbers
+n > 3
 ```
-- operations involving two vectors are done item by item, by matching indices (1st with 1st, etc.)
+- operations involving two vectors are done elementwise, by matching indices (1st with 1st, etc.)
 ```{r}
 n1 <- 1:4
 n2 <- 4:1
@@ -135,7 +156,7 @@ n2
 n1 + n2
 n1 / n2
 ```
-- when the lengths of the vectors do not match, the shorter vector is **recycled**
+- when the lengths of the vectors involved do not match, the shorter vector is **recycled**
 - this can lead to unexpected results, so watch out
 ```{r}
 n3 <- rep(4, 4)
@@ -151,7 +172,9 @@ paste(n3, l1)
 
 - of course, some operations do not deal with every element of a vector separately
 ```{r}
-s1 <- names(v4)
+sum(n)
+
+s1 <- names(v5)
 s1
 
 length(s1)
@@ -160,45 +183,66 @@ length(s1)
 ```{r}
 nchar(s1)
 ```
-
-
-
-\newline
-
-## III Subsetting
-
-- **subsetting** is when we pick out a subset of a vector
-- any language allows for subsetting an element from a sequence
-- R is especially robust and flexible with it
-- subsetting is done with the `[` operator
-
-\newline
-
-- this simplest case is getting the *n*-th element of a vector
+- be careful, read the documentation, test
 ```{r}
-v3[1]
+l1 <- toupper(letters)
+l2 <- LETTERS
+
+identical(l1, l2)
+l1 == l2
+
+vna <- c(1, NA, 2, NA, 3, NA)
+
+is.na(vna)
+anyNA(vna)
 ```
-- the index (the number in the brackets) is not a number - it is a vector of length 1
-- it may be longer
+
+
+
+
+
+## III *Extraction*
+
+- **extraction**, also called **subsetting** is picking out a some elements from an object
+- any language allows for extracting a single element from a sequence
+- R is especially robust and flexible at it
+- extraction is done with the `[` operator
+
+\newline
+
+- this simplest case is getting the *n*-th element of a vector: `vec[n]`
+```{r}
+v4[1]
+```
+- the number in the brackets is the index: the ordinal number of an element in the vector
+- the index is not a number - it is a vector of length 1
+- the index vector can be of any length
 ```{r}
 ind <- c(1,3)
-v3[ind]
+v4[ind]
 ```
-- **the indices need not be unique**
+- in fact, it can be any numeric vector at all
 ```{r}
 ind <- c(1, 1, 3, 4, 6, 6)
-v3[ind]
+v4[ind]
+
+# invalid index yields an NA
+v4[7]
+
+# fractions are rounded down
+v4[2.3]
+# this should be avoided regardless
 ```
 - if a vector is named, names can be used as indices
 ```{r}
-v4['first']
+v5['first']
 ind <- c('first', 'second', 'first', 'first')
-v4[ind]
+v5[ind]
 ```
-- subsetting can also be done with a logical vector, typically of the same length
+- extraction can also be done with a logical vector, typically of the same length
 ```{r}
 ind <- c(T, T, F, T, F, F)
-v3[ind]
+v4[ind]
 ```
 - a logical vector does not refer to indices and therefore its length matters
 ```{r}
@@ -217,12 +261,38 @@ x[ind]
 ind <- TRUE
 x[ind]
 ```
+```{r eval=FALSE, include=FALSE}
+#- an empty bracket selects the whole object and maintains its attributes
+#```{r}
+#v5[]
+#```
+```
 
 
 
-\newline
 
-## IV Matrix
+
+## IV *Replacement*
+
+- R has a **replacement** functionality, a combination of extraction and assignment
+- a subset is used as a variable name in an assignment expression
+- the new value is assigned to the subset in the original object
+```{r}
+ind <- 1:3 * 2
+
+# extract elements
+n[ind]
+
+# replace elements
+n[ind] <- NA
+n
+```
+
+
+
+
+
+## V Matrix
 
 - a matrix is a 2-dimensional data structure
 - it has rows (dimension 1) and columns (dimension 2)
@@ -266,7 +336,7 @@ length(m)
 ```
 
 #### subsetting a matrix
-- when subsetting a matrix, we must account for it having two dimensions
+- when extracting from a matrix, we must account for it having two dimensions
 - specify the range of each dimension and separate them with a comma:
 ```{r}
 m[1,3]
@@ -322,33 +392,64 @@ m[c('a', 'b'), c('A', 'B')]
 - dimanmes can be viewed or set with the function `dimnames`
 - it is structured as a list (more on lists below)
 
-
-
 \newline
 
-## V List
+- finally, replacement in a matrix works much the same as before
+```{r}
+m[2,3] <- "hello"
+m
+# note the conversion to character
+```
+- replacing to an empty index affects all items but keeps attributes
+```{r}
+m[] <- "goodbye"
+m
+```
+
+
+
+
+
+## VI List
 
 - a list is a special type of vector
 - in a list any item can be of **any type** - including a list
 - this is called a **recursive** object
+- a list gives `TRUE` to `is.list` and `is.recursive`
 - look at `state.center` and `ability.cov` for examples of lists
 
 \newline
 
 - a list is constructed with the function `list`
 - much like `c`, `list` takes a number of objects and returns a list object
-- concatenate lists with `c` ro `append`
-- using `list` to add items to a list will take your list and put it in a higher order list
+```{r}
+l1 <- list(1, "one", TRUE, v5)
+l1
+```
+- concatenate lists with `c` or `append`
+- using `list` to add items to a list will take your list make it an element of a higher order list
+```{r}
+l2 <- list(l1, "surprize")
+l2
+
+l3 <- c(l1, "surprize")
+l3
+```
 - turn a vector into a list with `as.list` and do the reverse with `unlist`
 - a list can be named just like any other vector
-
+- list names have restrictions just like variable names: no spaces, no special characters other than underscores or dashes (the latter never at the beginning)
+- forbidden names can be used, but must be backticked
+```{r}
+l4 <- list(one = 1:3, two = 4:5, three = 7:8, `forbidden name` = 9)
+l4
+```
 
 <h4>subsetting a list <br>
 <font size = 1> it's a bit of a mess... </font>
 </h4>
 
-- like any vector, a list can be subsetted
-- however, the special structure of a list calls for special measures
+- like any vector, a list can be extracted from
+- however, the recursive structure of a list calls for special measures
 
 \newline
 
@@ -357,46 +458,51 @@ m[c('a', 'b'), c('A', 'B')]
 - the result is always a list
 ```{r}
 # subset with numeric index
-ability.cov[2]
+l4[2]
+
 ind <- 2:3
-ability.cov[ind]
+l4[ind]
 
 # subset with names
-ind <- 'n.obs'
-ability.cov[ind]
+l4['three']
 
 # subset with logical vector
 ind <- c(T, F, F)
-ability.cov[ind]
+l4[ind]
+# the logical vector has been recycled
 
 # it's a list
-x <- ability.cov[1]
+x <- l4[1]
 x
 is.list(x)
 ```
 
-- using a **double bracket** will return the contents of that level of the list
-- a single bracket accepts only **single indices**
-- logically, how else would you return two items of a list other than as a list?
+- a **double bracket** accepts only **single indices** and returns a single list item
+- using a double bracket returns the **contents** of that item of the list
 ```{r}
 # numeric
-ability.cov[[3]]
+l4[[3]]
 
 # names
-ability.cov[['n.obs']]
+l4[['forbidden name']]
 
 # it's not a list
-x <- ability.cov[[1]]
+x <- l4[[3]]
 x
 is.list(x)
-is.matrix(x)
+is.numeric(x)
 ```
 
-- there is a special **dollar** operator for subsetting lists: `$`
-- it only accepts bare names of list elements: `ablity.cov$center`
+*Note: a double bracket can also be used on a normal vector. The difference to a single bracket is that a double one discards names. It also accepts only a length 1 index. `[[` is virtually never used with atomic vectors.*
+
+- then there is a special **dollar** operator for subsetting lists: `$`
+- it only accepts bare names of list elements: `l4$one`
 - it does exactly the same thing as a double bracket
 ```{r}
-state.center$x
+l4$one
+
+l4$`forbidden name`
+
 ```
 
 <h4> A list is a kind of vector that can hold any item. <br>
@@ -406,10 +512,8 @@ Subsetting a list with `[` yields a list of any length. Using `[[` or `$` yields
 
 ```{r eval=FALSE, include=FALSE}
 
-\newline
 
-## VI R's syntactic flexibility
-
+## VII *R's syntactic flexibility*
 
 
 
@@ -417,7 +521,8 @@ Subsetting a list with `[` yields a list of any length. Using `[[` or `$` yields
 
 
 
-# ## VII Data Frame
+
+# ## VIII Data Frame
 # - the data frame is pehaps the most often used data structure
 
 ```
