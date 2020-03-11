@@ -422,4 +422,4 @@ Subsetting a list with `[` yields a list of any length. Using `[[` or `$` yields
 
 ```
 
-[confusedcat]: ../images/confused.png
+[confusedcat]: ../images/confused.jpg
