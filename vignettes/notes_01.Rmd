@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 ## I RStudio basics:
 -	the Console is on the bottom left and that is where the magic happens
 -	the upper left is the Source, or script, from where we can execute consecutive lines of code
--	the upper right shows the contents of the Global Environment, which can be useful
+-	the upper right shows the contents of the **Global Environment**, which can be useful
 -	help and plots will appear on the bottom right
 
 \newline
@@ -55,7 +55,7 @@ help("Rdlazer")
 
 ## III comments
 - the pound sign (`#`) is a comment sign
-- everything right of a # in a line is considered a comment rather than code and will not executed
+- everything right of a `#` in a line is considered a comment rather than code and will not executed
 - comments are put in source rather than the console; you want the console to do things, after all
 - commenting code is very helpful for other people to understand code
 - other people include yourself some (surprisingly short) time in the future
@@ -104,6 +104,10 @@ help("Rdlazer")
 -	a variable is **created** or **declared** by **assigning** a value to a name
 - a name can consist of any letters (lower- and uppercase), digits, periods, dashes and underscores but must not begin with a digit or dash (`-`)
 - variables with names beginning with a period (`.`) are hidden
+<font color = 'blue'>
+- actually, names **can** contain illegal characters (even spaces!) but must be referred to with backticks
+- this is a backtick: `
+</font>
 -	a variable, as well as a binding, exists in an **environment** (more on environments later)
 -	variables can be created by `<-`, `->` and `=` (name on left and value on right)
 -	it is good style to always use `<-`, with spaces around it for intelligibility
@@ -158,7 +162,7 @@ if (condition) {
 }
 
 ```
-- **expression** (the block of code within the braces) is only executed if condition is TRUE
+- **expression** (the block of code within the braces) is only executed if condition is `TRUE`
 
 \newline
 
@@ -171,7 +175,7 @@ if (condition) {
 }
 
 ```
--	the alternative expression will only be executed if the condition is FALSE
+-	the alternative expression will only be executed if the condition is `FALSE`
 
 \newline
 
@@ -187,8 +191,8 @@ if (condition1) {
   }
 }
 ```
-- expression1 will be executed only if both conditions are TRUE
-- condition2 is tested only if condition1 is TRUE
+- expression1 will be executed only if both conditions are `TRUE`
+- condition2 is tested only if condition1 is `TRUE`
 
 \newline
 
@@ -206,8 +210,8 @@ if (condition1) {
 
 ```
 
--	after one condition is found to be TRUE, the others are not tested
--	only the first block of code for which the condition is TRUE will be executed
+-	after one condition is found to be `TRUE`, the others are not tested
+-	only the first block of code for which the condition is `TRUE` will be executed
 -	*WARNING: never brake a line before an `else`!*
 
 \newline
@@ -255,7 +259,7 @@ while(condition) {
   expression...
 }
 ```
--	the condition is tested before every iteration and the loop runs as long as it is TRUE
+-	the condition is tested before every iteration and the loop runs as long as it is `TRUE`
 
 
 \newline
