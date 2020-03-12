@@ -172,8 +172,6 @@ paste(n3, l1)
 
 - of course, some operations do not deal with every element of a vector separately
 ```{r}
-sum(n)
-
 s1 <- names(v5)
 s1
 
