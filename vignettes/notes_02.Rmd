@@ -260,6 +260,7 @@ ind <- TRUE
 x[ind]
 ```
 <font color = 'blue'>
+
 - a negative index will drop an item
 ```{r}
 v4
@@ -288,6 +289,7 @@ n[ind] <- NA
 n
 ```
 <font color = 'blue'>
+
 - assigning to a non-existent index creates a new element
 ```{r}
 n[7] <- 15
