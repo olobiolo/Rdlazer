@@ -110,9 +110,16 @@ hintlist <- function() {
   hints[next.hint()] <- 'use ls to discover the contents of GlobalEnv'
 
   # next.part(2)
-  # hints[next.hint()] <- 'see what anmes returns when run on an unnamed vector'
+  # hints[next.hint()] <- 'see what names returns when run on an unnamed vector'
   # hints[next.hint()] <- 'try to think of a function that tests for this kind of object'
   # hints[next.hint()] <- 'try help("NULL") or ?`NULL` (mind the backquotes with ?)'
+
+  # next.exercise(2)
+  # hints[next.hint()] <- 'use subsetting with a logical vector'
+  # hints[next.hint()] <- 'obtain a logical vector that says which elements of your vector are NAs'
+  # hints[next.hint()] <- 'you can put a logical condition in the brackets'
+
+  # hints[next.hint()] <- head(sort(table(m$make), decreasing = T))
 
   # hints['2.1.1'] <- 'use the ls function to list all objects in a package namespace'
   # hints['2.1.2'] <- 'use is.data.frame and is.factor to test the class of a data set and a column'

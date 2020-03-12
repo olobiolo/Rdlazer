@@ -14,6 +14,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r setup, include=FALSE}
+library(Rdlazer)
+```
+
 ![a tour of R][confusedcat]
 
 # Data Structures And *Language Properties*
@@ -85,9 +89,14 @@ v4
 
 \newline
 
+#### attributes
+
 - a vector can have **attributes**
 - an attribute is an additional feature of a vector, e.g. properties or information
 - the definition of attributes is necessarily vague as they can be anything, really
+<font color = 'blue'>
+- attributes are stored as a named list (more on lists below)
+</font>
 - all attributes of an object can be viewed with the function `attributes`
 - a specific attribute can be viewed with `attr`
 - a frequently encountered attribute is **names**: a vector of character strings associated with each item
@@ -273,6 +282,7 @@ v4[c(-2, -5)]
 
 
 
+
 ## IV *Replacement*
 
 - R has a **replacement** functionality, a combination of extraction and assignment
@@ -362,7 +372,7 @@ m1 <- m[1, ]
 is.matrix(m1)
 is.vector(m1)
 ```
-- in order to preserve tha matrix nature of the result, we must set the `drop` argument to FALSE:
+- in order to preserve tha matrix nature of the result, we must set the `drop` argument to `FALSE`:
 ```{r}
 m2 <- m[1, , drop = FALSE]
 # mind the empty second dimension!
@@ -403,7 +413,17 @@ m[c('a', 'b'), c('A', 'B')]
 ```
 - the row and column names are stored a single attribute **dimnames**
 - dimanmes can be viewed or set with the function `dimnames`
-- it is structured as a list (more on lists below)
+<font color = 'blue'>
+- it is a list with two unnamed elements
+- row and column names can be viewed or set separately with `rownames` and `colnames`
+</font>
+```{r}
+dimnames(m)
+rownames(m)
+colnames(m)
+```
+
+
 
 \newline
 
@@ -578,11 +598,254 @@ toupper(s[order(nchar(s), decreasing = T)][1:5])
 
 
 
+## VIII Data Frame
+- a **data frame** is a 2-dimensional data structure
+- it is the closest thing to a spreadsheet that exists in R
+- a data frame is superficially similar to a matrix in that it has rows and columns
+- **unlike** a matrix, it can hold different types of data: each column is independent
+- see `iris` for an example of a data frame
+- a data frame has certain dimensions (number of rows  and columns) and they can be checked
+```{r}
+nrow(iris)
+
+ncol(iris)
+
+dim(iris)
+```
+- test if an object is a data frame with `is.data.frame`
+- a data frame has two (virtually) obligatory attributes: row names and column names
+```{r}
+rownames(iris)
+
+colnames(iris)
+```
+- unlike `dimnames` in a matrix, `rownames` and `colnames`  are independent attributes
+- both are vectors of unique character strings
+- `dimnames` does still work, thoguh
+```{r}
+dimnames(iris)
+```
+- if not supplied when creating a data frame, they will be assigned default values
+- `colnames` **can** be set to `NULL` and be removed
+- `rownames` **can** be set to `NULL` but will be replaced by a character vector of integers
+
+\newline
+
+- a data frame is created with the `data.frame` function, enumerating the vectors that build columns
+```{r, error=TRUE}
+# different lengths of columns throw an error
+data.frame(1:4, letters[1:4], c('some', 'strings', 'here'))
+
+data.frame(1:4, letters[1:4], c('some', 'strings', 'go', 'here'))
+# the automatic names are unhelpful
+
+d1 <- data.frame(first = 1:4, 
+                 second = letters[1:4], 
+                 'third' = c('some', 'strings', 'go', 'here'))
+d1
+# note names need not be quoted
+```
+- matrices can be coerced to a data frame with `as.data.frame`
+```{r}
+as.data.frame(m)
+
+dimnames(m) <- NULL
+as.data.frame(m)
+# these automatic names are better
+```
+- as can some lists but it the results may be surprising
+```{r, error = TRUE}
+l3
+as.data.frame(l3)
+
+l4
+as.data.frame(l4)
+```
+- manually created data frames are uncommon, usually they result from importing data
+
+\newline
+
+- to be fair, it is possible for a column to be a list of lists rather than an atomic vector
+- this is called a list column
+- it is rarely used, just be aware it can happen
+
+\newline
+
+- a data frame is actually a special type of list with some restrictions:
+    - all list elements are (usually) atomic vectors
+    - all list elements are of the same length
+    - the list must be named
+    - the list elements are the columns of the table
+- this is why `length` returns the number of columns rather than rows of a data frame
+- since columns are list elements, column names are actually the names of the list elements
+```{r}
+colnames(iris)
+names(iris)
+
+identical(names(iris), colnames(iris))
+```
+
+\newline
+
+- data frames are where `head` starts coming in really handy, as it displays the first rows
+```{r}
+head(iris)
+```
+- another useful function is `str`, which displays the structure of an object
+```{r}
+str(iris)
+```
+*(What's this "Factor" thing here, you ask? Hold that thought.)*
+
+#### subsetting a data frame
+
+- use the `[` operator and specify two dimensions
+```{r}
+# use numeric indices
+iris[1:5, 3:4]
+
+# use row/column names
+iris[c('1', '4', '9'), c('Petal.Length', 'Species')]
+
+# leave columns unspecified to get them all
+iris[1:5, ]
+
+# leave rows unspecified to get them all
+iris[, 4:5]
+
+# selecting a single column will yield a vector, not a data frame
+iris[, 'Species']
+
+# unless you specify that dimensions not be dropped
+iris[, 'Species', drop = F]
+
+# use logical vectors - highly unorthodox but possible
+iris[c(TRUE, FALSE), c(TRUE, FALSE)]
+# note the recycling
+
+# again, selecting a single column drops dimensions
+iris[, c(F, F, T, F, F)]
+
+# unless forbidden
+iris[, c(F, F, T, F, F), drop = FALSE]
+```
+- use the `[` operator and only specify the column(s), like with a list
+```{r}
+iris[4:5]
+iris['Species']
+# always yields a data frame, consistent with list behavior
+```
+- use the `[[` to get **one** column as a vector, like with a list
+```{r, error=TRUE}
+iris[[5]]
+iris[['Species']]
+# always yields a vector
+
+iris[[5, drop = F]]
+# keeping dimensions is not applicable
+
+iris[[c('Species', 'Petal.Length')]]
+# only one item
+
+iris[[1:5]]
+iris[[1:2]]
+#madness
+```
+- use the `$` operator to extract one column as a vector, like with a list
+```{r}
+iris$Species
+```
+
+\newline
+
+- so far this replicates list behavior
+- now for something specific to data frames
+
+- use a logical expression derived from the data frame to determine rows
+```{r}
+iris[iris$Species == 'setosa', ]
+```
+- what just happened?
+```{r}
+# 1. the iris$Species column is compared to the string 'setosa'
+iris$Species == 'setosa'
+# this yields a logical vector EXACTLY the same length as iris$Species, i.e. the number of rows
+
+# 2. this vector is then used for extracting rows
+ind <- iris$Species == 'setosa'
+iris[ind, ]
+```
+- conceptually, this comes down to *get me all rows, for which the column Species has the value "setosa"*
+- and since logical expressions can be combined
+```{r}
+iris[iris$Species == 'setosa' & iris$Sepal.Length >= 5, ]
+```
+- of course, this can be combined with selecting columns
+```{r}
+iris[iris$Species != 'virginica' & iris$Sepal.Length >= 5, 'Petal.Width']
+```
+
+#### replacing in a data frame
+
+- all the subsetting mechanics can be used for very specific replacement
+```{r}
+# suppose we want to omit some outliers from our calculations
+# we can replace some data points with NA
+iris[iris$Sepal.Length > 6 | 
+       iris$Sepal.Length < 5 & 
+       iris$Species == 'versicolor', 
+     'Petal.Width'] <- NA
+iris
+```
+
+
+#### operations with columns
+
+- data frames provide a convenient way of processing data
+- columns are vectors of equal length
+- operations involving several columns will always be performed rowwise (no recycling)
+```{r}
+head(mtcars)
+
+# compute how much horse power (hp) a car has per cylinder (cyl)
+mtcars$hp / mtcars$cyl
+```
+- the resulting vector can easily be saved as a new column
+```{r}
+mtcars$hp.per.cyl <- mtcars$hp / mtcars$cyl
+head(mtcars)
+```
+- the same can be done with the string notation with `[[`
+```{r}
+mtcars[['hp.per.cyl']] <- mtcars[['hp']] / mtcars[['cyl']]
+```
+- adding new columns is often a useful way to add information without losing data
+```{r}
+# rather than substituting NAs for numbers, 
+# let's add a logical column that will flag certain observations as outliers
+iris$outlier <- 
+  ifelse(iris$Sepal.Length > 6 | 
+           iris$Sepal.Length < 5 & 
+           iris$Species == 'versicolor', 
+         TRUE, FALSE)
+iris
+```
+- `ifelse` is a very useful function; study it carefully
+
+
+<h4> A data frame is a special kind of list made up of atomic vectors. <br>
+Extracting rows and columns is reobust. <br>
+Operations on columns are easy.
+</h4>
+
+
+
 
 
 ```{r forlater, eval=FALSE, include=FALSE}
-# ## VIII Data Frame
-# - the data frame is pehaps the most often used data structure
+## IX Class
+
+## X Factor
 ```
 
 [confusedcat]: ../images/confused.jpg

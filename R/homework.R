@@ -85,13 +85,19 @@
 # #'   Write an \code{if-else} statement that will test wheter a vector is named and print "found names" if yes, and "no names" if not.
 # #'   }
 # #'   \item{
+# #'   Given a vector that contains NAs (create one), obtain a subset of the vector without the NAs.
 # #'   }
-#'
-#'
-#'
-#'
-#'
-#'
+# #'
+
+# #'   \item{
+# #'   Examine the \code{cars} data set. Find out which make is the most frequent and how many times it ocurrs.
+# #'   }
+
+
+
+
+
+
 # #'   \item{
 # #'   They are attached to every R session and reside in the datasets package.
 # #'   Find out which of them are data frames that contain at least two columns that are factors.

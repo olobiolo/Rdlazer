@@ -29,8 +29,3 @@
 #' @aliases Romanes Romansgohome Brian gohome
 #'
 NULL
-
-# #' @export
-Brian <- 'Romanes eunt domus'
-# #' @export
-Cleese <- 'Romani ite domum'
