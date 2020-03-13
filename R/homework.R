@@ -93,7 +93,9 @@
 # #'   Examine the \code{cars} data set. Find out which make is the most frequent and how many times it ocurrs.
 # #'   }
 
-
+# #'   \item{
+# #'   Create a vector with \code{factor(round(rnorm(10), 6))}. Now obtain the numbers encoded within in numeric form.
+# #'   }
 
 
 

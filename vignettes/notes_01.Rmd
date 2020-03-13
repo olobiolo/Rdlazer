@@ -37,6 +37,10 @@ knitr::opts_chunk$set(
 -	execute a statement with Enter
 -	use Up and Down arrows to navigate console history
 -	use Ctrl+L to clear the console (does not affect history)
+<font color = 'blue'>
+- autocomplete exists for object names, argument names and access paths
+- it is trigerred by Tab
+</font>
 -	call for help like this:
 ```{r help, eval=FALSE, include=TRUE}
 ?Rdlazer
@@ -69,6 +73,7 @@ help("Rdlazer")
 -	there are other types in R but that is deep lore and we don’t need it here
 -	integer and double are much the same for most purposes, so they are both treated as **numeric**
 <font color = 'blue'>
+- integers are created explicitly by adding `L` to a digit: `1L`
 - missing values are called `NA` for not available
 - NAs are not absent! they are there, they are just unknown
 - a lack of anything is represented by `NULL`, a "nothing" object
