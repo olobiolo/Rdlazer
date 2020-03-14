@@ -888,6 +888,12 @@ Operations on columns are easy.
 ```{r}
 str(iris)
 ```
+- let's have a closer look
+```{r}
+head(iris$Species)
+
+str(iris$Species)
+```
 
 ![a typical reaction to factors][picard]
 
