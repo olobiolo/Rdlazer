@@ -94,9 +94,7 @@ v4
 - a vector can have **attributes**
 - an attribute is an additional feature of a vector, e.g. properties or information
 - the definition of attributes is necessarily vague as they can be anything, really
-<font color = 'blue'>
 - attributes are stored as a named list (more on lists below)
-</font>
 - all attributes of an object can be viewed with the function `attributes`
 - a specific attribute can be viewed with `attr`
 - a frequently encountered attribute is **names**: a vector of character strings associated with each item
@@ -133,7 +131,9 @@ v5 <- c(first = 1, second = 2, third = 3)
 - we will discuss more attributes when appropriate but names will keep coming back
 - the function `as.vector` will strip all atributes, leaving a bare vector
 
-#### Every vector has a type and a length. It can also have attributes.
+<h4>
+Every vector has a type and a length. It can also have attributes.
+</h4>
 
 
 
@@ -268,7 +268,6 @@ x[ind]
 ind <- TRUE
 x[ind]
 ```
-<font color = 'blue'>
 
 - a negative index will drop an item
 ```{r}
@@ -277,7 +276,6 @@ v4[-2]
 v4[-c(2,5)]
 v4[c(-2, -5)]
 ```
-</font>
 
 
 
@@ -298,7 +296,6 @@ n[ind]
 n[ind] <- NA
 n
 ```
-<font color = 'blue'>
 
 - assigning to a non-existent index creates a new element
 ```{r}
@@ -310,7 +307,7 @@ n
 n[10] <- 25
 n
 ```
-</font>
+
 
 
 
@@ -413,17 +410,13 @@ m[c('a', 'b'), c('A', 'B')]
 ```
 - the row and column names are stored a single attribute **dimnames**
 - dimanmes can be viewed or set with the function `dimnames`
-<font color = 'blue'>
 - it is a list with two unnamed elements
 - row and column names can be viewed or set separately with `rownames` and `colnames`
-</font>
 ```{r}
 dimnames(m)
 rownames(m)
 colnames(m)
 ```
-
-
 
 \newline
 
@@ -442,7 +435,6 @@ m
 
 
 
-<font color = 'blue'>
 
 ## XI/II Array
 
@@ -477,7 +469,6 @@ a1[, , 3, drop = F]
 \newline
 
 - arrays are not often used nowadays
-</font>
 
 
 
@@ -578,8 +569,9 @@ l4$`forbidden name`
 
 ```
 
-<h4> A list is a kind of vector that can hold any item. <br>
-Subsetting a list with `[` yields a list of any length. Using `[[` or `$` yields a single list item.
+<h4>
+A list is a kind of vector that can hold any item. <br>
+Subsetting a list with `[` yields a list of any length. Using `[[` or `$` yields a single list item. <br>
 <h4>
 
 
@@ -873,9 +865,10 @@ iris
 - `ifelse` is a very useful function; study it carefully
 
 
-<h4> A data frame is a special kind of list made up of atomic vectors. <br>
+<h4>
+A data frame is a special kind of list made up of atomic vectors. <br>
 Extracting rows and columns is reobust. <br>
-Operations on columns are easy.
+Operations on columns are easy and reliable. <br>
 </h4>
 
 
@@ -947,23 +940,18 @@ as.numeric(nf)
 
 \newline
 
-**Wherefore the factors?**<br> Factors store **categorical data**. It used to be a very useful way to encode what is called discreet variables. Today much of what factors do can be don eby character vectors just as well but many procedures rely on a factor input, so they are not going away any time soon.
+**Wherefore the factors?**
+
+Factors store **categorical data**. It used to be a very useful way to encode what is called discreet variables. Today much of what factors do can be don eby character vectors just as well but many procedures rely on a factor input, so they are not going away any time soon.
 
 It may seem superfluous now but we will get to places where factors are helpful and even necessary.
 
 I promise.
 
-#### Factors are confusing so it's all right to be confused.
+<h4>
+Factors are confusing so it's all right to be confused.
+</h4>
 
-
-
-
-
-```{r forlater, eval=FALSE, include=FALSE}
-## X Class
-
-
-```
 
 [confusedcat]: ../images/confused.jpg
 [picard]: ../images/picard.jpg

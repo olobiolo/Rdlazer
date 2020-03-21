@@ -1,0 +1,120 @@
+---
+title: "Notes On Classes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Notes On Classes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# *Objects, Classes and Methods*
+
+
+
+
+
+## I Object-Oriented Programming
+
+- **object-oriented (OO) programming** is a programming style present in many languages
+- an **object** is a thing that exists
+- a **class** is an abstract definition of a kind of object that describes its allowed features and behaviors
+- the behaviors are functions: blocks of code taht perform certain actions
+- they are called **methods**
+- an object is an instance of a class
+- classes can exist in hierarchies of **subclasses** and **superclasses**
+- a subclass **inherits** all properties of its superclass and adds new ones
+- thus an object can inherit from multiple classes in sequence
+
+*An extended example:*
+
+|     *Think of "human" as a class and a person as an object. Some properties of the class human are two paris of limbs, an upright posture and a couple of eyes - these are things all persons share. However, people come with differently colored eyes, so there is variability allowed.*
+
+|     *Humans can be divided into men and women. Every man has all the attributes of a human, as does woman. Man and woman are thus subclasses of human and they both inherit from human. Man and woman each have specific features that are not defined by human like berad and nail polish, respetively. But human is itself a subclass of mammal. Mammal has two pairs of limbs and eyes and these are the features human inherits from mammal. The upright posture is specific to human - but inherited by man and woman.*
+
+|     *Class hierarchies can be long but they are always shaped like trees, never networks. When arranged in a bottom-up fashion classes diverge upwards but the branches never cross.*
+
+|     *Behaviors are encoded in methods. Human can be triggered to walk a certain number of steps - this would be implemented in the `walk` method. When we want a human object Aleksander to walk 20 stpes we call something like `Aleksander.walk(20)`. Syntax will vary from language to language but you get the idea. Human also gets hungry: there is a constantly running method `hungry` (it runs an internal  clock, which depends on an external time source) and if it runs uninterrupted for too long it will cause a human object to terminate. When the `hungry` method has run for some time, it triggers another method, `eat`. The `eat` method resets the clock on the `hungry` method, delaying object termination. While walking is a method specific to the human class walking on two legs is different to walking on all fours), the others are inherited from the mammal class, which in turn inherits them from the vertebrate class and so on, all the way up to the animal class.*
+
+
+
+
+
+## II This is R
+
+#### OO programming in R
+
+- the typical OO style does exist
+- it is implemented, more than once, as **ReferenceClasses** and **R6** classes (no, there are no typos here)
+- there is also the old **S4** style, which is something of an abomination
+- let's just say S4 was an early attempt at implementing proper OO programming in R
+
+*FULL DISCLOSURE: I don't use these and I don't know them.*
+
+
+
+
+
+## II S3
+
+- **S3** is a **functional** style of programming rather than an object-oriented one
+- it is the most common style of programming in R
+- in S3 methods exist outside classes
+- **class** is a special attribute that most objects have
+- actually, virtually only atomics do not have a class attribute - the type doubles for a class in those cases
+- class is a character vector of classes from which the object inherits
+- class is what tells functions how to handle that specific kind of object
+
+\newline
+
+- take the `summary` function:
+    - when called on a `numeric`, it presents some statistics
+    - when called on a `factor`, it presents a limited contingency table
+    - when called on a `list`, it presents a table briefly describing the list's element
+    - when called on a `data.frame`, it runs itself on every column
+- each of these jobs is actually done by a different **method**
+- methods are separate functions that sort of "float around"
+- a method exists for class factor, another for class data.frame, etc.
+- they are called `summary.factor`, `summary.data.frame` and so on
+- there are, in fact, MANY methods for `summary`:
+```{r, echo=FALSE}
+methods('summary')
+```
+- the `summary` we call is called a **generic** function
+- the generic does the following:
+    - determine the class of the object passed to it by reading the `class` attribute
+    - check whether a method for the first element of the `class` of the argument exists
+    - if so, call that method and pass the argument to it: this is called **dispatch**
+    - if not, move to the next element of `class` and check again
+    - if no special method is found, call the **default** method
+- methods **can** be called directly (`foo.class(x)`) but there is rarely reason to do it
+- all generic functions have a special argument: `...` (ellipsis)
+- we will cover the ellipsis when we get to programming
+
+\newline
+
+Why go through all the trouble?
+
+- there is just one function name to remember, not a separate function for every class: want to summarize an object, call `summary`
+- if you create a new class and want a specific behavior for it, you can define a new method for an existing generic
+
+<h4>
+Class is a way to govern the behavior of functions is S3 programming. <br>
+Class is encoded in a special attribute. <br>
+A generic function recognizes an object's class and attemps to find an appropriate method. <br>
+</h4>
+
+```{r forlater, eval=FALSE, include=FALSE}
+# ellipsis (`...`)
+# - it is used when a function calls another function and wants to pass arguments to it
+# - this is exactly what a generic does, hence every generic has the ellipsis argument
+# - the ellipsis also has another (rare) use in functions that can acept a variable number of arguments, such as `c`
+
+
+```

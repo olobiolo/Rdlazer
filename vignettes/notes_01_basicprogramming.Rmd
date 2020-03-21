@@ -17,6 +17,9 @@ knitr::opts_chunk$set(
 ![Rdlazer][typingcat]
 
 
+
+
+
 ## I RStudio basics:
 -	the Console is on the bottom left and that is where the magic happens
 -	the upper left is the Source, or script, from where we can execute consecutive lines of code
