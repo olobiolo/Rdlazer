@@ -88,7 +88,7 @@ knitr::opts_chunk$set(
 - ***as.factor***: convert to factor
 - ***names***: get/set names
 - ***levels***: get/set factor levels
-- ***which***: which element of vector satisfies logical predicate; returns integer vector
+- ***which***: which element of logical vector is TRUE; returns integer vector
 - ***rev***: reverse order of vector
 - ***sort***: sort vector
 - ***order***: get order of vector elements that would result in a sorted vector; returns integer vector

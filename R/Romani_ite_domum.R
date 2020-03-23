@@ -20,12 +20,13 @@
 #' \itemize{
 #'   \item{\code{Brian}: The dreadful thing Brian wrote on the wall in the first place.}
 #'   \item{\code{Cleese}: The proper Roman way to deface a palace.}
+#'   \item{\code{Palace}: The hundred signs Brian boldly painted on the palace.}
 #'   \item{\code{grade}: Grade a slogan or more.}
 #'   \item{\code{goBrian}: Make Brian write the thing proper,
 #'                         as many times as you want, you threatening, manly centurion.}
 #' }
 #'
 #' @name Romani
-#' @aliases Romanes Romansgohome Brian gohome
+#' @aliases Romanes Romansgohome Brian Cleese Palace gohome
 #'
 NULL

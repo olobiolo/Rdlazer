@@ -5,6 +5,8 @@
 \alias{Romanes}
 \alias{Romansgohome}
 \alias{Brian}
+\alias{Cleese}
+\alias{Palace}
 \alias{gohome}
 \title{Defacing the palace.}
 \description{
@@ -30,6 +32,7 @@ And so he does. But has the lesson stuck?
 \itemize{
   \item{\code{Brian}: The dreadful thing Brian wrote on the wall in the first place.}
   \item{\code{Cleese}: The proper Roman way to deface a palace.}
+  \item{\code{Palace}: The hundred signs Brian boldly painted on the palace.}
   \item{\code{grade}: Grade a slogan or more.}
   \item{\code{goBrian}: Make Brian write the thing proper,
                         as many times as you want, you threatening, manly centurion.}

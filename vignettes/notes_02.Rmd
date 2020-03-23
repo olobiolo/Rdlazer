@@ -953,5 +953,5 @@ Factors are confusing so it's all right to be confused.
 </h4>
 
 
-[confusedcat]: ../images/confused.jpg
+[confusedcat]: ../images/confusedcat.jpg
 [picard]: ../images/picard.jpg

@@ -15,4 +15,6 @@ test_that("errors work", {
   expect_error(hint('0.0'))
   # empty string
   expect_error(hint(''))
+  # numeric input
+  expect_error(hint(1))
 })
