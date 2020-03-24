@@ -77,7 +77,7 @@ Use only base R when solving these problems (no added packages allowed).
 Run \code{set.seed(0)} and then \code{v <- rnorm(10000)}.
 You have just created a 10,000 large sample from a normal distribution.
 Normally this would be a random sample but by setting the random seed
-to a specific value we ensure that v will be the same every time.
+to a specific value we ensure that \code{v} will be the same every time.
 Now use \code{round} to round the numbers to 3 decimal places.
 
 4. Count the number of zeros in \code{v}.
@@ -137,8 +137,12 @@ Examine the \code{mtcars} data set.
     and put them into a single new data frame.
     Not the same 9 random rows, mind you, draw independently from each category.
 
-20. There are only three tension levels in \code{warpbreaks}.
+20. This is substantially more difficult.
+    There are only three tension levels in \code{warpbreaks}.
     For added difficulty, try doing exercise 19 as if that number were unknown.
     This can prove quite difficult, expecially as you try to put the thing together.
+
+21. Examine the \code{trees} data set and its help page.
+    Change all data to metric units.
 }
 

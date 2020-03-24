@@ -218,6 +218,9 @@ hintlist <- function() {
   hints[next.hint()] <- 'try using split'
   hints[next.hint()] <- 'reveal bonus bonus hint?'
   hints[next.hint()] <- 'try using do.call'
+  next.exercise(21)
+  hints[next.hint()] <- 'remember vectorized operations'
+  hints[next.hint()] <- 'you your results to existing columns'
   next.exercise()
   hints[next.hint()] <- 'sorting is done with order but the help is quite confusing'
   hints[next.hint()] <- 'focus on what order does to a numeric vector rather than a data frame'
@@ -232,13 +235,6 @@ hintlist <- function() {
   # hints['2.1.1'] <- 'use the ls function to list all objects in a package namespace'
   # hints['2.1.2'] <- 'use is.data.frame and is.factor to test the class of a data set and a column'
   # hints['2.1.3'] <- 'make use of the apply family of functions'
-
-  # hints['2.2.1'] <- 'what you\'re after is a subset of the data'
-  # hints['2.2.2'] <- 'use the sample function'
-  #
-  # hints['2.3.1'] <- 'this is a split-apply-combine problem'
-  # hints['2.3.2'] <- 'split up iris by values of Species'
-  # hints['2.3.3'] <- 'pick random rows from subsets and recombine into a single data frame'
 
   return(hints)
 }
