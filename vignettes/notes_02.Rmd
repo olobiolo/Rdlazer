@@ -572,7 +572,7 @@ l4$`forbidden name`
 <h4>
 A list is a kind of vector that can hold any item. <br>
 Subsetting a list with `[` yields a list of any length. Using `[[` or `$` yields a single list item. <br>
-<h4>
+</h4>
 
 
 
