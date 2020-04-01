@@ -1,7 +1,8 @@
 #' homework assignments
 #'
-#' This help page will contain homework assignments.
+#' This help page will contain homework assignments. It will grow in time.
 #'
+#' Try solving the problems one by one, some solutions build on previous ones.
 #' If you're stuck, use the \code{hint} function.
 #'
 #' @section Solutions:

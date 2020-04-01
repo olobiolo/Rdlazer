@@ -1,5 +1,7 @@
 #' Defacing the palace.
 #'
+#' Now do that again one hundred times or...
+#'
 #' In order to stick it to the Romans, Brian is sent on a night mission
 #' of defacing Pilat's palace with defiant graffiti.
 #' He is to paint "Romans go home" on the wall of the palace, for all to see.

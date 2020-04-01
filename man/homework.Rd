@@ -4,9 +4,10 @@
 \alias{homework}
 \title{homework assignments}
 \description{
-This help page will contain homework assignments.
+This help page will contain homework assignments. It will grow in time.
 }
 \details{
+Try solving the problems one by one, some solutions build on previous ones.
 If you're stuck, use the \code{hint} function.
 }
 \section{Solutions}{

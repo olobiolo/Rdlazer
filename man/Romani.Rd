@@ -10,11 +10,13 @@
 \alias{gohome}
 \title{Defacing the palace.}
 \description{
+Now do that again one hundred times or...
+}
+\details{
 In order to stick it to the Romans, Brian is sent on a night mission
 of defacing Pilat's palace with defiant graffiti.
 He is to paint "Romans go home" on the wall of the palace, for all to see.
-}
-\details{
+
 Unfortunately, he is caught in the act by a centurion,
 who forces him - at swordpoint - to immediately correct the mistakes
 in his Latin. You see, rather that the proper "Romani ite domum"
