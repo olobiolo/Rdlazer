@@ -88,4 +88,4 @@ head(ggplot2::diamonds)
 ```
 - another way is to view the search list with `search`; check the Environments vignette for an explanation
 
-[kittens]: ..images/kittenspackage.png
+[kittens]: ../images/kittenspackage.png
