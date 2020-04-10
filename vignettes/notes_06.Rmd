@@ -1,0 +1,403 @@
+---
+title: "Notes 06: <br> Functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include = FALSE}
+library(Rdlazer)
+```
+
+![lapply(c(lipstick, deodorant), drop)][droppingcat]
+
+
+<br><br><br>
+
+
+## I Functions recap
+
+<i>
+Here is what we have covered so far:
+
+- functions are the active components of the language, whereas objects are passive
+- a function is a block of code that can be run repeatedly
+- as instance of a function running is a function call
+- a function usually takes arguments
+- arguments can modify the procedure within the function
+- objects passed as arguments remain unchanged
+- a function usually returns an output value
+
+\newline
+
+- R is a language where *functions are first class citizens*
+- everything is done by a function
+- everything can be done to a function
+
+</i>
+
+
+<br><br><br>
+
+
+## II Function Environments
+
+`If you find yourself confused by this part, consider reading the Environments vignette.`
+
+- there are three environments that are always associated with a function
+1. the enclosing environment
+    - this is the environment where the function was **defined**
+    - the function "remembers" the contents of its enclosing environment even when the environment no longer exists
+
+2. the calling environment
+    - this is the environment where the function is **called**
+    - another, strictly technical name for it is **parent frame**
+    - obviously, this can be different from call to call
+
+3. the execution environment
+    - this is an environment that is created **when** the function is called
+    - each call creates a separate execution environment
+    - the execution environment contains all arguments of the function and nothing else
+    - the execution environment exists only for the duration of the call and is immediately deleted afterwards
+    - the parent of the execution environment is the function's **enclosing** environment
+*NOTE: I was wrong to say it is the calling environment during class. Like I said, the terminology is confusing. In that case it was true, however, because the function in question was both defined and called in the same (Global) environment.*
+
+
+<br><br><br>
+
+
+## III Defining New Functions
+
+
+- you can define new function at any time
+- functions are defined with the `function` function
+- the arguments in the call to `function` are the **formal arguments** of the function being defined
+- if formal arguments are given with a value, that becomes the default value of the argument
+- the expression after the call to `function` is the **body** of the function being defined
+- this is isually a compound expression (more than one expression) so it is put in braces
+    - any number of expressions can consist in the body
+    - any function can be called
+    - variables can assigned: they will exist in the execution environment
+    - functions can be defined and used within functions
+- returning a value is done with a call to `return`
+- a call to `return` immediately ends the function call, all subsequent expressions are ignored
+```{r}
+f <- function(x, y = 9L) {
+  cat('x and y will be added', '\n')
+  z <- x + y
+  cat('the sum will be pasted to a string constant', '\n')
+  ans <- paste('text', z)
+  cat('the result wil be returned', '\n')
+  return(ans)
+  cat('I am being ignored', '\n')
+  ans <- paste(ans, 'redoubled')
+  return(ans)
+}
+
+# the defined function is assigned as the variable f
+# f has two formal arguments, x and y; y has a default value of 9L
+# during the call a variable called ans is created and returned
+# returning ends the call
+
+f(3)
+```
+
+- the call to `return` is optional
+- if there is no explicit return value, the value of the last expression will be returned
+```{r}
+f2 <- function(x, y = 9) {
+    cat('x and y will be added', '\n')
+  z <- x + y
+  cat('the sum will be pasted to a string constant', '\n')
+  cat('the pasted text will be implicitly returned', '\n')
+  paste('text', z)
+}
+
+f2(3)
+```
+
+\newline
+
+- a function need not be assigned in order to be used
+- this is called an annonymous function
+```{r}
+function(x, y) {z <- x + y; as.character(z)}(3, 5)
+
+function(x, y) {x + y}(3, 5)
+
+(function(x, y) x + y)(3, 5)
+```
+
+\newline
+
+<i>
+
+SIDENOTE
+
+- during a function call arguments are evaluated as they are needed, not before
+```{r, error = TRUE}
+fs <- function(x, y = NULL) {
+  y
+  toupper(x)
+}
+
+# y is not specified, defaults to NULL
+fs('text')
+
+# y is specified as a call to stop, which signals an error and terminates the call
+fs('text', stop('not so fast!', call. = FALSE))
+
+
+
+fns <- function(x, y = NULL) {
+  toupper(x)
+}
+
+fns('text')
+
+fns('text', stop('not so fast!'))
+
+# the error is ignored as no expression in the body refers to it
+```
+- this behavior is called **lazy evaluation**, as opposed to eager evaluation, and is a standard feature of R
+
+END OF SIDENOTE
+</i>
+
+
+<br><br><br>
+
+
+## IV Applying Functions Over Vectors
+
+- to reiterate, a vectorized operation is one where every element of a vector is processed and a vector of the same length is returned
+- not all functions perform vectorized operations
+
+```{r}
+v1 <- 1:5
+
+# this is a vectorized operation:
+v2 <- v1 < 3
+
+# these are not
+any(v2)
+isTRUE(v2)
+```
+- quite often we want to be able to run a fuction on all elements of a vector
+
+\newline
+
+- R contains a set of functions specifically designed to run other functions over vectors
+- the prototype of these functions is `lapply`
+    - `lapply` takes a vector and a function
+    - it runs the function on every element of the vector
+    - it returns a **list**, where each element is the result of the functino being run on a element of the vector argument
+    - it can be applied (pun uninteded) to any vector, which includes lists, which includes data frames
+    - if the vector is named, the names will be transferred to the resulting list
+    - again, it **always** returns a list
+```{r}
+v <- c('one', 'two')
+vn <- setNames(v, c('item1', 'item2'))
+
+lapply(v, identity)
+
+lapply(vn, identity)
+
+lapply(as.list(vn), identity)
+```
+
+\newline
+
+- `identity` doesn't quite display the power of `lapply`
+- consider the following problem: you want to compute the mean of several numeric vectors
+```{r}
+# get the vectors in list form
+l <- as.list(iris[1:4])
+
+# run lapply
+lapply(l, mean)
+```
+- conceptually this is the same as running a loop
+```{r}
+l2 <- vector(mode = 'list', length = length(l))
+for (i in seq_along(l)) {
+  l2[[i]] <- mean(l[[i]])
+}
+names(l2) <- names(l)
+l2
+```
+- `lapply` can be faster as the looping is done in C (the language that runs "under the hood" of R)
+- `lapply` makes for neater code
+- both of these are more and more true as the operation grows more complex
+```{r}
+ff <- function(x, text  ='text') {
+  y <- mean(x)
+  y <- round(y, 2)
+  ans <- paste0(text, ': ', y)
+  return(ans)
+}
+
+lapply(l, ff)
+```
+
+\newline
+
+- the `X` argument in a `lapply` call, the one we iterate over, is the first formal argument of the function we apply
+- other arguments can also be passed in a `lapply` call; they will be the same for every iteration
+
+```{r}
+lapply(l, ff, text = 'the mean value is')
+
+lapply(list(iris, mtcars), head, n = 2)
+```
+- naming them is not strictly necesary but highly advised for clarity and safety
+
+\newline
+
+- finally, `lapply` accepts annonymous functions
+- this is where the real flexibility shows
+```{r}
+# get the mean of each list element
+lapply(l, mean)
+
+# alternative with annonymous function
+lapply(l, function(x) mean(x))
+
+# get the first element of each list item
+lapply(l, function(x) x[1])
+
+# get the first and third element of each list item
+lapply(l, function(x) c(x[1], x[2]))
+
+# get the first and last elements
+lapply(l, function(x) c(x[1], x[length(x)]))
+```
+- and it doesn't end there
+```{r}
+iris[, sapply(iris, is.numeric)]
+```
+
+
+\newline
+
+- using the annonymous function mechanic we can also iterate over other formal arguments rather than the first
+```{r}
+seps <- c(',', ', ', ' - ', '_')
+
+l[[1]]
+
+lapply(seps, function(x) paste(l[[1]], collapse = x))
+```
+
+#### `lapply` family members
+
+- there are other functions that build on the functionality of `lapply`
+
+1. `sapply` does basically the same thing with two major differences:
+    - it will attempt to simplify the result, *e.g.* turn a list of length 1 vectors into an atomic vector
+    - it will attempt co construct names for the result based on the contents of the argument
+```{r}
+lapply(v, identity)
+
+sapply(v, identity)
+```
+    - both of these behaviors are optional    
+    - `sapply` will behave consistently but not always predictably
+```{r}
+# simplifying can involve coercion
+ll <- list(one = '1', two = 1)
+sapply(ll, identity)
+
+# it can also be impossible
+lll <- list(one = 1:2, two = 1)
+sapply(lll, identity)
+```
+
+2. `vapply` is `lapply` with safety measures:
+    - it will also attempt to simplify and create names
+    - you must specify the output you expect from `FUN`, *e.g.* "character of length 1"
+```{r, error = TRUE}
+vapply(ll, identity, character(1))
+
+vapply(v, identity, character(1))
+```
+    - `vapply` is recommended over `sapply` in programming (calling it within a function)
+
+3. `mapply` is a "multivariate" version of `sapply`
+    - it can iterate over more than one argument
+```{r}
+mapply(paste, l, collapse = seps)
+```
+    - the variable arguments are passed (named) in `...`
+    - arguments that are to be constant across iterations are passed in `MoreArgs` as a list
+    - mind the difference in syntax:
+    `sapply(X, FUN)` (vector first) vs. `mapply(FUN, ..., MoreArgs)` (function first)
+
+4. `replicate` is a little different
+    - it does not iterate over a vecotr
+    - it will run an operation a set number of times and simplify the result
+```{r}
+replicate(5, 1:4)
+```
+    - this is handy for simulating random processes
+```{r}
+# create 5 random samples (10 items each) of a normal distribution
+replicate(5, rnorm(10))
+
+# compute mean of a random sample (10k items)
+replicate(100, {
+  s <- rnorm(1e+4)
+  mean(s)
+})
+
+# capture the means and compute their mean
+means <- replicate(100, {
+  s <- rnorm(1e+4)
+  sm <- mean(s)
+})
+
+head(means)
+
+mean(means)
+```
+- note that when we assign the result of a random operation to a variable, we assing the **value** of that one call rather than an unevaluated call itself
+- this means the call is **not** repeated when we call the assigned variable:
+```{r}
+# random pertumation
+sample(6)
+
+# another random permutation
+sample(6)
+
+# assigned random permutation ("captured")
+(p <- sample(6))
+
+# the permutation remains "captured"
+p
+
+# p stores the value returned by the call to sample, not the function call itself
+```
+
+\newline
+
+*Check out the `Vectorize` function too.*
+
+<h4>
+`lapply` is a very powerful and flexible tool <br>
+`sapply` can return vectors rather than lists <br>
+`sapply` results can be surprising <br>
+`mapply` can iterate over any number of arguments <br>
+`replicate` can be useful for simulations <br>
+
+</h4>
+
+[droppingcat]: ../images/droppingcat_cropped.gif

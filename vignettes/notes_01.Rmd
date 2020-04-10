@@ -1,8 +1,8 @@
 ---
-title: "Notes For Part One"
+title: "Notes 01: <br> The Basics"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Notes For Part One}
+  %\VignetteIndexEntry{Notes 01: <br> The Basics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,10 +17,11 @@ knitr::opts_chunk$set(
 ![Rdlazer][typingcat]
 
 
+<br><br><br>
 
 
+## I RStudio basics
 
-## I RStudio basics:
 -	the Console is on the bottom left and that is where the magic happens
 -	the upper left is the Source, or script, from where we can execute consecutive lines of code
 -	the upper right shows the contents of the **Global Environment**, which can be useful
@@ -36,14 +37,17 @@ knitr::opts_chunk$set(
 
 -	workspace and console history can be saved and loaded between sessions; I myself never do it
 
-## II Console basics:
+
+<br><br><br>
+
+
+## II Console basics
+
 -	execute a statement with Enter
 -	use Up and Down arrows to navigate console history
 -	use Ctrl+L to clear the console (does not affect history)
-<font color = 'blue'>
 - autocomplete exists for object names, argument names and access paths
 - it is trigerred by Tab
-</font>
 -	call for help like this:
 ```{r help, eval=FALSE, include=TRUE}
 ?Rdlazer
@@ -60,7 +64,12 @@ help("Rdlazer")
 -	when the cursor is on or after a close\* sign, the appropriate open\* sign is highlighted
 -	this goes for **parentheses** ( `(` ), **brackets** ( `[` ) and **braces** ( `{` )
 
+
+<br><br><br>
+
+
 ## III comments
+
 - the pound sign (`#`) is a comment sign
 - everything right of a `#` in a line is considered a comment rather than code and will not executed
 - comments are put in source rather than the console; you want the console to do things, after all
@@ -68,30 +77,33 @@ help("Rdlazer")
 - other people include yourself some (surprisingly short) time in the future
 
 
+<br><br><br>
 
-\newline
 
-## IV basic programming from an R perspective:
+## IV basic programming from an R perspective
+
 -	there are four basic **types** of data: **logical**, **character**, **integer** and **double**
 -	there are other types in R but that is deep lore and we don’t need it here
 -	integer and double are much the same for most purposes, so they are both treated as **numeric**
-<font color = 'blue'>
 - integers are created explicitly by adding `L` to a digit: `1L`
 - missing values are called `NA` for not available
 - NAs are not absent! they are there, they are just unknown
 - a lack of anything is represented by `NULL`, a "nothing" object
-</font>
+
+<br>
 
 #### character strings
+
 -	character strings are delineated by **quote marks**, double (`"`) or single (`'`)
 -	to place a quote mark within a string you must **escape** it by preceding it with `\`
 -	whitespace can be encoded in strings with **special characters**: `\t` for tab, `\n` for new line
 -	in these cases the backslash bestows special meaning rather than removes it as with quotes
 
+<br>
+
 <h4> Boolean logic <br> 
 <font size = "1"> 
-*named after British mathematician George Bool; it is said he died because he was set to FALSE* 
-</font></h4>
+*named after British mathematician George Bool; it is said he died because he was set to FALSE* </font></h4>
 
 -	logical values can be **TRUE** or **FALSE**; these are **reserved words**
 -	**T** and **F** are aliases for TRUE and FALSE; these are not reserved
@@ -104,7 +116,10 @@ help("Rdlazer")
     - `|`		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OR; is any of the two items TRUE; analogous to addition
 - NAs cannot be compared to anything, so comparing an NA always yields an NA
 
+<br>
+
 #### simple maths
+
 -	most arithmetic operations are implemented as operators:
     - `+`, `-`, `*`, `/`, `^`	&nbsp;&nbsp;&nbsp;&nbsp; add, subtract, multiply, divide, raise to power
     -	`%%`, `%/%`		                  &nbsp;&nbsp;&nbsp;&nbsp; division remainder, modulus
@@ -113,15 +128,16 @@ help("Rdlazer")
     -	`>`, `<`, `>=`, `<=`  &nbsp; greater than, less than, greater or equal, less or equal
     -	operation precedence is as usual, including parentheses
 
+<br>
+
 #### variables
+
 -	a **variable** is a **binding** of a **value** to a **name** (a.k.a. **symbol**)
 -	a variable is **created** or **declared** by **assigning** a value to a name
 - a name can consist of any letters (lower- and uppercase), digits, periods, dashes and underscores but must not begin with a digit or dash (`-`)
 - variables with names beginning with a period (`.`) are hidden
-<font color = 'blue'>
 - actually, names **can** contain illegal characters (even spaces!) but must be referred to with backticks
 - this is a backtick: `
-</font>
 -	a variable, as well as a binding, exists in an **environment** (more on environments later)
 -	variables can be created by `<-`, `->` and `=` (name on left and value on right)
 -	it is good style to always use `<-`, with spaces around it for intelligibility
@@ -129,7 +145,7 @@ help("Rdlazer")
 -	when creating a variable, its type is determined automatically (unlike in, say, Java or C)
 -	a new value can be assigned to an existing symbol, overwriting the previous value
 
-\newline
+<br>
 
 #### functions
 
@@ -140,9 +156,7 @@ help("Rdlazer")
 -	a function will usually take input, possibly some existing variables/objects
 -	a variable that is used by a function is said to be **passed** to a function
 -	variables passed to a function remain unaffected
-<font color = 'blue'>
 - a functions expects a certain type of input and it it encounters an object of a different type, it will attempt to convert it to as appropriate one; this is called **coercion**
-</font>
 -	a function will usually produce output
 -	the output value is **returned**
 -	an instance of a function’s action is a **function call**
@@ -160,7 +174,7 @@ help("Rdlazer")
 
 <font size = 2><b>Use the `foo` function to play around with function calls.</font></b>
 
-\newline
+<br>
 
 #### flow control
 
@@ -276,9 +290,8 @@ while(condition) {
 -	the condition is tested before every iteration and the loop runs as long as it is `TRUE`
 
 
-\newline
+<br><br><br>
 
-<font color = 'blue'>
 
 ## A Look Ahead
 
@@ -301,6 +314,5 @@ c('one', 'two', 'three', 'four')
 3) concatenating strings
 - character strings can be concatenated with the function `paste`
 
-</font>
 
 [typingcat]: ../images/typingcat.gif

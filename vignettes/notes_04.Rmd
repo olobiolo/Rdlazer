@@ -1,0 +1,165 @@
+---
+title: "Notes 04: <br> Environments"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Environments}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+![envirnoment madness][reds]
+
+<br>
+
+    Disclaimer:
+    This vignette is by no means a comprehensive description of environments and their mechanics! Think of it as an advanced primer. It will be helpful in understanding packages, scoping and masking, which any user will run into sooner or later but this is not mandatory knowledge.
+
+
+<br><br><br>
+
+
+## I Environments
+
+- this is a concept that has existed since before R so terminology is somewhat redundant and confusing
+- an **environment** is the virtual space where bindings (name-value pairs) exist
+- an object cannot exist outside an environment
+- the bindings in an environment are called a **frame**
+- every enrivonment has an **enclosing environment** or **enclosure**
+- this is also called a **parent environment**
+- "environment" and "frame" can and will be used interchangably
+
+\newline
+
+- the user's workspace is the **Global Environment**
+- you can refer to it with `.GlobalEnv` or `globalenv()`
+- check what environment you are in with `environment`
+- check the parent environment with `parent.env`
+```{r}
+environment()
+
+parent.env(environment())
+```
+
+\newline
+
+- environments form a stack with the Global Envionment at the bottom and the **empty environment** at the top
+- the empty environment has no parent and no variables can be assigned there
+- every session starts with several existing environments
+- the current stack of environments is called the **search path** or **search list**
+- it can be viewed with `search`
+```{r}
+# search returns a character vector, it will be easier to read as a matrix
+cbind(search())
+```
+- the empty environment is not listed but we can make sure it's there
+```{r}
+parent.env(as.environment('package:base'))
+```
+- and that there is nothing above it
+```{r, error = TRUE}
+parent.env(emptyenv())
+```
+*Most of the items on the search path are attached packages.*
+
+\newline
+
+- items added to the search path are by default placed immediately above the Global Environment
+- this is always the case when attaching a package, which is the most common:
+```{r}
+cbind(search())
+
+library(lattice)
+cbind(search())
+```
+
+
+
+#### package environments
+
+- a package in isolation can be thought of as a frame without a parent
+- it has a namesapace, a listing of all named objects encoded in the package
+- when a package is attached, its namespace is added to the search path as a new environment
+- core R packages such as `base`, `utils` and `datasets` are attached at the beginning of every session
+
+
+<br><br><br>
+
+
+## II Scoping
+
+- **scoping** is the process of looking for a value bound to a symbol
+- the range of locations where scoping takes place is called a **scope**
+- whenever a symbol is evaluated, R attempts to locate the appropriate binding in the environment where the evaluation is taking place, *e.g.* in the Global Environment
+- if the symbol is found, the associated value is returned
+- if not, R moves to the parent environment and checks there
+- this continues up the search path until the empty environment is reached and an error is signalled
+
+\newline
+
+- objects with the same name can exist in multiple environments on the search path
+- the object located lower on the search path **masks** the one located higher
+- in fact, whenever you create an object that has the same name as an object previously existing somewhere higher on the search patch, that pre-existing object is masked and not overwritten
+- a masked object can still be accessed with `get`
+```{r}
+head(mtcars)
+
+mtcars <- matrix(rep("mtcars", 100), 20, 5)
+head(mtcars)
+
+mtc <- get("mtcars", pos = "package:datasets")
+head(mtc)
+```
+- or with the special operator `::`
+```{r}
+mtc <- datasets::mtcars
+head(mtc)
+```
+- the `::` operator can also be used to access namespaces of packages that have been installed but not attached
+```{r, error = TRUE}
+head(diamonds)
+
+head(ggplot2::diamonds)
+```
+
+
+\newline
+
+*Note that `get` can scope an object with a character string rather than a symbol*
+
+<br>
+
+#### double arrow assignment
+
+- we can now better explain the different ways of assigning variables
+1. the arrow: `<-`, `->`
+    - the most common and recommended way to assign varaibles (especially right-to-left)
+    - the name goes on the arrowhead side
+    - creates the binding in the environment where it is called (it's a function, remember?)
+    - accepts bare symbols as well as strings on the name (arrowhead) side
+2. the equals sign: `=`
+    - does right-to-left assignemnt just like `<-`
+    - not recommended for creating variables
+    - best used only for passing named arguments to functions for code clarity
+3. the `assign` function
+    - takes the name as a string in `x` and the value in `value`
+    - the environment to do the assignment in can be specified
+4. the double arrow: `<<-`, `->>`
+    - unlike single arows they scope the name before assigning
+    - if they find the name somewhere, they **replace the value in that environment**
+    - if they don't find the name, they **create a new variable in the Global Environment**
+    - some bindings and environments are locked and cannot be changed but that is the gist of it
+
+#### be careful when using double arrow assignment
+
+<br><br><br>
+
+*Again, this is by far not comprehensive, just some working knowledge. For more details check out R help pages for `environment`, `search`, `attach`, `library`. Read the Packages vignette before you do.*
+
+[reds]: ../images/reds.png

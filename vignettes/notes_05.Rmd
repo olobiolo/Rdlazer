@@ -1,0 +1,91 @@
+---
+title: "Notes 05: <br> Packages"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Packages}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+![a package][kittens]
+
+
+<br><br><br>
+
+
+## I Packages
+
+- a **package** is a collection of files containing code, *i.e.* primarily functions
+- a package can also contain data, either as raw files or as code that generates the data
+- some packages contain only data - this allows the data to be neatly documented
+- a package is a common way of distributing code, ensuring it will be readily usable
+- in other languages (*e.g.* Python, or C++) this is usually called a library
+
+
+
+#### the library
+
+- before they can be used, packages have to be **installed**
+- install packages with `install.packages`
+- this downloads the specified packages from a **repository** and installs them
+- the default repository is **CRAN**: the entity that keeps, maintains, and delevops the R language
+- there are other repositories, *e.g.* BioConductor, Github
+- non-CRAN repositories can have other ways to install packages
+- all installed packages are kept in a directory called the **library**
+- list all installed packages with `.packages(all.available = TRUE)`
+- for more comprehensive view use `installed.packages`
+- uninstall packages with `remove.packages`
+- installing a package does **not** mean you can access its contents, not quite yet
+
+#### packages in action
+
+- a package has a **namespace**, a collection of names to which values are assigned
+- objects that are made accessible to the user are said to be **exported**
+- a namespace also contains names of objects that are **imported** from other packages but that is another story
+- a package can be **attached** to a session with `library`
+- this causes the contents of the namespace to be accessible
+```{r, error = TRUE}
+hint('0.1.2')
+
+library(Rdlazer)
+hint('0.1.2')
+```
+
+\newline
+
+- note that attaching `Rdlazer` causes **masking** of two objects from `datasets`
+- masking means that two objects exist under one name
+- by defualt the name will access the object that was attached later
+- you can refer to them unambiguously with the special operator `::`
+```{r}
+head(mtcars)
+
+head(Rdlazer::mtcars)
+
+head(datasets::mtcars)
+```
+- the `::` operator can also be used to access namespaces of packages that have been installed but not attached
+```{r, error = TRUE}
+head(diamonds)
+
+head(ggplot2::diamonds)
+```
+
+\newline
+
+- **detach** a package from the current session with `detach("package:packagename", unload = TRUE)`
+- the currently attached packages can be viewed with the function `.packages`
+```{r}
+# .packages returns invisibly
+(.packages())
+```
+- another way is to view the search list with `search`; check the Environments vignette for an explanation
+
+[kittens]: ..images/kittenspackage.png
