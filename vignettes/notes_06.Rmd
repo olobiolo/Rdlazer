@@ -69,6 +69,7 @@ Here is what we have covered so far:
     - the execution environment contains all arguments of the function and nothing else
     - the execution environment exists only for the duration of the call and is immediately deleted afterwards
     - the parent of the execution environment is the function's **enclosing** environment
+    <br>
 *NOTE: I was wrong to say it is the calling environment during class. Like I said, the terminology is confusing. In that case it was true, however, because the function in question was both defined and called in the same (Global) environment.*
 
 
