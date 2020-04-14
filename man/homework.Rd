@@ -9,6 +9,9 @@ This help page will contain homework assignments. It will grow in time.
 \details{
 Try solving the problems one by one, some solutions build on previous ones.
 If you're stuck, use the \code{hint} function.
+
+Unless otherwise stated, use only base R when solving these problems
+(no added packages allowed).
 }
 \section{Solutions}{
 
@@ -18,11 +21,13 @@ become too difficult or tedious.
 
 \section{For Part One}{
 
+Part One encompasses the Notes 01 vignette.
+
 The lecture and notes should be sufficient to solve all these problems.
 When in doubt, feel free to use the help
 but for the time being refrain from looking on the Internet.
 
-Since exersises 8-11 are getting large and difficult, there is a solution provided.
+Since exercises 8-11 are getting large and difficult, there is a solution provided.
 Use the \code{solution} function to get a character vector
 like the one you're supposed to construct.
 You can then test whether your result is EXACTLY like mine with \code{identical}.
@@ -54,22 +59,21 @@ You can then test whether your result is EXACTLY like mine with \code{identical}
 11. This is a hard one.
     Repeat exercise 8 but also add week days: "25th February 2020 Tuesday".
     2000 started on a Saturday, 2010 on a Friday, and 2020 - on a Wednesday.
-    Even though we did cover it, you don't need subsetting to do this, so don't.
+    You don't need subsetting to do this, so don't, even though we did cover it at the lecture.
 
 12. There are probably several objects in your Global Environment. (If not, create some.)
     Remove them all with a single console command (two at most).
     Try to do it in a way that does not require you to know the contents of GlobalEnv to do it.
 }
 
-\section{For Part Two}{
+\section{For Part Two (Notes 02 and 03)}{
 
-Use only base R when solving these problems (no added packages allowed).
 
 1. Write an \code{if-else} statement that will test wheter a vector is named
    and print "found names" if yes, and "no names" if not.
    Create a named and an unnamed vector and test it.
 
-2. Create a numeric vector contains NAs (but not only NAs).
+2. Create a numeric vector that contains NAs (but not only NAs).
    Now obtain a subset of the vector without the NAs.
 
 3. Create a factor with \code{factor(round(rnorm(10), 6))}.
@@ -81,7 +85,7 @@ Normally this would be a random sample but by setting the random seed
 to a specific value we ensure that \code{v} will be the same every time.
 Now use \code{round} to round the numbers to 3 decimal places.
 
-4. Count the number of zeros in \code{v}.
+4. Count how may elements of \code{v} are zeros.
 
 5. Create a character vector the same length as \code{v} with the values
    "negative" and "non-negative" in accordance with the numeric values of \code{v}.
@@ -134,8 +138,8 @@ Examine the \code{mtcars} data set.
 
 18. Pick 10 rows from the \code{iris} data set at random.
 
-19. Pick 9 random observations from level of tension in the \code{warpbreaks} data set
-    and put them into a single new data frame.
+19. Pick 9 random observations from each level of tension in the \code{warpbreaks}
+    data set and put them into a single new data frame.
     Not the same 9 random rows, mind you, draw independently from each category.
 
 20. This is substantially more difficult.
@@ -145,5 +149,39 @@ Examine the \code{mtcars} data set.
 
 21. Examine the \code{trees} data set and its help page.
     Change all data to metric units.
+}
+
+\section{For Part Three (Notes 04 through 06)}{
+
+
+1. Recall \bold{exercise 3} from Part Two. Solve it again but this time do it by writing a function.
+   (Not co create the factor but to get the numbers out, obviously.)
+
+2. Solve **exercise 4** from Part Two by writing a function.
+
+3. Expand the function from the exercise 2 so that it returns
+   the numbers of negative, positive, and 0 elements like in **exericse 7** from Part Two.
+
+4. Write a function that will remove one or more columns from a data frame.
+   The columns to be removed must be able to be specified
+   either with a character vector or an integer vector.
+   The function must return a modified data frame, not modify the existing one.
+
+5. This is a hard one, feel free to skip it.
+   Write another function like in exercise 4 but have this one modify the original data frame
+   rather than returning a modified one.
+
+6. Write a function that randomly picks a specified number of rows from a data frame.
+
+7. Use the function from exercise 6 to solve **exercise 19** from Part Two.
+   No loops this time.
+
+The \code{datasets} package contains a number of data sets.
+
+8. Find out which of them are data frames. Get their names as a character vector.
+
+9. Find out which of the data frames have at least three columns.
+
+10. Find out which of the data frames contain at least two columns that are factors.
 }
 

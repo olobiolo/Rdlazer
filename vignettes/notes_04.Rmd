@@ -123,9 +123,9 @@ head(mtc)
 ```
 - the `::` operator can also be used to access namespaces of packages that have been installed but not attached
 ```{r, error = TRUE}
-head(diamonds)
+head(barley)
 
-head(ggplot2::diamonds)
+head(lattice::barley)
 ```
 
 

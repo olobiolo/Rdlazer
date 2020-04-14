@@ -211,7 +211,7 @@ hintlist <- function() {
   hints[next.hint()] <- 'bind the data frames back together'
   next.exercise(20) # random rows by unknown number of groups
   hints[next.hint()] <- 'you will need a for loop to iterate over the tension levels'
-  hints[next.hint()] <- 'createing a variable wform within a loop is easily done with assign'
+  hints[next.hint()] <- 'creating a variable form within a loop is easily done with assign'
   hints[next.hint()] <- 'alternatively you can store new variables in a list'
   hints[next.hint()] <- 'you will need another for loop to bind the results'
   hints[next.hint()] <- 'reveal bonus hint?'
