@@ -1,8 +1,8 @@
 ---
-title: "Notes 03: <br> Classes, Objects and Methods"
+title: "Classes, Objects and Methods"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Classes, Objects and Methods}
+  %\VignetteIndexEntry{Notes 03: Classes, Objects and Methods}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -1,8 +1,8 @@
 ---
-title: "Notes 06: <br> Functions"
+title: "Functions"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Functions}
+  %\VignetteIndexEntry{Notes 06: Functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

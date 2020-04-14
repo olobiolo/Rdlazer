@@ -1,8 +1,8 @@
 ---
-title: "Notes 02: <br> Data Structures And Language Properties"
+title: "Data Structures And Language Properties"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data Structures And Language Properties}
+  %\VignetteIndexEntry{Notes 02: Data Structures And Language Properties}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

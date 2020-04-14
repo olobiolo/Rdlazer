@@ -1,8 +1,8 @@
 ---
-title: "Notes 05: <br> Packages"
+title: "Packages"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Packages}
+  %\VignetteIndexEntry{Notes 05: Packages}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
