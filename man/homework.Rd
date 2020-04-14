@@ -157,10 +157,10 @@ Examine the \code{mtcars} data set.
 1. Recall \bold{exercise 3} from Part Two. Solve it again but this time do it by writing a function.
    (Not co create the factor but to get the numbers out, obviously.)
 
-2. Solve **exercise 4** from Part Two by writing a function.
+2. Solve \bold{exercise 4} from Part Two by writing a function.
 
 3. Expand the function from the exercise 2 so that it returns
-   the numbers of negative, positive, and 0 elements like in **exericse 7** from Part Two.
+   the numbers of negative, positive, and 0 elements like in \bold{exericse 7} from Part Two.
 
 4. Write a function that will remove one or more columns from a data frame.
    The columns to be removed must be able to be specified
@@ -173,15 +173,20 @@ Examine the \code{mtcars} data set.
 
 6. Write a function that randomly picks a specified number of rows from a data frame.
 
-7. Use the function from exercise 6 to solve **exercise 19** from Part Two.
+7. Use the function from exercise 6 to solve \bold{exercise 19} from Part Two.
    No loops this time.
 
 The \code{datasets} package contains a number of data sets.
 
-8. Find out which of them are data frames. Get their names as a character vector.
+8. Find out which of the data sets in \code{datasets} are data frames.
+   Put their names as a character vector.
+   Don't use loops.
 
-9. Find out which of the data frames have at least three columns.
+9. Find out which of the data frames from exercise 8 have at least three columns.
+   Don't use loops.
 
-10. Find out which of the data frames contain at least two columns that are factors.
+10. Find out which of the data frames from exercise 8 contain
+    at least two columns that are factors.
+    Don't use loops.
 }
 

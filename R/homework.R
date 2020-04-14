@@ -172,12 +172,17 @@
 #'
 #' The \code{datasets} package contains a number of data sets.
 #'
-#' 8. Find out which of them are data frames. Get their names as a character vector.
+#' 8. Find out which of the data sets in \code{datasets} are data frames.
+#'    Put their names as a character vector.
+#'    Don't use loops.
 #'
-#' 9. Find out which of the data frames have at least three columns.
+#' 9. Find out which of the data frames from exercise 8 have at least three columns.
+#'    Don't use loops.
 #'
-#' 10. Find out which of the data frames contain at least two columns that are factors.
-#'
+#' 10. Find out which of the data frames from exercise 8 contain
+#'     at least two columns that are factors.
+#'     Don't use loops.
+
 
 
 
