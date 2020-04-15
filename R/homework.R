@@ -14,6 +14,8 @@
 
 
 
+#'
+#'     \cr
 #' @section For Part One:
 #' Part One encompasses the Notes 01 vignette.
 #'
@@ -61,6 +63,8 @@
 
 
 
+#'
+#'     \cr
 #' @section For Part Two (Notes 02 and 03):
 #'
 #' 1. Write an \code{if-else} statement that will test wheter a vector is named
@@ -143,18 +147,22 @@
 #'
 #' 21. Examine the \code{trees} data set and its help page.
 #'     Change all data to metric units.
+
+
+
 #'
-
-
+#'     \cr
 #' @section For Part Three (Notes 04 through 06):
 #'
-#' 1. Recall \bold{exercise 3} from Part Two. Solve it again but this time do it by writing a function.
+#' 1. Recall \bold{exercise 3} from Part Two.
+#'    Solve it again but this time do it by writing a function.
 #'    (Not co create the factor but to get the numbers out, obviously.)
 #'
 #' 2. Solve \bold{exercise 4} from Part Two by writing a function.
 #'
 #' 3. Expand the function from the exercise 2 so that it returns
-#'    the numbers of negative, positive, and 0 elements like in \bold{exericse 7} from Part Two.
+#'    the numbers of negative, positive, and 0 elements
+#'    like in \bold{exericse 7} from Part Two.
 #'
 #' 4. Write a function that will remove one or more columns from a data frame.
 #'    The columns to be removed must be able to be specified
@@ -162,8 +170,8 @@
 #'    The function must return a modified data frame, not modify the existing one.
 #'
 #' 5. This is a hard one, feel free to skip it.
-#'    Write another function like in exercise 4 but have this one modify the original data frame
-#'    rather than returning a modified one.
+#'    Write another function like in exercise 4 but have this one modify
+#'    the original data frame rather than returning a modified one.
 #'
 #' 6. Write a function that randomly picks a specified number of rows from a data frame.
 #'
@@ -182,11 +190,34 @@
 #' 10. Find out which of the data frames from exercise 8 contain
 #'     at least two columns that are factors.
 #'     Don't use loops.
+#'
+#' 11. Examine the \code{iris} data set (the one from \code{Rdlazer}).
+#'     Obtain the mean of all numeric columns, observing the fllowing conditions: \cr
+#'     \verb{   }a) non-numeric columns should be excluded from the result \cr
+#'     \verb{   }b) assume you don't know the number, name(s) or position(s)
+#'                  of non-numeric columns; \cr
+#'     \verb{     }in other words, your solution should work just as well
+#'                 after a random reshuffle of columns \cr
+#'     \verb{   }c) the result must be a numeric vector \cr
+#'     \verb{   }d) \bold{do everything in one line of code} \cr
+#'
+#' 12. Examine the \code{iris} data set (the one from \code{Rdlazer}).
+#'     Obtain the mean and standard deviation of all numeric columns,
+#'     observing the fllowing conditions: \cr
+#'     \verb{   }a) non-numeric columns should be excluded from the result \cr
+#'     \verb{   }b) assume you don't know the number, name(s) or position(s)
+#'                  of non-numeric columns; \cr
+#'     \verb{     } in other words, your solution should work just as well
+#'                  after a random reshuffle of columns \cr
+#'     \verb{   }c) the result must be a named numeric matrix \cr
+#'     \verb{   }d) the numeric columns must be placed in rows and the statistics in columns \cr
+#'     \verb{   }e) \bold{do everything in one line of code} \cr
 
 
 
-
-# #' @section For Part Three:
+# #'
+# #'     \cr
+# #' @section For Part :
 # #' \enumerate{
 # #'   \item{
 # #'   Obtain a data frame with 10 random irises from every species in the iris data set.
@@ -198,5 +229,4 @@
 # #' }
 
 #' @name homework
-
 NULL

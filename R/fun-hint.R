@@ -298,6 +298,11 @@ hintlist <- function() {
   hints[next.hint()] <- 'sum the resulting logical vector to get the number of factor columns'
   hints[next.hint()] <- 'use sapply to run these operations over a list of data frames'
   hints[next.hint()] <- 'you may need to write a function'
+  next.exercise(11)
+  hints[next.hint()] <- 'use the lapply family judiciously'
+  next.exercise(12)
+  hints[next.hint()] <- 'use the lapply family judiciously'
+  hints[next.hint()] <- 'use an annonymous function'
 
   return(hints)
 }

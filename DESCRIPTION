@@ -1,6 +1,6 @@
 Package: Rdlazer
 Title: Resources for Teaching R
-Version: 0.12.4
+Version: 0.12.5
 Authors@R: 
     person(given = "Aleksander",
            family = "Chlebowski",
