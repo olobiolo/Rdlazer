@@ -89,7 +89,7 @@ You will **not** learn:
 
 3. Install the `devtools` package along with its dependecies. To do this, start RStudio and go to the Console, which should occupy the majority of the RStudio window. Once there, run the following command:
 ```
-install.packages('devtools', dependencies = TRUE))
+install.packages('devtools', dependencies = TRUE)
 ```
 
 <br>
