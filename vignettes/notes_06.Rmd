@@ -24,7 +24,7 @@ library(Rdlazer)
 <br><br><br>
 
 
-## I Functions recap
+## Functions Recap
 
 <i>
 Here is what we have covered so far:
@@ -49,7 +49,7 @@ Here is what we have covered so far:
 <br><br><br>
 
 
-## II Function Environments
+## Function Environments
 
 `If you find yourself confused by this part, consider reading the Environments vignette.`
 
@@ -76,8 +76,7 @@ Here is what we have covered so far:
 <br><br><br>
 
 
-## III Defining New Functions
-
+## Defining New Functions
 
 - you can define new function at any time
 - functions are defined with the `function` function
@@ -178,7 +177,7 @@ END OF SIDENOTE
 <br><br><br>
 
 
-## IV Applying Functions Over Vectors
+## Applying Functions Over Vectors
 
 - to reiterate, a vectorized operation is one where every element of a vector is processed and a vector of the same length is returned
 - not all functions perform vectorized operations
@@ -299,20 +298,26 @@ l[[1]]
 lapply(seps, function(x) paste(l[[1]], collapse = x))
 ```
 
-#### `lapply` family members
+
+<br><br><br>
+
+
+## `lapply` Family Members
 
 - there are other functions that build on the functionality of `lapply`
 
-1. `sapply` does basically the same thing with two major differences:
-    - it will attempt to simplify the result, *e.g.* turn a list of length 1 vectors into an atomic vector
-    - it will attempt co construct names for the result based on the contents of the argument
+### sapply
+
+- `sapply` does basically the same thing with two major differences:
+- it will attempt to simplify the result, *e.g.* turn a list of length 1 vectors into an atomic vector
+- it will attempt co construct names for the result based on the contents of the argument
 ```{r}
 lapply(v, identity)
 
 sapply(v, identity)
 ```
-    - both of these behaviors are optional    
-    - `sapply` will behave consistently but not always predictably
+- both of these behaviors are optional    
+- `sapply` will behave consistently but not always predictably
 ```{r}
 # simplifying can involve coercion
 ll <- list(one = '1', two = 1)
@@ -323,33 +328,44 @@ lll <- list(one = 1:2, two = 1)
 sapply(lll, identity)
 ```
 
-2. `vapply` is `lapply` with safety measures:
-    - it will also attempt to simplify and create names
-    - you must specify the output you expect from `FUN`, *e.g.* "character of length 1"
+
+
+### vapply
+
+- `vapply` is `sapply` with safety measures:
+- it will also attempt to simplify and create names
+- you must specify the output you expect from `FUN`, *e.g.* "character of length 1"
 ```{r, error = TRUE}
 vapply(ll, identity, character(1))
 
 vapply(v, identity, character(1))
 ```
-    - `vapply` is recommended over `sapply` in programming (calling it within a function)
+- `vapply` is recommended over `sapply` in programming (calling it within a function)
 
-3. `mapply` is a "multivariate" version of `sapply`
-    - it can iterate over more than one argument
+
+
+### mapply
+
+- `mapply` is a "multivariate" version of `sapply`
+- it can iterate over more than one argument
 ```{r}
 mapply(paste, l, collapse = seps)
 ```
-    - the variable arguments are passed (named) in `...`
-    - arguments that are to be constant across iterations are passed in `MoreArgs` as a list
-    - mind the difference in syntax:
-    `sapply(X, FUN)` (vector first) vs. `mapply(FUN, ..., MoreArgs)` (function first)
+- the variable arguments are passed (named) in `...`
+- arguments that are to be constant across iterations are passed in `MoreArgs` as a list
+- mind the difference in syntax: `sapply(X, FUN)` (vector first) vs `mapply(FUN, ..., MoreArgs)` (function first)
 
-4. `replicate` is a little different
-    - it does not iterate over a vecotr
-    - it will run an operation a set number of times and simplify the result
+
+
+### replicate
+
+- `replicate` is a little different
+- it does not iterate over a vecotr
+- it will run an operation a set number of times and simplify the result
 ```{r}
 replicate(5, 1:4)
 ```
-    - this is handy for simulating random processes
+ - this is handy for simulating random processes
 ```{r}
 # create 5 random samples (10 items each) of a normal distribution
 replicate(5, rnorm(10))

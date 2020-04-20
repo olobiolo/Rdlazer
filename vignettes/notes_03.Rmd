@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 <br><br><br>
 
 
-## I Object-Oriented Programming
+## Object-Oriented Programming
 
 - **object-oriented (OO) programming** is a programming style present in many languages
 - an **object** is a thing that exists
@@ -46,7 +46,7 @@ knitr::opts_chunk$set(
 <br><br><br>
 
 
-## II This is R
+## This is R
 
 #### OO programming in R
 
@@ -61,7 +61,7 @@ knitr::opts_chunk$set(
 <br><br><br>
 
 
-## III S3
+## S3
 
 - **S3** is a **functional** style of programming rather than an object-oriented one
 - it is the most common style of programming in R
@@ -69,7 +69,7 @@ knitr::opts_chunk$set(
 - **class** is a special attribute that most objects have
 - actually, virtually only atomics do not have a class attribute - the type doubles for a class in those cases
 - class is a character vector of classes from which the object inherits
-- class is what tells functions how to handle that specific kind of object
+- *class is what tells functions how to handle that specific kind of object*
 
 \newline
 
@@ -110,13 +110,5 @@ Class is encoded in a special attribute. <br>
 A generic function recognizes an object's class and attemps to find an appropriate method. <br>
 </h4>
 
-```{r forlater, eval=FALSE, include=FALSE}
-# ellipsis (`...`)
-# - it is used when a function calls another function and wants to pass arguments to it
-# - this is exactly what a generic does, hence every generic has the ellipsis argument
-# - the ellipsis also has another (rare) use in functions that can acept a variable number of arguments, such as `c`
-
-
-```
 
 [classy]: ../images/classycat.png

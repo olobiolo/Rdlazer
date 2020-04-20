@@ -1,0 +1,102 @@
+---
+title: "Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Notes 08: Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+<br><br><br>
+
+
+## Files and folders
+
+At any point in time during a session there is a designated **working directory**, the default location from which files will be read and where they will be saved. In RStudio it is displayed at the top of the Console window. The default wirking directory (where new sessions start) can be changed in RStudio's Global Options.
+
+Check the working directory with `getwd` and change it with `setwd`. The latter also invisibly returns the current working directory, before changing it.
+
+**Access paths are accepted and returned as character strings.**
+
+The usual access path convention applies, so:
+
+- `.` means current directory,
+- `..` means parent directory,
+- `/` is the separator.
+
+*IMPORTANT: Since Windows uses `\` instead of `/`, copying a path from Windows Explorer will cause errors. Always change the separators to `/` or escape the `\` with another `\` (the universal escape character).*
+
+Autofill is supported and triggerred with Tab.
+
+
+#### manipulating files
+
+Functions for file management include:
+
+- `list.files`: get the contents of a folder as a character vector;
+- `list.dirs`: get the child directories of a given folder;
+- `file.exists` and `dir.exists` test for existence of files and folders;
+- `file.copy`, `file.remove`, `file.rename`: self-explanatory; they accept vectors of file paths; they also report success/failure as logical values;
+- note that when renaming, if the directory changes, the file is **moved**;
+- `unlink` deletes files and folders (non-empty folders require `recursive = TRUE`);
+- `file.info` returns detailed file information such as creations time.
+
+
+<br><br><br>
+
+
+## Import and export
+
+Data is most often stored in text files that contain tables. These are usually tab-delimited or comma-separated. The latter commonly have the .csv extension (acronym for comma-separated values) but it is not forced in any way.
+
+Tabular data is imported with the `read.table` function. **It returns a data frame.** It has many options that make it quite flexible but usually most of them are unnecessary. There are four wrappers (daughter functions with some preset parameters) that cover the vast majority of cases.
+
+In short, `read.delim` is used for tab-delimited files and `read.csv` is used for comma-separated files. They both assume that full stops are used as the decimal separator. `read.delim2` and `read.csv2` are versions for locales that use commas (the semicolon takes over as the column separator in such .csv files).
+
+Things to keep in mind:
+
+- The `stringsAsFactors` argument decides whether character columns will be converted to factors upon loading. It defaults to the global option, which is `TRUE` and can be viewed with `.Options$strigsAfFactors`.
+- The `header` argument informs whether the file contains column names in its first row. If set to `FALSE`, column names will be generated automatically (V1, V2 and so on). If the file does contain column names but `header` is set to `FALSE`, the column names will be pushed into the first row of the data frame. This will coerce numeric columns to character (and possibly to factor).
+- Row names can be given as a character vector or taken from one of the columns.
+- Column names in a file can be illegal in a data frame context. By default, they will be run through the `make.names` function to replace each illegal characters with a period. This can be changed by setting `check.names` to `FALSE`.
+- The `skip` and `n` arguments allow for omitting top and bottom rows of a file, respectively.
+
+*It is highly advisable to carefully read the documentation for `read.table` at least twice.*
+
+<br>
+
+Wrtiting tabular data is done with `write.table`. Key arguments are:
+
+- `sep`: the column separator; set it to `"\t"` to obtain a tab-delimited file;
+- `dec`: the decimal separator;
+- `quote`: this determines if quote marks will be added to character strings in the file;
+- `row.names` and `col.names`: these allow for omitting dimension names from the file;
+- `append`: this decides whether an existing file is overwritten or extended (if possible).
+
+Wrappers for .csv files exist for convenience.
+
+
+<br><br><br>
+
+
+## Saving and loading
+
+Data can also be saved in binary files, readable only with R. These are given .Rdata or .rda extensions. A binary file does not hold tabular data in text form but rather a data frame. In fact, it can hold **any object(s)**. Use `save` to save objects to a binary file and `load` to bring the contents of a file into the current session.
+
+Between two files with the same informational content, a binary file will be smaller than a text file, which can be useful for very large data sets. It will also load faster.
+
+
+<br><br><br>
+
+
+## Reading files
+
+To read a file that does not contain tabular data use the `readLines` function. It uses end of line (eol) signs to break up the text into character strings and returns the contents of the file as a character vector.

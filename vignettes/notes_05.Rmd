@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 <br><br><br>
 
 
-## I Packages
+## Packages
 
 - a **package** is a collection of files containing code, *i.e.* primarily functions
 - a package can also contain data, either as raw files or as code that generates the data

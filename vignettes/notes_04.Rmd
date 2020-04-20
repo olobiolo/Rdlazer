@@ -14,18 +14,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-![envirnoment madness][reds]
-
-<br>
-
-    Disclaimer:
-    This vignette is by no means a comprehensive description of environments and their mechanics! Think of it as an advanced primer. It will be helpful in understanding packages, scoping and masking, which any user will run into sooner or later but this is not mandatory knowledge.
+*Note: This is not required reading. It will be helpful in understanding packages, scoping and masking, which any user will run into sooner or later but it is not crucial knowledge.*
 
 
 <br><br><br>
 
 
-## I Environments
+## Environments
 
 - this is a concept that has existed since before R so terminology is somewhat redundant and confusing
 - an **environment** is the virtual space where bindings (name-value pairs) exist
@@ -92,7 +87,7 @@ cbind(search())
 <br><br><br>
 
 
-## II Scoping
+## Scoping
 
 - **scoping** is the process of looking for a value bound to a symbol
 - the range of locations where scoping takes place is called a **scope**
@@ -160,6 +155,6 @@ head(lattice::barley)
 
 <br><br><br>
 
-*Again, this is by far not comprehensive, just some working knowledge. For more details check out R help pages for `environment`, `search`, `attach`, `library`. Read the Packages vignette before you do.*
+*This is by far not comprehensive, just some working knowledge. For more details check out R help pages for `environment`, `search`, `attach`, `library`. Read the Packages vignette before you do.*
 
 [reds]: ../images/reds.png

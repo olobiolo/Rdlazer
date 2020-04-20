@@ -1,0 +1,289 @@
+---
+title: "Ellipsis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Notes 07: Ellipsis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  error = TRUE,
+  comment = "#>"
+)
+```
+
+
+<br><br><br>
+
+
+## Ellipsis
+
+A function body contains calls to other functions. We may want to be able to influence those function calls from the top level, which means passing arguments to them. This is done with the **ellipsis** construct: `...`
+
+\newline
+
+Consider a function that puts its numeric argument alongside its squares in a data frame.
+```{r}
+f <- function(x) {
+  y <- x ^ 2
+  ans <- data.frame(x, y)
+  return(ans)
+}
+f(1:3)
+```
+Suppose we want another power than 2. We would have to rewrite `f` or write another function altogether. There is a better way. First let's rebuild `f` slightly by introducing another function, `fi`.
+```{r}
+f <- function(x) {
+  fi <- function(x, xp = 2) x ^ xp
+  y <- fi(x)
+  ans <- data.frame(x, y)
+  return(ans)
+}
+```
+- `fi` is a flexible function that will raise `x` to any power, 2 by default
+- `fi` can be defined outside `f` just as well, by the way
+
+\newline
+
+- so far the functionality is the same
+- what we want now is a way to control `fi` when calling `f`
+- we cannot add arguments for `fi` to the call to `f` as that causes an error
+```{r}
+f(1:3, xp = 3)
+```
+And here the **ellipsis** comes in.
+```{r}
+f <- function(x, ...) {
+  fi <- function(x, xp = 2) x ^ xp
+  y <- fi(x, ...)
+  ans <- data.frame(x, y)
+  return(ans)
+}
+```
+- ellipsis in the definition of `f` accepts arguments that do not match `f`'s formals
+- ellipsis in the call to `fi` captures the unmatched arguments from the call to `f`
+
+And so:
+```{r}
+f(1:3)
+
+f(1:3, xp = 3)
+```
+
+<h4>
+ellipsis is used for passing arguments to functions called within functions <br>
+the function that passes arguments must have ellipsis in definition <br>
+the function that receives arguments must have ellipsis in call
+
+\newline
+
+every generic function uses ellipsis to pass arguments to methods
+</h4>
+
+
+<br><br><br>
+
+
+## Passing to multiple functions
+
+We might also want to pass arguments to the `data.frame` call within `f`. We should add ellipsis to the `data.frame` call.
+```{r}
+f <- function(x, ...) {
+  fi <- function(x, xp = 2) x ^ xp
+  y <- fi(x, ...)
+  ans <- data.frame(x, y, ...)
+  return(ans)
+}
+f(x = 1:3, xp = 3, row.names = letters[1:3])
+```
+This doesn't work. The call to `fi` greedily captures all arguments that weren't matched in the call to `f`. Since the `fi` call now contains unused arguments, it crashes. In order to fix it we must add another ellipsis to the definition of `fi`. Now it will also be able to ignore unused arguments.
+```{r}
+f <- function(x, ...) {
+  fi <- function(x, xp = 2, ...) x ^ xp
+  y <- fi(x, ...)
+  ans <- data.frame(x, y, ...)
+  return(ans)
+}
+f(x = 1:3, xp = 3, row.names = letters[1:3])
+```
+
+<h4>
+when passing to more then one function, the functions that receive arguments must have ellipsis in definition as well
+</h4>
+
+
+<br><br><br>
+
+
+## Shared arguments
+
+To further confound the issue, functions can have the same formal arguments. Let's explore this in another example.
+
+<br>
+
+- we will test passing arguments through a stack of four funcionts:
+1. the bottom level, `f1`, checks if it as received its argument and reports it
+2. the middle level, `f2`, does the same as `f1` and then calls `f1`
+3. the top level, `f3`, does the same as `f1`, then calls `f2`, and then calls `f1`
+4. the "internal" level, `f4`, does the same as `f1` but is defined within `f3`
+
+- every function will have a separately named argument: `x1`, `x2`, etc.
+- every function will have a logical `verbose` argument to gate printing a message
+
+\newline
+
+We will use three helper functions as build blocks. You need not understand their code but feel free to figure it out.
+
+1. `talk` will say something; this will be gated by `verbose`
+2. `check` will report that an argument is present; this is to signal where the call stack falls apart
+3. `goodbye` will also say something; this is to signal the end of the top level function
+```{r helpers1}
+talk <- function() {
+  cat(as.character(as.list(sys.call(-1))), ': I am loud', '\n')
+}
+
+check <- function(x) {
+  cat(as.character(as.list(sys.call(-1))), ':\t', x, '\n\n')
+}
+
+goodbye <- function(x = NULL) {
+  cat(as.character(as.list(sys.call(-1))), ': I am now', x ,'done', '\n')
+}
+```
+
+<br>
+
+```{r}
+f1 <- function(x1, verbose, ...) {
+  if (verbose) talk()
+  check(x1)
+}
+f1('ok', F)
+
+f1('ok', T)
+```
+This is trivial.
+
+\newline
+
+Let's try to control verbosity on multiple levels.
+```{r}
+f2 <- function(x2, verbose, ...) {
+  if (verbose) talk()
+  check(x2)
+  f1(...)
+}
+f2('ok', verbose = F, x1 = 'ok1')
+```
+Here `f1` fails when called within `f2` as `verbose` is matched to `f2` and not passed along. <br>
+Let's specify `verbose` for `f1` explicitly.
+```{r}
+f2 <- function(x2, verbose, ...) {
+  if (verbose) talk()
+  check(x2)
+  f1(verbose = verbose, ...)
+}
+f2('ok', verbose = F, x1 = 'ok1')
+
+f2('ok', verbose = T, x1 = 'ok1')
+```
+All right. <br>
+Now let's also try to pass `verbose` unnamed.
+```{r}
+f2 <- function(x2, verbose, ...) {
+  if (verbose) talk()
+  check(x2)
+  f1(verbose, ...)
+}
+f2('ok', verbose = T, x1 = 'ok1')
+
+```
+So far so good.
+
+\newline
+
+Let's move on to a deeper stack.
+```{r}
+f3 <- function(x3, verbose, ...) {
+  if (verbose) talk()
+  check(x3)
+  f2(verbose, ...)
+  f1(verbose = verbose, ...)
+  goodbye()
+}
+f3(x3 = 'ok', verbose = T, x1 = 'ok1', x2 = 'ok2')
+```
+
+\newline
+
+And now let's add the internal level.
+```{r}
+f3 <- function(x3, verbose, ...) {
+  if (verbose) talk()
+  check(x3)
+  f2(verbose, ...)
+  f1(verbose = verbose, ...)
+  f4 <- function(x4, verbose, ...) {
+    if (verbose) talk()
+    check(x4)
+  }
+  f4(verbose, ...)
+  goodbye()
+}
+f3(x3 = 'ok', verbose = T, x1 = 'ok1', x2 = 'ok2', x4 = 'x4')
+```
+
+\newline
+
+Can f3 use `verbose` again or does it disappeaer into the stack?
+```{r}
+f3 <- function(x3, verbose, ...) {
+  if (verbose) talk()
+  check(x3)
+  f2(verbose, ...)
+  f1(verbose = verbose, ...)
+  f4 <- function(x4, verbose, ...) {
+    if (verbose) talk()
+    check(x4)
+  }
+  f4(verbose, ...)
+  goodbye()
+  if (verbose) goodbye('double')
+}
+f3(x3 = 'ok', verbose = T, x1 = 'ok1', x2 = 'ok2', x4 = 'x4')
+```
+
+
+<h4>
+arguments with common names must be passed explicitly, named or unnamed
+</h4>
+
+<br>
+
+Now, just for the hell of it, let's add one more level, `f5`: <br>
+a function created within a function by another function defined within the top level function. <br>
+In other words: `f5` will be created with a call to `f4`.
+
+```{r}
+f3 <- function(x3, verbose, ...) {
+  if (verbose) talk()
+  check(x3)
+  f4 <- function() {
+    talk()
+    function(x5, verbose, ...) {
+      if (verbose) talk()
+      check(x5)
+    }
+  }
+  f5 <- f4()
+  f5(verbose, ...)
+  goodbye()
+}
+f3(x3 = 'ok', verbose = T, x5 = 'ok5')
+
+f3(x3 = 'ok', verbose = F, x5 = 'ok5')
+```
+

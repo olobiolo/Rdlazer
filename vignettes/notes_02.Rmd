@@ -24,7 +24,7 @@ library(Rdlazer)
 <br><br><br>
 
 
-## I Vector
+## Vector
 
 - a **vector** is 1-dimensional sequence of items in a particular order
 - the number of elements it the vector's **length**
@@ -140,7 +140,7 @@ Every vector has a type and a length. It can also have attributes.
 <br><br><br>
 
 
-## II Vectorized Operations
+## Vectorized Operations
 
 - most operations in R are vectorized
 - they are applied to each vector element separately and return a vector of the same length
@@ -209,7 +209,7 @@ anyNA(vna)
 <br><br><br>
 
 
-## III Extraction
+## Extraction/Subsetting
 
 - **extraction**, also called **subsetting** is picking out a some elements from an object
 - any language allows for extracting a single element from a sequence
@@ -282,7 +282,7 @@ v4[c(-2, -5)]
 <br><br><br>
 
 
-## IV Replacement
+## Replacement
 
 - R has a **replacement** functionality, a combination of extraction and assignment
 - a subset is used as a variable name in an assignment expression
@@ -313,7 +313,7 @@ n
 <br><br><br>
 
 
-## V Matrix
+## Matrix
 
 - a matrix is a 2-dimensional data structure
 - it has rows (dimension 1) and columns (dimension 2)
@@ -440,7 +440,7 @@ m
 <br><br><br>
 
 
-## XI/II Array
+## Array
 
 - an **array** is an n-dimensional data structure
 - it is a generalization of the matrix concept
@@ -478,7 +478,7 @@ a1[, , 3, drop = F]
 <br><br><br>
 
 
-## VI List
+## List
 
 - a list is a special type of vector
 - in a list any item can be of **any type** - including a list
@@ -586,7 +586,7 @@ Subsetting a list with `[` yields a list of any length. Using `[[` or `$` yields
 <br><br><br>
 
 
-## VII R's syntactic flexibility
+## R's Syntactic Flexibility
 
 - there is a somewhat confusing word: **expression**
 - for now, every function call is an expression
@@ -638,7 +638,7 @@ toupper(s[order(nchar(s), decreasing = T)][1:5])
 <br><br><br>
 
 
-## VIII Data Frame
+## Data Frame
 - a **data frame** is a 2-dimensional data structure
 - it is the closest thing to a spreadsheet that exists in R
 - a data frame is superficially similar to a matrix in that it has rows and columns
@@ -890,7 +890,7 @@ Operations on columns are easy and reliable. <br>
 <br><br><br>
 
 
-## IX Factor
+## Factor
 
 - remember the factor thing in iris?
 ```{r}

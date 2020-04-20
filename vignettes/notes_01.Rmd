@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 <br><br><br>
 
 
-## I RStudio basics
+## RStudio Basics
 
 -	the Console is on the bottom left and that is where the magic happens
 -	the upper left is the Source, or script, from where we can execute consecutive lines of code
@@ -41,7 +41,7 @@ knitr::opts_chunk$set(
 <br><br><br>
 
 
-## II Console basics
+## Console Basics
 
 -	execute a statement with Enter
 -	use Up and Down arrows to navigate console history
@@ -68,7 +68,7 @@ help("Rdlazer")
 <br><br><br>
 
 
-## III comments
+## Comments
 
 - the pound sign (`#`) is a comment sign
 - everything right of a `#` in a line is considered a comment rather than code and will not executed
@@ -80,7 +80,7 @@ help("Rdlazer")
 <br><br><br>
 
 
-## IV basic programming from an R perspective
+## Basic Programming From An R Perspective
 
 -	there are four basic **types** of data: **logical**, **character**, **integer** and **double**
 -	there are other types in R but that is deep lore and we don’t need it here
@@ -168,7 +168,18 @@ help("Rdlazer")
     -	by name: arguments in a call are provided as `name = value` pairs
     -	by partial name: the name need not be complete as long as it can be uniquely matched
     -	by position: unnamed values are matched in the order they appear in the function definition
--	again, passing a variable as an argument does not alter that variable
+
+\newline
+
+<font color = 'blue'>
+
+- some functions have a special argument, `...`
+- it is used in two situations:
+    - to accept a variable number of arguments
+    - to pass arguments to other functions (more on this later)
+
+</font>
+
 -	some functions work as **infix operators**: the call is structured `x op y` rather than `foo(x, y)`
 -	examples of this are: `%in%` or `+` or `<-`
 

@@ -274,7 +274,7 @@ hintlist <- function() {
   hints[next.hint()] <- 'you can also wrap the loop in a function'
   hints[next.hint()] <- 'try using do.call'
   hints[next.hint()] <- 'try using Reduce'
-  next.exercise(8)  # looking through datasets 1
+  next.exercise(8)  # browsing through datasets 1
   hints[next.hint()] <- 'use is.data.frame to test if an object is a data frame'
   hints[next.hint()] <- 'now you have to do it to multiple objects at once'
   hints[next.hint()] <- 'use the lapply family'
@@ -286,12 +286,12 @@ hintlist <- function() {
   hints[next.hint()] <- 'use get or mget'
   hints[next.hint()] <- 'you can now test for data frames'
   hints[next.hint()] <- 'if you use sapply, you will get a named logical vector'
-  next.exercise(9)  # looking through datasets 2
+  next.exercise(9)  # browsing through datasets 2
   hints[next.hint()] <- 'use ncol to get the number of columns of a data frame'
   hints[next.hint()] <- 'use sapply to do it for all data frames; a named vector is returned'
   hints[next.hint()] <- 'subset the vector by comparing to 3'
   hints[next.hint()] <- 'get the names of the resulting subset'
-  next.exercise(10) # looking through datasets 3
+  next.exercise(10) # browsing through datasets 3
   hints[next.hint()] <- 'use is.factor to test if a vector is a factor'
   hints[next.hint()] <- 'recall taht data frames are lists'
   hints[next.hint()] <- 'use sapply to run is.factor across a data frame'
