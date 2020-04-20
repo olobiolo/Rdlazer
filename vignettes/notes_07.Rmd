@@ -48,13 +48,11 @@ f <- function(x) {
 
 \newline
 
-- so far the functionality is the same
-- what we want now is a way to control `fi` when calling `f`
-- we cannot add arguments for `fi` to the call to `f` as that causes an error
+So far the functionality is the same. What we want now is a way to control `fi` when calling `f`. Simply adding arguments for `fi` to the `f` call is no solution as it causes an error.
 ```{r}
 f(1:3, xp = 3)
 ```
-And here the **ellipsis** comes in.
+This is where the **ellipsis** comes in.
 ```{r}
 f <- function(x, ...) {
   fi <- function(x, xp = 2) x ^ xp
