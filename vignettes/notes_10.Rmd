@@ -1,0 +1,432 @@
+---
+title: "Plotting"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Notes 10: Plotting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.align = 'center',
+  fig.height = 3, fig.width = 3
+)
+```
+
+
+<br><br><br>
+
+
+## Plot
+
+- plotting in base R is implemented in the `graphics` package
+- `graphics` contains a number of functions for creating and formatting plots
+
+<br>
+
+#### creating a plot
+
+- the basic plotting function is `plot`, which (usually) draws scatter plots
+- the first thing it does is to craete a new plot (with an internal call to `plot.new`)
+- it then calls an appropriate plotting method
+- plot has a number of methods and can accept various input formats
+
+```{r}
+# a single numeric vector
+# elements are plotted against their indices
+v <- 1:10
+plot(1:10)
+# two numeric vectors
+vs <- sample(v)
+plot(x = v, y = vs)
+# a matrix
+# the first two columns are plotted as if they were x and y, the others are ignored
+m <- matrix(1:12, 4, 3)
+m
+plot(m)
+# a data frame
+# every column is plotted against every other, creating a matrix of scatter plots
+d <- iris[3:5]
+plot(d)
+```
+
+- note that axes are labelled automaticaly and informatively, if not beautifully
+- also note that scatter plots render factors as integers
+
+<br>
+
+#### plot content
+
+- plot appearance is handled by changing **graphical parameters**
+- this is done with the `par` function, which is called internally by `plot`
+- arguments to `par` are passed through `...`
+- see `?par` for a full list of available parameters; here are some examples:
+
+\newline
+
+- `type` decides the plot type, e.g. points, lines or both
+```{r}
+plot(v, vs, type = 'p')
+plot(v, vs, type = 'l')
+plot(v, vs, type = 'b')
+```
+
+<br>
+
+- `pch` sets the plotting character for points
+- available values are 1 through 25
+```{r, fig.width = 6}
+plot(1:25, rep(1, 25), pch = 1:25)
+```
+
+- note that assigning `pch` is a vectorized operation
+- above the length of `pch` was the same as that of `x` but `pch` will be recycled if necessary
+```{r, fig.width = 6}
+plot(1:25, rep(1, 25), pch = 1:5)
+```
+
+- this behavior is common to many graphical parameters
+
+<br>
+
+- `lty` controls line type
+```{r}
+plot(v, vs, type = 'l', lty = 1)
+plot(v, vs, type = 'l', lty = 2)
+plot(v, vs, type = 'l', lty = 3)
+```
+
+<br>
+
+- colors are handled with `col`
+- `col` can be specified in a number of ways:
+```{r}
+# as a hex code
+plot(v, vs, pch = 16, col = "#6495ED")
+# as a character string
+# see colors() for a list of available colors
+plot(v, vs, pch = 16, col = "cornflowerblue")
+# as a factor; each level is given a color based on the current palette
+f <- factor(rep(letters[1:2], each = 5))
+plot(v, vs, pch = 16, col = f)
+# as an integer, which is interpreted as an index in the current palette
+plot(v, vs, pch = 16, col = 2)
+```
+
+- palettes are character vectors of hex codes or color names
+    - they can be created manually
+    - or with predefined functions like `rainbow`
+    - color gradients can be created with `colorRampPalette`
+    - get or set the current palette with `palette`
+    
+*NOTE: `colorRampPalette` is a function that returns a function which takes an integer as argument and returns a vector of that many interpolated colors.*
+```{r}
+plot(v, vs, pch = 16, col = colorRampPalette(c('royalblue1', 'yellow', 'purple'))(10))
+```
+
+<br>
+
+- `xlim` and `ylim` set the axes limits
+```{r}
+plot(v, vs, xlim = c(-2, 12))
+```
+
+<br>
+
+#### adding content
+
+- more data can be drawn on an existing plot with `points` or `lines`
+```{r}
+plot(v, vs)
+points(v, sample(v), pch = 20, col = 'green')
+```
+
+- they work nearly the same as `plot`
+- they even respond to the `type` parameter, so you can draw lines with `points`
+- since they do not create a new plot, some data can fall outside of the window
+
+<br>
+
+- `abline` adds a straight line to an existing plot
+- arguments `a` and `b` describe its intercept and slope, respectively (slope is the tangent of the angle between the line and the X axis)
+- arguments `v` and `h` draw vertical and horizontal lines, respectively, and determine their crossing points with the respective axes
+```{r}
+plot(log(0:2000 / 100), type = 'l')
+abline(h = 0)
+plot(log(0:2000 / 100), type = 'l')
+abline(h = c(0,1), lty = c(1,2))
+```
+
+<br>
+
+#### plot appearance
+
+- the size of elements is controlled by the `cex` parameter
+- when a new plot is created, its size is determined by the size of the current device (see below)
+- the default size of all plot elements is derived from that plto size
+- `cex` is the multiplier to that default size
+```{r}
+plot(v, vs, pch = 16)
+# cex alone refers to the plotting characters
+plot(v, vs, pch = 16, cex = 2)
+# other cex parameters exist for other plot elements
+plot(v, vs, pch = 16, cex.lab = 2)
+```
+
+<br>
+
+- `xlab` and `ylab` change axis labels
+```{r}
+plot(v, vs, xlab = 'label x', ylab = 'label y')
+```
+
+<br>
+
+- `main` sets the plot title
+```{r}
+plot(v, vs, main = 'plot title')
+```
+
+- the title of an existing plot can be set with `title`
+```{r}
+plot(v, vs)
+title('plot title')
+```
+
+<br>
+
+- `legend` adds a legend box
+```{r}
+plot(v, vs, col = f, pch = 16)
+title('plot title')
+legend('topright', legend = levels(f), col = 1:length(levels(f)), pch = 16, cex = 0.75)
+```
+
+<br>
+
+- `las` controls the orientation of axis labels
+
+<br>
+
+#### plotting area
+
+- the plotting area, by default, fits only one plot
+- this can be changed with the functions `mfrow`, `mfpar` and `layout`, of which I only use the latter
+- `layout` takes a matrix of integers as argument `mat`
+- the elements of `mat` are 1 through the number of plots to be drawn
+- the plotting window is divided into `length(mat)` fields
+- plots are put into fields based on the values of corresponding elements of `mat`
+- after the last field has been drawn in, the next `plot` call will create a new window with the same layout
+```{r}
+m <- matrix(c(1, 1, 2, 1, 1, 2, 3, 3, 4), 3, 3, byrow = T)
+m
+
+layout(mat = m)
+```
+
+- `layout.show(n)` shows which field in the current layout the *n*-th plot will appear in
+
+- here is an example (wrapped in a function to work within the vignette):
+```{r, fig.height=6, fig.width=6}
+foo <- function() {
+  # prepare layout
+  layout(mat = m)
+
+  # prepare data
+  v1 <- rnorm(1e4)
+  v2 <- runif(1e4, -1, 1)
+  d1 <- density(v1)
+  d2 <- density(v2)
+  names(d2) <- c(names(d2)[2], names(d2)[-2])
+  
+  # draw plots
+  plot(v1, v2, pch = 4, cex = 0.5)
+  plot(d2, main = '', xlab = '', ylab = '')
+  plot(d1, main = '', xlab = '', ylab = '')
+  # draw an empty plot in field 16
+  plot.new()
+}
+
+foo()
+```
+
+- note that plots 2 and 3 are created by the method for class density
+- also note that each plot is entirely separate and could have its own title, legend, etc.
+
+\newline
+
+- resetting the layout is easy
+```{r}
+layout(mat = 1)
+```
+
+
+<br><br><br>
+
+
+## Other Plot Types
+
+- there are many built-in plotting functions other than `plot`
+- listing them all would be silly but let's go through some
+
+<br>
+
+- scatter plot
+    - this is what `plot` does
+    - large samples are drawn prettier with `smoothScatter`
+```{r}
+plot(rnorm(1e4), runif(1e4), pch = 4, cex = 0.2)
+smoothScatter(rnorm(1e4), runif(1e4), pch = 4, cex = 0.2)
+```
+
+<br>
+
+- `barplot`
+    - draws a typical barplot
+    - the vector method draws one bar per element
+    - the matrix method draws one bar per element but groups the bars according to columns
+    - by default bars within columns are stacked; they can be separated by setting `beside = TRUE`
+    - calling `plot` on a factor will draw a barplot
+```{r}
+# a vector
+barplot(v)
+# a matrix
+barplot(m)
+barplot(m, beside = T)
+```
+
+<br>
+
+- 1d scatter plot
+    - sapmles/categories are drawn separately
+    - all points of a sample are drawn such that they do not overplot
+    - implemented with the function `stripchart`
+```{r}
+# a vector
+rv <- rnorm(1e2)
+stripchart(rv, pch = 20)
+stripchart(rv, method = 'jitter', pch = 20)
+
+# a data frame
+stripchart(iris[1:4], method = 'jitter', vertical = T, pch = 1)
+```
+
+*NOTE: This is implemented better in package `beeswarm`.*
+
+<br>    
+
+- boxplot
+    - very useful type of plot
+    - highly recommended over barplots
+    - starts working as sample size of about 7
+    - draws a graphical representation of basic statistics of the sample
+    - a box delimits the interquartile range
+    - the median is marked with a horizontal bar
+    - the range of the data is marked by lines and "whiskers"
+    - outlying data points are highlighted
+    
+    - boxplots are drawn with `boxplot`
+    - the `varwidth` argument makes the box width proportional to sample size
+    - the `notch` creates indentations in boxes: if these do **not** overlap, the means are "significantly different"
+```{r}
+# a vector
+boxplot(rnorm(1e3))
+# a matrix
+boxplot(as.matrix(iris[1:4]))
+#a data frame
+boxplot(iris[1:4])
+```
+
+<br>
+
+- histogram
+    - a plot of observed frequencies of events
+    - extremely useful for assessing a sample's distribution
+    - implemented with the `hist` function
+    - it bins a numeric vector and draws frequencies of the bins
+    - the `breaks` argument controls the number of bins
+    - unlike most plotting funcionts, `hist` also returns the plot as an object that can be drawn alter with `print`
+```{r}
+hist(rnorm(1e5))
+hist(rnorm(1e5), breaks = 100)
+```
+
+- plotting 3d data
+    - built-in tools for 3d data are fairly limited
+    - `persp` draws a surface
+    - `contour` draws contours
+    - `image` draws a color-coded matrix
+```{r}
+persp(volcano)
+contour(volcano)
+image(volcano)
+```
+
+
+<br><br><br>
+
+
+## Plotting With Formulas
+
+- many plotting functions can be driven by a formula
+- the formula is evaluated within a data frame or a list given by the argument `data`
+- if `data` is undefined, the formula will be evaluated in the Global Environment
+- formula methods usually have the `subset` argument
+    - it accepts logical predicates to select observations from `data`
+    - it uses non-standard evaluation
+    - the documentation for the `subset` function can be informative here
+- the formula interface of `plot` can also evaluate the `col` argument with NSE
+
+<br>
+
+#### formulas in `plot`
+```{r}
+# numeric vs numeric draws a scatter plot
+plot(Sepal.Length ~ Sepal.Width, data = iris, col = Species, pch = 20)
+# numeric vs factor drawas a boxplot
+plot(Sepal.Length ~ Species, data = iris, col = Species)
+# two terms on RHS draws two plots
+plot(Sepal.Length ~ Petal.Length + Petal.Width, data = iris)
+# plot one column vs all others
+plot(Sepal.Length ~ ., data = iris, col = Species, pch = 20)
+
+```
+
+<br>
+
+#### formulas in other plotting functions
+```{r}
+barplot(yield ~ variety + year, data = lattice::barley, subset = site == 'Morris', beside = TRUE)
+stripchart(Sepal.Length ~ Species, data = iris, vertical = T, method = 'jitter', pch = 1)
+boxplot(Sepal.Length ~ Species, data = iris)
+```
+
+<br>
+
+#### enhanced use of formulas
+
+- `coplot` uses more complex formulas to separate data into subplots
+```{r}
+coplot(Sepal.Length ~ Sepal.Width | Species, data = iris, pch = 16, rows = 1)
+```
+
+- this is also, quite robustly, implemented in the `lattice` package
+```{r, fig.width=6, fig.height=3}
+library(lattice)
+xyplot(Sepal.Length ~ Petal.Width | Species, data = iris, layout = c(3,1))
+stripplot(yield ~ year | site, data = barley, layout = c(3,2))
+bwplot(yield ~ year | variety, data = barley, layout = c(5,2))
+bwplot(Sepal.Length ~ Species, data = iris)
+histogram(~ Sepal.Length | Species, data = iris, layout = c(3,1))
+levelplot(Sepal.Length ~ Petal.Width * Petal.Length | Species, data = datasets::iris, layout = c(3,1),
+          at = seq(4, 8, length.out = 100), col.regions = colorRampPalette(c('blue', 'gray90', 'red'))(100),
+          aspect = 1)
+```
+
+*NOTE: `lattice` plots ignore some `par` commands, e.g. `title`, `layout`.*
+
+*ALSO NOTE: `lattice` plots are only drawn automaticaly when in an interactive session. Otherwise they must be drawn explicitly with `print`.*
+

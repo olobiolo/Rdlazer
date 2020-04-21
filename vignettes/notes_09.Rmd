@@ -1,0 +1,46 @@
+---
+title: "Notes 09: Formulas"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Notes 09: Formulas}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+<br><br><br>
+
+
+#### What is a formula
+
+There are three classes of language elements in R: names, expressions and calls. A **formula** is a kind of call that describes a relationship between some variables in a schematic way. The formula interface is used more or less consistently across many functions in R, which is convenient once you get used to it. For example, scatter plot and linear regression have he exact same syntax with a formula
+
+An object of class formula consists of terms (the variables) and a tilde operator `~`. It is created with bare term names. Character strings can be converted into formulas with `formula` or `as.formula`.
+```{r}
+y ~ x
+
+formula("y ~ x")
+
+as.formula(paste('y', 'x', sep = ' ~ '))
+```
+
+<br>
+
+#### Interpretation
+
+The parts of a formula on either side of the tilde are commonly referred to as LHS (left-hand side) and RHS (right-hand side). Typically the LHS represents the **response** whereas the RHS contains **predictors**. In some cases, one of the sides can be missing to represent "no response" or consist of a period to represent "all other variables".
+
+The formula above would be interpreted as "y depends on x (in some way)". In a model ` r ~ x + y + z ` would mean that the response `r` is shaped by the `x`, `y` and `z` predictors. The `+` need not actually mean addition as the variables need not be numeric (they can be factors). It is a way of listing multiple terms which can be independent or interact in some way. Formulas can contain other operators to represent these interactions, depending on the context; this is usually well documented.
+
+<br>
+
+#### Evaluation
+
+A formula is evaluated in a specific environment, where the terms are scoped. This can also be a list or a data frame (see the vignette on non-standard evaluation for more details).
