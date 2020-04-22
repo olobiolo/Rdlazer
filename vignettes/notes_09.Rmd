@@ -1,8 +1,8 @@
 ---
-title: "Notes 09: Formulas"
+title: "Non Standard Evaluation"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Notes 09: Formulas}
+  %\VignetteIndexEntry{Notes 09: Non Standard Evaluation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,33 +14,111 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r setup, include = FALSE}
+library(Rdlazer)
+```
+
 
 <br><br><br>
 
 
-#### What is a formula
+## Evaluation
 
-There are three classes of language elements in R: names, expressions and calls. A **formula** is a kind of call that describes a relationship between some variables in a schematic way. The formula interface is used more or less consistently across many functions in R, which is convenient once you get used to it. For example, scatter plot and linear regression have he exact same syntax with a formula
+    This is my personal understanding, not necessarily official deep knowledge.
 
-An object of class formula consists of terms (the variables) and a tilde operator `~`. It is created with bare term names. Character strings can be converted into formulas with `formula` or `as.formula`.
-```{r}
-y ~ x
+Calls are evaluated in the environment in which they are called. In an interactive session, this is usually the Global Environment. That is where scoping for symbols starts.
 
-formula("y ~ x")
+It is the uncommon property of R that a call can be captured and held **before** it is evaluated. It can even be modified at this point but that far beyond the scope of this course. Suffice it to say that evaluation can be postponed or moved to a different environment.
 
-as.formula(paste('y', 'x', sep = ' ~ '))
+Now, recall that an environment contains bindings of names and vaules. This is much like a named list. In fact, one can refer to variables in an environment like to list elements, with the `$` operator.
+```{r, error = TRUE}
+evnX <- new.env()
+assign(x = 'varX', value = 'sometext', envir = envX)
+
+# list environment contents
+ls(envir = envX)
+
+# get variable
+envX$varX
 ```
 
 <br>
 
-#### Interpretation
+|  Not only are environments like lists, lists are like environments and calls can be evaluated within them.
+```{r, error = TRUE}
+l <- list(varA = 1:3, varB = letters[1:3])
 
-The parts of a formula on either side of the tilde are commonly referred to as LHS (left-hand side) and RHS (right-hand side). Typically the LHS represents the **response** whereas the RHS contains **predictors**. In some cases, one of the sides can be missing to represent "no response" or consist of a period to represent "all other variables".
+# this call uses elements of the list l
+paste(l$varA, l$varB, sep = '.')
 
-The formula above would be interpreted as "y depends on x (in some way)". In a model ` r ~ x + y + z ` would mean that the response `r` is shaped by the `x`, `y` and `z` predictors. The `+` need not actually mean addition as the variables need not be numeric (they can be factors). It is a way of listing multiple terms which can be independent or interact in some way. Formulas can contain other operators to represent these interactions, depending on the context; this is usually well documented.
+# this call tries to scope varA or varB in the Global Environment and fails
+paste(varA, varB, sep = '.')
+
+# here the call is captured and moved to l as environment
+eval(substitute(paste(varA, varB, sep = '.')), envir = l)
+```
+
+Capturing a call and moving it like that is calle **non standard evaluation** (NSE). Don't worry about `substitute` and `eval`, they are not used on a daily basis.
 
 <br>
 
-#### Evaluation
+## Using NSE
 
-A formula is evaluated in a specific environment, where the terms are scoped. This can also be a list or a data frame (see the vignette on non-standard evaluation for more details).
+Operations on language elements are very common in R but they are always contained in higher level functions and run "under the hood". A non-programmer will hardly have any use for them. Surface uses of non standard evaluation are basically limited to convenience as it can save some typing.
+
+We have already covered cases where NSE is used, most notably in `library`, which accepts the name of the attached package as a character string or as an unquoted symbol. Likewise, `get` can find an object given its name a a string but it can also deal with a bare name. The `$` operator for accessing list elements also runs on NSE, relieving the user of having to use quotes and brackets. The magnitude of those benefits is up to the user to weigh. The one place where this really helps is assignment as it actually makes code easier to read when variable names are unquoted.
+
+Sometimes, though typing names of data frames can become tedious. There are tools for just this kind of situation.
+
+1. `with`
+
+The function `with` will evaluate an expression in a data frame (among other things). The expression can be more than one call but must be a single block of code, so braces can come in handy.
+```{r}
+iris[['Sepal.Length']] * iris[['Sepal.Width']]
+
+iris$Sepal.Length * iris$Sepal.Width
+
+with(iris, Sepal.Length * Sepal.Width)
+
+with(iris, {
+  x <- Sepal.Length * Sepal.Width
+  summary(x)
+})
+
+
+table(warpbreaks$tension, warpbreaks$wool)
+
+with(warpbreaks, table(tension, wool))
+```
+Note that the value of the expression is simply returned by `with`, independent of the environment in which it was created.
+
+2. `within`
+
+Unlike `with`, `within` will return a modified version of the data it the value of the expression contains an assignment.
+```{r}
+within(iris, Sepal.Area <- Sepal.Length * Sepal.Width)
+```
+
+*NOTE: While I personally use `with`, although extremely rarely, I have yet to see `within` used at all.*
+
+3. `subset`
+
+This function makes subsetting data frames more convenient. Columns can be specified by integers corresponing to their indices or by their unquoted names. More importantly, rows can be selected based on logical predicates that are evaluated within the data frame.
+```{r}
+# the normal way
+iris[iris$Sepal.Length > 5 & iris$Species == 'setosa', ]
+
+# the NSE way
+subset(iris, Sepal.Length > 5 & Species == 'setosa')
+```
+
+
+## Parting Word
+
+The purpose of this vignette is not to teach NSE but rather show that an expression can be evaluated in an arbitrary context. You will see why with formulas.
+
+The lesson is this:
+
+1. NSE exists and is most often used for convenience.
+
+2. Do not use it in programming unless you want to make usage easier for the user but then beware unforeseen consequences.
