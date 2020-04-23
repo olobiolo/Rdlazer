@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun-goBrian.R
 \name{goBrian}
 \alias{goBrian}
-\title{Biarn's mission}
+\title{Brian's mission}
 \usage{
 goBrian(slogan = "Romani ite domum", times = 100, freq = 0.3, upto = 3)
 }

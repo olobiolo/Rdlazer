@@ -1,4 +1,4 @@
-#' Biarn's mission
+#' Brian's mission
 #'
 #' Vandalize Pilat's palace with your poor Latin.
 #'
