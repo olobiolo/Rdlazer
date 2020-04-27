@@ -250,11 +250,11 @@ hintlist <- function() {
   hints[next.hint()] <- 'depending on your method of removing columns you may have to
                          write separate procedures for character and numeric input'
   next.exercise(5) # the hard one: remove columns from original data frame, not returned copy
-  hints[next.hint()] <- 'modify the data and use the result to overwrite the original with it'
-  hints[next.hint()] <- 'think how you can replace an existing variable'
+  hints[next.hint()] <- 'modify the data and use the result to overwrite the original'
   hints[next.hint()] <- 'remember the variable you want to replace is in a different environment'
-  hints[next.hint()] <- 'there are two ways you can do it'
-  hints[next.hint()] <- 'use either <<- or assign'
+  hints[next.hint()] <- 'that environment is the calling environment of the function call'
+  hints[next.hint()] <- 'read the help page for ?environment very carefully'
+  hints[next.hint()] <- 'use the assign function (not the arrow infix)'
   hints[next.hint()] <- 'you will need the name of the data frame as a character string for assignment'
   hints[next.hint()] <- 'the name of the data frame should be passed as a string, not a symbol'
   hints[next.hint()] <- 'but you also need to refer to the original object by name'
