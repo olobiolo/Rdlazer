@@ -14,9 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, message = FALSE, include = FALSE}
 library(Rdlazer)
-mtcars. <- head(mtcars, 10)
 ```
 
 
@@ -35,7 +34,7 @@ The Tidyverse is a large enterprise with a comprehensive underlying philosophy. 
 
 Tidyverse packages can be installed and attached jointly as if they were one package called `tidyverse` but they can also be treated separately, as usual.
 
-As far as data processing goes, fll functions have a consistent syntax, they all return a (modified) copy of the data and they all use non standard evaluation to save the user some typing. All names, logical predicates, and operations are evaluated within the scope of the data frame in question. The first argument is always the data frame to be modified.
+As far as data processing goes, all functions have a consistent syntax, they all return a (modified) copy of the data and they all use non standard evaluation to save the user some typing. All names, logical predicates, and operations are evaluated within the scope of the data frame in question. The first argument is always the data frame to be modified.
 
 <br>
 
@@ -101,6 +100,8 @@ rename(iris, SL = 1)
     - `one_of` selects columns whose names are elements of a character vectors
     - `everything` selects all columns not selected before
 ```{r}
+mtcars. <- head(Rdlazer::mtcars, 10)
+
 select(mtcars., make, model)
 
 select(mtcars., 1:4)
@@ -203,12 +204,12 @@ summarize(iris, mSL = mean(Sepal.Length))
 - the `group_by` function takes one or more columns (grouping variables) and splits observations into groups by combinations of values of those variables
 - this is `dplyr`'s implementation of the split-apply-combine paradigm
 ```{r}
-iris.g <- group_by(iris, Species)
+iris.g <- group_by(Rdlazer::iris, Species)
 summarize(iris.g, mSL = mean(Sepal.Length))
 
 slice(iris.g, 1:2)
 
-mtcars.g <- group_by(mtcars, cyl, gear, carb)
+mtcars.g <- group_by(Rdlazer::mtcars, cyl, gear, carb)
 summarize(mtcars.g, m.disp = mean(disp))
 ```
 
@@ -267,7 +268,8 @@ spread(ig1, sepal.part, size)
 ```
 - long to wide conversion can (and will) fail if it is impossible to assign unique identity to observations
 ```{r, error = TRUE}
-spread(ig2, flower.part, size)
+# the error crashes building the vignette, run the code yourself
+#spread(ig2, flower.part, size)
 ```
 - this can be avoided by adding an additional column with unique values
 ```{r}
@@ -344,4 +346,3 @@ iris %>%
 
 
 *to be continued...*
-
