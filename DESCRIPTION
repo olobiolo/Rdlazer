@@ -1,6 +1,6 @@
 Package: Rdlazer
 Title: Resources for Teaching R
-Version: 0.14.4
+Version: 0.15.0
 Authors@R: 
     person(given = "Aleksander",
            family = "Chlebowski",
@@ -14,7 +14,10 @@ Depends:
     R (>= 3.5.0)
 Imports: 
     knitr,
-    lattice
+    lattice,
+    dplyr (>= 0.8.5),
+    tidyr (>= 1.0.2),
+    ggplot2 (>= 3.3.0)
 Suggests: 
     rmarkdown,
     testthat (>= 2.1.0)

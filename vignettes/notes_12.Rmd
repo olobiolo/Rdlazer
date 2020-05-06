@@ -1,0 +1,279 @@
+---
+title: "Character Strings"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Notes 12: Character Strings}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+<br><br><br>
+
+
+## Character String Basics
+
+- a character string is a specific data type
+- a string is composed of characters: 
+    - letters, lower- upper case
+    - digits
+    - punctuation marks and other special characters (`,;:@#$%` etc.)
+    - whitespace characters: space, tabulator, line break
+- characters are contained within quote marks, single or double
+- the quote marks are not treated literally but have a special meaning: they limit the contents a character string
+- the quote marks are a **metacharacter** (more on metacharactes below)
+- a string is "closed" by the same type of quote mark it was "opened" with
+- a single quote mark within a double-quoted string will be treated literally
+- check the number of characters in a string with `nchar`
+- character case can be changed with `tolower` and `toupper`
+- elements of a character vector can be changed with `replace`
+```{r}
+v <- names(precip)[3:8]
+v
+
+replace(v, list = 1:3, c('replacement 1', 'replacement 2'))
+```
+
+\newline
+
+#### metacharacters
+
+- **metacharacters** are characters whose meaning is not literal
+- e.g. a quote mark in not a quote mark, it opens and closes a sting
+- special meaning can be stripped from a metacharacter so that it will be treated literally
+- this is done with an **escape character** and is called **escaping**
+- the escape character in R (and other languages as well) is the backslash: `\`
+- and so, a literal quote mark can be put in a string with `\"`
+- *note: in a string delimited by `"`, `'` is treated literally, and vice versa*
+
+\newline
+
+- some characters cannot be put into a string directly and they must be encoded with metacharacters
+- in such cases the the escape character bestows meaning rather than stripping it
+- and so, a tabulator is encoded by `\t` and a line break by `\n`
+- a backslash will also require escaping, so `\\`
+
+\newline
+
+## Combining And Splitting Strings
+
+- strings are concatenated (combined) with the function `paste`
+- any number of character strings and character vectors can be concatenated at once but mind the vector recycling mechanics
+- the `collapse` argument allows `paste` to combine a character vector into one string
+```{r}
+paste('some', 'text')
+
+paste(c('some', 'more'), 'text')
+
+paste(c('some', 'text'), collapse = '_')
+```
+- `paste0` is a fast wrapper with no separator
+
+<br>
+
+- the `substr` function can isolate a range of a string, beginning and ending at specified positions
+```{r}
+substr('some text', start = 3, stop = 8)
+```
+
+\newline
+
+- a string can also be split into several strings with `strsplit`
+- the `split` argument specifies the character(s) that the separation will be done on
+- the separating characters are removed from the result
+```{r}
+strsplit('even_more_text', split = '_')
+```
+- note that a list is returned; the length of the list is equal to the that of `x`
+```{r}
+strsplit(v, split = ' ')
+```
+- we can now easily count the number of per sentence in a piece of text:
+```{r, out.width='.8\\textwidth'}
+text <- "In the Lenin Barracks in Barcelona, the day before I joined the militia, I saw an Italian militiaman standing in front of the officers' table.
+
+He was a tough-looking youth of twenty-five or six, with reddish-yellow hair and powerful shoulders. His peaked leather cap was pulled fiercely over one eye. He was standing in profile to me, his chin on his breast, gazing with a puzzled frown at a map which one of the officers had open on the table. Something in his face deeply moved me. It was the face of a man who would commit murder and throw away his life for a friend--the kind efface you would expect in an Anarchist, though as likely as not he was a Communist. There were both candour and ferocity in it; also the pathetic reverence that illiterate people have for their supposed superiors. Obviously he could not make head or tail of the map; obviously he regarded map-reading as a stupendous intellectual feat. I hardly know why, but I have seldom seen anyone--any man, I mean--to whom I have taken such an immediate liking. While they were talking round the table some remark brought it out that I was a foreigner."
+
+# split text on period followed by any character
+sentences <- strsplit(text, split = '\\..')[[1]]
+sentences
+
+sapply(strsplit(sentences, ' '), length)
+```
+- note that unless `fixed` is `TRUE`, `split` is interpreted as a regular expression (see below)
+
+
+<br><br><br>
+
+
+## Matching Strings
+
+- it is common to test whether a string contains a certain substring
+- of course, this can be done on a vector
+- `startsWith` and `endsWith` check for matches at the edges of strings
+```{r}
+vv <- c('word 1', 'word 2', 'word3', 'Word 4', 'Words', 'word')
+
+startsWith(vv, 'word')
+
+endsWith(vv, 's')
+```
+- the `grep` family of functions provedes very useful funcionalities
+```{r}
+# grep returns indices of matching vector elements
+grep('word', vv)
+
+# it can also return the matching items
+grep('word', vv, value = TRUE)
+
+# or the non-matching ones
+grep('word', vv, value = TRUE, invert = TRUE)
+
+# character case can be ignored
+grep('word', vv, value = TRUE, ignore.case = TRUE)
+
+# grepl returns a logical vector based on the presence of absence of a match
+grepl('word', vv)
+
+# both functinos can ignore case
+grepl('word', vv, ignore.case = TRUE)
+```
+
+
+<br><br><br>
+
+
+## Regular Expressions
+
+The first argument fo `grep` and `grepl` specifies the pattern that is matched to elements of a caracter vector. Normally every character is matched exactly but it is possible to loosen the matching process. **Regular expressions** (often abbreviated as **regex**) are a way of ambiguating a the search pattern so that non-exact matches are identified. Matches can occur on alternative characters, repeated characters and more.
+
+The ambiguation is achieved by using wildcards, which are put into the pattern as metacharacters. The most often used wildcards are:
+
+- `.` matches any character
+- `[]` matches any character within the brackets
+    - `[abcde]` matches a, b, c, d or e
+    - `[a-e]` also matches a, b, c, d or e
+    - `[a-z]` matches any lower case letter
+    - `[4-9]` matches any digit from 4 to 9
+    - `[49]` matches either a 4 or a 9
+    - `[0-9A-Z]` matches any digit or any upper case letter
+- `[^]` mathes any character **other** than the ones within the brackets following a `^`
+- `^` stands for the beginning of the string
+- `$` stands for the end of the string
+- `*` the previous character is repeated any number of times
+- `+` the previous character is repeated at least 1 time
+- `?` the previous character is repeated 0 or 1 time
+- `{2,4}` the previous character is repeated at least 2 and at most 4 times
+- `|` separates alternative expressions and allows a match of any
+- `()` parenetheses delimit subexpressions, which is used for **backreference** (see below)
+
+There are other ways of specifying character classes, e.g.:
+
+- `\w` any letter, digit, or underscore
+- `\d` any digit
+- `\s` any whitespace character
+
+Whenever a wildcard character is to be taken literally, it must be escaped. Importantly, in R the backslash alone is a literal character so it must be escaped to turn int into the escape character. And so `\.` means "backslash-period" but `\\.` means "any character".
+
+Some examples:
+
+- `^A` matches anything beginning with A, including a single A
+- `^A.` a string beginning with A followed by any character
+- `^A.$` matches a string containing A followed by any one character and nothing else
+- `A*$` mathces a string ending with any number of As
+
+\newline
+
+- ` ` matches any string containing a space
+- ` u` matches a space followed by a u
+- ` T?u{1,3}$` matches a space followed by an optional T, followed by one to three us but *only* at the end of a string
+
+\newline
+
+- `grey` matches only grey
+- `grey|gray` matches both gray and grey (US vs UK spelling)
+- `gr[ae]y` is equivalent to the above - does *not* match graey!
+- `[Ee]arth` matches Earth and earth
+- `[Ee]arths?` also matches Earths and earths
+
+\newline
+
+- `^[A-Z].*\\.$` matches a string that begins with a capital letter, ends with a period and contains any number of any characters in between - a typical declarative sentence
+
+- `^[A-Z].*, .*\\.$` matches a sentence that contains a comma followed by a space anywhere within, which indicates a compond sentence
+
+- `^[A-Z].*, .*[.?]` the sentence can now also be a question; note that characters within brackets are taken literally and need not be escaped
+
+\newline
+
+More examples:
+```{r}
+vv
+
+grep('^w', vv, value = TRUE)
+
+grep('^[wW]', vv, value = TRUE)
+
+grep('^Ws$', vv, value = TRUE)
+
+grep('^W.s$', vv, value = TRUE)
+
+grep('^W.+s$', vv, value = TRUE)
+
+grep('^W.+s?$', vv, value = TRUE)
+
+grep(' \\d$', vv, value = T)
+
+grep(' *\\d$', vv, value = T)
+```
+
+<br>
+
+#### replacing patterns
+
+The `sub` function searches a string for matches to a regular expression just like `grep` does. However, rather than reporting matches, it replaces them with a replacement string. The replacement is a literal string, not a regex.
+```{r}
+days <- c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+
+grep('day', days, value = TRUE)
+
+sub('day', 'DAY', days)
+```
+
+`sub` only acts on the first occurrence of the pattern. To replace all accurrences use `gsub`.
+```{r}
+sub('e', '.E.', 'Wednesday')
+
+gsub('e', '.E.', 'Wednesday')
+```
+
+<br>
+
+#### backtracing
+
+Characters in a regular expression can be grouped using parentheses: `(Wednes)(day)`. The ability to recall these groups individually is called **backtracing**. Backtracing allows for preserving a partial match during substitution, whereas normally the entire match is replaced.
+```{r}
+sub('day', 'DAY', 'Wednesday')
+
+sub('.*day', 'DAY', 'Wednesday')
+
+sub('(.*)(day)', 'DAY', 'Wednesday')
+
+sub('(.*)(day)', '\\1\\2', 'Wednesday')
+
+sub('(.*)(day)', '\\1', 'Wednesday')
+
+sub('(.*)(day)', '\\1DAY', 'Wednesday')
+```
+
+<h4>
+Regular expressions are a powerful tool for searching patterns within text. <br>
+They also allow for full and partial replacing of the mathcing patterns.
+</h4>
