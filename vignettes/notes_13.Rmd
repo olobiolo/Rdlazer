@@ -1,6 +1,11 @@
 ---
 title: "Modern Data Processing"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_float: false
+    toc_depth: 4
+    collapsed: true
 vignette: >
   %\VignetteIndexEntry{Notes 13: Modern Data Processing}
   %\VignetteEngine{knitr::rmarkdown}
@@ -77,7 +82,36 @@ glimpse(mtcars)
 
 <br>
 
-2. Renaming columns
+2. Subsetting rows
+
+- rows are selected with `filter` or `slice`
+- `slice` specifies rows by numeric indices
+```{r}
+slice(iris, 1:3)
+```
+- `filter` uses logical vectors or predicates that can be evaluated within the data to produce logical vectors
+- unlike in `subset`, multiple vectors can be passed, separated by commas, rather than a single logical predicate, so there is no need to use `&`
+```{r}
+filter(iris, Species == 'setosa')
+
+filter(iris, Species == 'versicolor', Sepal.Width < 3)
+```
+
+<br>
+
+3. Subsetting rows randomly
+
+- `sample_n` randomly selects a given number of rows
+- `sample_frac` randomly selects a fraction of rows
+```{r}
+sample_n(iris, 5)
+
+sample_n(iris, 0.2)
+```
+
+<br>
+
+4. Renaming columns
 
 - `rename` gives new names to columns as if new columns were assigned within the data frame
 - the renamed columns can be specified by name or position
@@ -89,7 +123,7 @@ rename(iris, SL = 1)
 
 <br>
 
-2. Subsetting columns
+5. Subsetting columns
 
 - columns are selected with the `select` function
 - columns can be specified by name or by position
@@ -122,49 +156,6 @@ select(iris, Sepal.Length, SL = Sepal.Length, species = Species)
 
 <br>
 
-3. Subsetting rows
-
-- rows are selected with `filter` or `slice`
-- `slice` specifies rows by numeric indices
-```{r}
-slice(iris, 1:3)
-```
-- `filter` uses logical vectors or predicates that can be evaluated within the data to produce logical vectors
-- unlike in `subset`, multiple vectors can be passed, separated by commas, rather than a single logical predicate, so there is no need to use `&`
-```{r}
-filter(iris, Species == 'setosa')
-
-filter(iris, Species == 'versicolor', Sepal.Width < 3)
-```
-
-<br>
-
-4. Selecting random rows
-
-- `sample_n` randomly selects a given number of rows
-- `sample_frac` randomly selects a fraction of rows
-```{r}
-sample_n(iris, 5)
-
-sample_n(iris, 0.2)
-```
-
-<br>
-
-5. Sorting data
-
-- sorting is done with `arrange`
-- pass one or more columns on which to sort the data
-- ties in the first column are broken by values of the second, etc.
-- use the `desc` function to arrange in descending order
-```{r}
-arrange(iris, Sepal.Length, Sepal.Width)
-
-arrange(iris, desc(Sepal.Length), Sepal.Width)
-```
-
-<br>
-
 6. Adding columns
 
 - new columns are created with `mutate` or `transmute`
@@ -188,7 +179,7 @@ transmute(iris, Sepal.Area = Sepal.Length * Sepal.Width,
 
 <br>
 
-7. Computing summary statistics
+7. Computing aggregate statistics
 
 - `summarize` is used to compute on columns
 - syntax is much like mutate but it collapses the data to a single row and drops non-relevant columns
@@ -215,15 +206,44 @@ summarize(mtcars.g, m.disp = mean(disp))
 
 <br>
 
+9. Sorting data
+
+- sorting is done with `arrange`
+- pass one or more columns on which to sort the data
+- ties in the first column are broken by values of the second, etc.
+- use the `desc` function to arrange in descending order
+```{r}
+arrange(iris, Sepal.Length, Sepal.Width)
+
+arrange(iris, desc(Sepal.Length), Sepal.Width)
+```
+
+<br><br><br>
+
 #### other `dplyr` functions
 
 The `do` function can be used to perform any operation within a data frame. This is used when mutate is insufficient because the desired result is not a vector but a different structure, e.g. a data frame or a model (class `lm`, for instance). `do` produces **list columns**. List columnas are a native feature of data frames. They are lists rather than atomic vectors. They are very rarely used.
 
-Some `plyr` functions have "scoped" variants that allow for simultaneous operations on multiple columns. For example, `mutate_at` performs the same operations on columns specified by name or position, `mutate_if` operates on columns specified by a logical predicate, and `mutate_all` acts on all columns. The problem with `dplyr`, and the tidyverse in general, is that their usage is constantly evolving and difficult to keep track of for non-users. We will not discuss them in detail, they are well documented in the help files and online.
+Some `dplyr` functions have "scoped" variants that allow for simultaneous operations on multiple columns. For example, `mutate_at` performs the same operations on columns specified by name or position, `mutate_if` operates on columns specified by a logical predicate, and `mutate_all` acts on all columns. The problem with `dplyr`, and the tidyverse in general, is that their usage is constantly evolving and difficult to keep track of for non-users. We will not discuss them in detail, they are well documented in the help files and online.
 
 The `n` function returns the number of rows of the data frame in which it is called.
 `count` and `tally` report on the numbers of observations in groups in grouped data frames.
 
+
+<br><br><br>
+
+<font color = "blue">
+#### merging data with `dplyr`
+
+Merging data is a very common operation. It is done to combine data from separate experiments, attach annotations, etc. As a general principle, two data frames are joined **on** one or more variables. These variables are used to determine which rows in the two data frames correspond to the same cases. Columns from one data frame are added to the other. Common rows are extended with new information. Non-common rows are kept or dropped, depending on the type of join desired.
+
+In base R merging is done with the `merge` function, which covers all ways of combining data frames and is controlled by arguments. `dplyr` provides a family of separate `join` functions for every situation, which perhaps make the process easier to understand at first.
+
+- `inner_join` only the rows common to both data frames
+- `full_join` keeps all observations from both data frames
+- `left_join` and `right_join` keep all rows from one data frame and the common ones
+- `outer_join` discards the common rows and leaves the differing ones
+</font>
 
 <br><br><br>
 
@@ -340,9 +360,559 @@ iris %>%
   summarize_at(.vars = 1:4, .funs = list(mean = mean, error = sd)) %>%
   arrange(desc(Petal.Length_error))
 ```
+<font color = "blue">
+
+
+<br><br><br>
+  
+  
+## `data.table` Package
+
+```{r}
+library(data.table)
+```
+
+The `data.table` package, created by Matt Dowle, is a package for data processing. Unlike the Tidyverse, which comprises a large network of functions that reshape the language, `data.table` is a single package with no dependencies that enhances the language from the inside. It has a single objective, accelerating operations, and it achieves it with base R functionalities.
+
+`data.table` introduces a new class: data.table, an "enhanced data.frame". Since data.table inherits from data.frame, all data frame methods will still work but methods for data tables can be much more powerful. There are two basic mechanisms that distinguish data tables from data frames.
+
+<br>
+
+#### modification by reference
+
+At the heart of data tables lies **modification by reference** or **in place**. It is a behaviour that is not unknown to R but very uncommon. Normally when an object is modified, whether it is adding or replacing a column, even with a replacement function, the whole object is copied within the execution environment of the function call. This is called a **deep copy**. This copy is modified and then substituted for the original value, bound to the same symbol. Superficaially, the binding is unchanged but the value is written in a different place in memory. The data table class changes this mechanic so that the deep copy is **not** created and the object remains in the same memory location. This saves a lot of time, especially for large objects (think gigabytes of data). *Don't ask me how it handles defragemntation, I have no idea.*
+
+<br>
+
+#### consequences
+
+In order to allow modification by reference, data tables operate on **active bindings**. So far we have only talked about normal bindings, where a symbol is assigned to a value. Here is the difference.
+```{r}
+# create an object
+a <- 'object'
+
+# copy the object with a static binding
+assign(x = 'b', value = a)
+
+# copy the object with a active binding
+makeActiveBinding(sym = 'B', fun = function() a, env = globalenv())
+
+
+a
+b
+B
+
+a <- 'another object'
+a
+b
+B
+```
+Assigning the value of `a` to variable `b` creates an independent copy of the value. On the other hand, an active binding between the symbol `B` and the value of variable `a` means the value of `B` is changed whenever the value of `a` changes.
+
+Now, let us create a data table.
+```{r}
+ir <- as.data.table(Rdlazer::iris)
+```
+The function `as.data.table` converts a data frame to a data table, thus endowing it with special properties. A lit of existing data tables can be viewed with `tables`.
+```{r}
+tables()
+```
+An attempt at assigning the data table to another varaible will **not** create a copy but rather assign the value to a second name. These two names will be connected as if with an active binding.
+```{r}
+IR <- ir
+
+# there are two data tables now
+tables()
+
+# they are both at the same address
+address(ir)
+address(IR)
+```
+If `ir` is modified now, a copy at another memory location will be created, while `IR` will remain the same. The two objects will be uncoupled.
+```{r}
+ir$newcol <- paste(ir$Species, ir$Sepal.Length)
+
+tables()
+
+address(ir)
+address(IR)
+# the address of IR is the same as before
+```
+However, if `ir` is modified by reference, both objects will change but the memory address will not.
+```{r}
+ir <- as.data.table(Rdlazer::iris)
+IR <- ir
+
+address(ir)
+address(IR)
+
+# pay no attention to the syntax for now
+ir[, newcol := paste(ir$Species, ir$Sepal.Length)]
+
+tables()
+
+address(ir)
+address(IR)
+```
+Note that the result of the modification was not reassigned. In fact, reassigning back to the `ir` symbol would defeat the purpose.
+
+And so, most modifications to a data table can and should be done **in place**, using `data.table` functions. Many of them will also work on data frames and retain the "in place" functinaly but I can make no guarantees.
+
+An explicit copy of a data table can be created with `copy`.
+```{r}
+ir <- as.data.table(Rdlazer::iris)
+IR <- ir
+IR2 <- copy(ir)
+
+address(ir)
+address(IR)
+address(IR2)
+# IR2 is at a different address in memory
+
+tables()
+ir[, newcol := paste(ir$Species, ir$Sepal.Length)]
+tables()
+
+# IR2 remains unmodified
+```
+
+<br>
+
+Now that that is clear, let's try to figure out this strane syntax above.
+
+<br>
+
+#### the data.table query
+
+Operations on data tables are done by **queries**, which are designed to resemble the SQL syntax. A query is contained within a bracket. For data frames the bracket is a subsetting operator but for data tables it is a query operator.
+
+The query is composed of three parts, referred to by the `data.table` authors as **i**, **j**, and **by**: `DT[i, j, by]`. `i` is the index: it determines the subset of rows, on which the operation will be run. `j` determines the operation to be run. Finally, `by` serves to split the data into subsets in the split-apply-combine paradigm.
+
+Let us consider `iris` again. Say we want to check the number of observations for each species but omit the flowers with sepal widths lower than 3. We will use `.N`, a special variable introduced in `data.table` that stores the number of rows of a data table in question, much like the `n` function `dplyr`.
+```{r}
+# make a data table version of iris
+ir <- as.data.table(iris)
+
+# build data table query
+ir[i = Sepal.Width >= 3, j = .N, by = Species]
+```
+Note the use of non standard evaluation. It is mostly optional. It can also be turned off completely with the `with` argument. See `data.table` vignettes for details.
+
+The `j` part of the query contains an expression that will be evaluated within the scope of the data table (on the rows defined in `i`). The value of the expression is returned, not incorporated into the data table, like in the examples above.
+
+`j` can include **any** expression that can be realized within the scope of the data table. Literally any expression.
+```{r}
+ir[, head(faithful)]
+
+# the faithful data set is not contained within the data table
+
+ir[, {x <- .N; paste('the number of rows is', x)}]
+
+# the value of x is returned but x is not assigned in the Global Environment
+exists('x')
+```
+We will only explore some possibilities but it must be emphasized that the query is extremely flexible.
+
+<br>
+
+The elements of the query can be rearranged if desired. This can be helpful if one is used to `dplyr`, where one groups first and operates second. Leaving `by` for last is the SQL way. Otherwise `i`, `j` and `by` are matched positionally, much like any function argument.
+```{r}
+ir[Sepal.Width >= 3, by = Species, .N]
+```
+
+<br>
+
+#### data processing with `data.table`
+
+1. Subsetting rows
+
+- rows are defined in `i`
+- `i` accepts numerical indices or **one** logical vector
+- this works much like base R but with non standard evaluation
+```{r}
+ir <- as.data.table(iris)
+ir[1:3]
+
+ir[Species == 'versicolor']
+```
+- naturally, the logical vector can be created by one or more predicates
+```{r}
+ir[Sepal.Width >= 3 & Species != 'virginica']
+```
+- note that the second dimension is not specified, all columns are returned
+- what comes after the comma is not column specification but operations, `j`
+- in order to apply `j` to all rows `i` must be left empty:
+```{r}
+ir[, .N]
+```
+
+<br>
+
+2. Renaming columns
+
+- column names can be modified in place with the `setnames` function
+- column to rename can be specified as character string or numeric index
+```{r}
+names(ir)
+
+setnames(ir, 'Species', 'specs')
+names(ir)
+
+setnames(ir, 5, 'Species')
+```
+- vectors change multiple names at a time
+```{r}
+names(ir)
+
+setnames(ir, c('Species', 'Sepal.Length'), c('specs', 'SL'))
+names(ir)
+
+setnames(ir, c(5, 1), c('Species', 'Sepal.Length'))
+
+```
+
+<br>
+
+3. Subsetting columns
+
+- `j` can be used to select a subset of columns from the data table
+- columns are specified as a character vector, a list of unquoted names, or numerical indices
+```{r}
+ir[1:5, 4:5]
+
+ir[1:5, c('Petal.Width', 'Species')]
+
+ir[1:5, .(Petal.Width, Species)]
+
+# using an external character vector requires a special escape operator
+
+cols <- c('Petal.Width', 'Species')
+ir[1:5, ..cols]
+
+# the dots are supposed to resemble directory trees:
+# . for current directory
+# .. for parent directory
+```
+- columns can be dropped with `!` or `-`
+- no NSE this time!
+```{r}
+ir[1:5, -c(4,5)]
+
+ir[1:5, -c('Petal.Width', 'Species')]
+
+ir[1:5, !..cols]
+```
+
+<br>
+
+4. Operations on columns
+
+- the result of a data table query is returned as is
+- however, if the result is a list, it will be converted into a data table
+- the list can contain one or more expressions
+- the list can be named and the names are preserved in the result
+```{r}
+ir[, Sepal.Length * Sepal.Width]
+
+ir[, list(Sepal.Length * Sepal.Width)]
+
+ir[, list(Sepal.Area = Sepal.Length * Sepal.Width, 
+          Petal.Area = Petal.Length * Petal.Width)]
+```
+- `data.table` uses `.` can as an alias for `list` within queries
+```{r}
+ir[, .(Sepal.Area = Sepal.Length * Sepal.Width, 
+       Petal.Area = Petal.Length * Petal.Width)]
+```
+- existing columns can also be used, even renamed on the fly
+```{r}
+ir[, .(Sepal.Length, Petal.Length,
+       gatunek = Species,
+       Sepal.Area = Sepal.Length * Sepal.Width,
+       Petal.Area = Petal.Length * Petal.Width)]
+```
+
+<br>
+
+- `j` can call aggregating functions to compute summary statistics
+- like before, using a list will produce a data table
+```{r}
+ir[, mean(Sepal.Length)]
+
+ir[, .(mean(Sepal.Length), median(Sepal.Length))]
+```
+- if an aggregate function returns a vector longer than one, the results can be surprising
+```{r}
+ir[, .(mean(Sepal.Length), range(Sepal.Length))]
+
+ir[, .(mean(Sepal.Length), t(median(Sepal.Length)))]
+
+ir[, .(mSL = mean(Sepal.Length), t(median(Sepal.Length)))]
+```
+
+<br>
+
+- to run the same function on multiple columns use `lapply`
+- the special variable `.SD` is used as a stand-in in for `X`
+- ".SD" stands for **S**ubset of **D**ata
+```{r}
+ir[, lapply(.SD, mean)]
+```
+- optionally, use the `.SDcols` argument to determine, which columns are considered to be in `.SD`
+- `.SDcols` can be specified with a charatcer vector of column names, an integer vector of indices, a logical vector or regular expressions
+- regular expressions are handled with the `patterns` function
+```{r}
+# a character vector
+ir[, lapply(.SD, mean), .SDcols = c('Sepal.Length', 'Petal.Length')]
+
+# numeric indices
+ir[, lapply(.SD, mean), .SDcols = c(1,3)]
+
+# a logical vector
+ir[, lapply(.SD, mean), .SDcols = c(c(T, F, T, F, F))]
+
+# regular expressions
+ir[, lapply(.SD, mean), .SDcols = patterns('Length')]
+```
+- more than one `lapply` call is possible
+```{r}
+ir[, .(means = lapply(.SD, mean), 
+       numbers = lapply(.SD, length)), 
+   .SDcols = -5]
+```
+
+<br>
+
+5. Adding columns
+
+- normally a query returns a value but does not influence the data table
+- adding columns is a **modification**
+- data tables are modified **by reference** or **in place**
+- this is done with a special operator, `:=`
+- changes are applied to the original data table
+```{r}
+ir[, Sepal.Area := Sepal.Length * Sepal.Width]
+ir
+```
+- no assignment is necessary
+- in fact, one should not use assignment here (see below)
+- an aggregated value will be recycled to preserve the data table structure
+```{r}
+ir[, mSL := mean(Sepal.Length)]
+```
+
+\newline
+
+- note that the `:=` expression in `j` is not encased in a list
+- there are three ways to add multiple columns
+    1. several queries, adding single columns sequentially
+    2. the "functional" form of `:=`
+    3. `lapply` (only when the same thing is done to multiple columns)
+```{r}
+ir[, col_1.1 := Sepal.Length ^ 2]
+ir[, col_1.2 := Petal.Length ^ 2]
+
+ir[, `:=`(col_2.1 = Sepal.Length ^ 2,
+          col_2.2 = Petal.Length ^ 2)]
+
+ir[, c('col_3.1', 'col_3.2') := lapply(.SD, function(x) x ^ 2),
+   .SDcols = patterns('Length')]
+
+str(ir)
+```
+
+- aggregate functions are easily run with `lapply`
+```{r}
+ir[, c('mSL', 'mSW', 'mPL', 'mPW') := lapply(.SD, mean), .SDcols = 1:4]
+
+str(ir)
+```
+- creating new columns by vector operations is best done with the functional `:=`
+```{r}
+ir[, `:=`(Sepal.Area = Sepal.Length * Sepal.Width,
+          Petal.Area = Petal.Length * Petal.Width)]
+```
+
+<br>
+
+*NOTE: The backtick thing may seem surprising but in fact it can be done with  **any** infix operator. This is not a special feature of `data.table`.*
+```{r}
+2 + 3
+
+`+`(2, 3)
+```
+
+<br>
+
+6. Grouped operations
+
+- applying the expressions in `j` to subsets of data rather than the whole data table is done with the `by` argument in the data table query
+- `by` accepts character vectors or lists
+```{r}
+ir <- as.data.table(Rdlazer::iris)
+
+ir[, lapply(.SD, mean), .SDcols = patterns('Length')]
+
+ir[, lapply(.SD, mean), .SDcols = patterns('Length'), by = 'Species']
+
+ir[, lapply(.SD, mean), .SDcols = patterns('Length'), by = Species]
+
+ir[, lapply(.SD, mean), .SDcols = patterns('Length'), by = .(Species)]
+```
+- modification can also be done in gropus
+```{r}
+ir[, mSL := mean(Sepal.Length), by = .(Species)]
+```
+
+<br>
+
+7. Rearranging
+
+- `setorder` sorts the data table on given variables
+- ties are broken by variables left to right
+- use `-` for descending order
+- sorting is done by reference, so no reassignment
+```{r}
+setorder(ir, Sepal.Length)
+ir
+
+setorder(ir, Sepal.Length, -Sepal.Width)
+ir
+```
+
+<br>
+
+- `setcolorder` rearranges columns
+- it accepts character strings or a character vector
+- columns not named will be put to the right in their original order
+```{r}
+setcolorder(ir, 'Species')
+str(ir)
+
+setcolorder(ir, c('Species', 'Petal.Width'))
+str(ir)
+```
 
 
 <br><br><br>
 
 
-*to be continued...*
+#### merging data tables
+
+- `data.table` implements a wide range of joining options
+```{r}
+d1 <- data.table(x = letters[1:6], v1 = 1:6)
+d2 <- data.table(x = letters[4:9], v2 = 1:6)
+
+d1
+
+d2
+```
+- full and inner joins are done with the `merge` function
+- the data table methods are faster than data frame ones
+```{r}
+merge(d1, d2, all = TRUE)
+
+merge(d1, d2, all = FALSE)
+```
+- partial joins are done as data table queries
+- you query the dta table that is to be kept with the other data table in `i`
+- the joining columns are specified in the `on` argument
+```{r}
+d1[d2, on = 'x']
+```
+- the joining query can include `j`
+- the resulting data table can also be modified on the fly
+```{r}
+d1[d2, on = 'x', .(v1 + v2)]
+
+d1[d2, on = 'x', v3 := v1 + v2]
+```
+- joining with queries makes use of `data.table`'s
+- there are also more sophisticated joins, like rolling join, which we will not get into
+
+
+<br><br><br>
+
+
+#### reshaping data with `data.table`
+
+- `data.table` uses the built-in methods for wide/long format transformation
+- actually, the work by `data.table`'s team was such an improvement on the previous solutions that it was incorporated into base R - the interface stayed the same but the underlying code was improved
+
+1. wide to long with `melt`
+```{r}
+d <- data.table(num1 = 1:3, num2 = 4:6, num3 = 7:9, cat = letters[1:3])
+dm <- melt(d)
+dm
+```
+
+2. long to wide with `dcast`
+```{r}
+dcast(dm, cat ~ variable)
+```
+- problems will arise if there are no unique combinations of categories and values
+- this can be dealt with by adding a column with unique numbers, just like we did earlier with `spread`
+
+3. split columns with `tstrsplit`
+
+- it is a wrapper for `strsplit` adjusted for use within a data table
+```{r}
+ir <- as.data.table(Rdlazer::iris)
+
+ir[, tstrsplit(Sepal.Length, split = '\\.')]
+
+ir[, c('wholes', 'tenths') := tstrsplit(Sepal.Length, split = '\\.')]
+
+```
+
+4. combining columns
+
+- there is no special function for combining columns
+- use `paste` or `paste0`
+
+
+<br><br><br>
+
+
+#### streaming operations
+
+Queries can be combined by simply adding one after another:
+```{r}
+ir[Sepal.Length > 6, mean(Sepal.Length)]
+
+ir[Sepal.Length > 6][, mean(Sepal.Length)]
+```
+
+An empty bracket will print a data table. This is often useful when modifyinf by reference:
+```{r}
+ir[, mSW := mean(Sepal.Width), by = .(Species)]
+
+ir[, mPW := mean(Petal.Width), by = .(Species)][]
+```
+
+<br>
+
+`magrittr`'s pipe can also be used.
+```{r}
+library(magrittr)
+
+ir[Sepal.Length > 6] %>% .[, mean(Sepal.Length)]
+```
+
+
+<br><br><br>
+
+
+#### `data.table` speed
+
+The high performance of data tables is achived in several ways. First, operations in `j` are only applied to the rows defined in `i`. Second, modification by reference with the `set` functions and the `:=` operator does not copyg entire, potentially large, objects, which is much more efficient memory-wise. Third, `data.table` allows **indexing** of rows, which makes identifying rows by `i` faster. We will not cover indexing here. Refer to the vignettes for detailed instructinos.
+
+<br>
+
+<h4>
+The Tidyverse and `data.table` both improve on R. <br>
+I recommend the Tidyverse for daily interactive work, especially for non-progammers.<br>
+Large data sets and programming are better served by `data.table`, but the learning curve is admittedtly steeper.
+</h4>
+</font>

@@ -1,6 +1,11 @@
 ---
 title: "Functions"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_float: false
+    toc_depth: 4
+    collapsed: true
 vignette: >
   %\VignetteIndexEntry{Notes 06: Functions}
   %\VignetteEngine{knitr::rmarkdown}

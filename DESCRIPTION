@@ -1,6 +1,6 @@
 Package: Rdlazer
 Title: Resources for Teaching R
-Version: 0.15.1
+Version: 0.16.0
 Authors@R: 
     person(given = "Aleksander",
            family = "Chlebowski",
@@ -17,7 +17,8 @@ Imports:
     lattice,
     dplyr (>= 0.8.5),
     tidyr (>= 1.0.2),
-    ggplot2 (>= 3.3.0)
+    ggplot2 (>= 3.3.0),
+    data.table (>= 1.12.8)
 Suggests: 
     rmarkdown,
     testthat (>= 2.1.0)

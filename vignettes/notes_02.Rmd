@@ -1,6 +1,11 @@
 ---
 title: "Data Structures And Language Properties"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_float: false
+    toc_depth: 4
+    collapsed: true
 vignette: >
   %\VignetteIndexEntry{Notes 02: Data Structures And Language Properties}
   %\VignetteEngine{knitr::rmarkdown}
