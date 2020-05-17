@@ -1,0 +1,135 @@
+---
+title: "Modern Data Plotting"
+output: html_vignette
+vignette: >
+  %\VignetteIndexEntry{Notes 14: Modern Data Plotting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.height = 2.5,
+  fig.width = 5
+)
+```
+
+## Introduction To `ggplot2`
+
+The `ggplot` package introduced a new standard in generating plots in R. 
+
+`ggplot` was later superceded by `ggplot2` which introduced a special syntax that made building pltos much more convenient. `ggplot2` is now the gold standard of plotting data in R but naturally it is not the be all and end all. Other packages and more will likely come.
+
+`ggplot2` is now considered a part of the Tidyverse, even though it was created before. Nevertheless, the two go together well. `ggplot2` "likes" tidy data and is easily added to a pipe stream.
+
+Plots are objects so they can be drawn immediately or assigned to a variable. This way they can be held on to or modified down the line. The plot is drawn when the object is **printed**. In an interactive session this is done whenever the plot is put into the console but in a programming context an expcilit call to `print` is necessary. Keep this in mind, it can be quite surprising.
+
+<br>
+
+#### creating a plot
+
+```{r}
+library(ggplot2)
+```
+
+A plot object has a list structure and is constructed in steps. 
+
+1. Initiate a plot with a call to `ggplot`.
+```{r}
+ggplot()
+```
+
+2. Specify the data frame from which information will be plotted in the `data` argument. The data becomes part of the plot object but still nothing is drawn.
+```{r}
+ggplot(data = iris)
+```
+
+3. Define **mappings**, *i.e.* assign variables in the data to plot features, *e.g.* axes or colors. This is done by calling the `aes` function and enumerating the bindings, using non standard evaluation. `aes_string` still exists for passing column names as character strings, which is useful in programming, but it is being phased out. <br>
+Once variables are mapped to the axes, the scales and limits are set and a grid is created.
+```{r}
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species))
+```
+
+4. Add **geometries**, actually drawn plot elements. Every geometry is created by its own function, e.g. points are drawn with `geom_point` and boxplots with `geom_boxplot`. Geometries are added with a special operator: `+`.
+```{r}
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point()
+# note that a legend is created automatically
+```
+
+|          Geometry functions have `data` and `mappings` arguments like `ggplot` but they can inherit these arguments from the `ggplot` call that initiated the plot. Every geometry has a set of aesthetics it can accept to customize its looks according to the data.
+
+|          The appearance of a gemoetry can be modified outside of the mappings. Some geometries have certain requirements, e.g. `geom_boxplot` expects a discrete variable mapped to one of the axes.
+```{r}
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point(pch = 1)
+```
+
+5. Multiple geometries can be added to one plot, where they stack on one another.
+```{r}
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot() +
+  geom_point(aes(color = Species), position = position_jitter(width = 0.2))
+```
+
+6. Any change to the plot is made by adding another element to the plot like a geometry. The list of things that can be done is quite long:
+    - `ggtitle`: add a title with 
+    - `xlab` and `ylab`: change axis labels
+    - `xlim` and `ylim`: change axes limits
+    - `scale_x_log10` and `scale_y_log10`: change axes to log scale
+    - `scale_color_manual`: change the automatic colors for the **color** aesthetic
+    - `theme`: change any plot element
+|          The `theme` function can customize any element of the plot. Sets of customizations can be saved as a separate theme and applied to a plot in bulk. There are a few themes built in like `theme_linedraw` or `theme_minimal`. More can be downloaded or created.
+
+<br>
+
+#### modifying a plot
+
+At any stage of construction a plot object can be assigned to a variable, which can make customization easier.
+```{r}
+p <- ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species))
+
+p +geom_point()
+p +geom_point() +geom_smooth()
+```
+
+<br>
+
+#### splitting a plot
+
+A plot can be broken up into panels according to one or more discrete variables. This is done with `facet_wrap` and `facet_grid`. Both functions accept formulas for easy specification of the facetting.
+```{r}
+p +geom_point() +geom_smooth() +facet_grid(. ~ Species)
+p +geom_point() +geom_smooth() +facet_grid(Species ~ .)
+```
+
+These are not separate plots! They are panels that contain subsets of the data.
+
+<br>
+
+#### multiple pltos
+
+Winston Chang has developed a very nice function for putting several ggplot objects on one page. His original post, along with the code, can be found [here](http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/). I have taken the liberty of addind the function to my utilities package `acutils` which can be found on [Github](http://github.com/olobiolo/acutils).
+
+<br>
+
+#### exporting plots
+
+To save a plot to a file open a grahpics device, print a plot, and close the device, just as usual. An alternative is to use the `ggsave` function. It takes the last created ggplot object and sends it to a graphical device, which it automatically closes afterwards.
+
+Unfortunately, `ggsave` will not capture a multiplot, only the last panel. multiplots must be exported normally.
+
+<br><br><br>
+
+
+## Further Reading
+
+This is just a primer into `ggplot2`, the subject is far too vast to cover here. There are excellent resources on the Internet anyway. Check out the links below and learn to google solutions. Good luck!
+
+[official RStudio cheat sheet](https://rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf)<br>
+[Graphs book](http://www.cookbook-r.com/Graphs/)<br>
+[ZevRoss](http://zevross.com/blog/2014/08/04/beautiful-plotting-in-r-a-ggplot2-cheatsheet-3/)<br>
+[STDHA](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization/)
+
+<br>
