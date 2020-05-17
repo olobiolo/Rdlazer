@@ -1,0 +1,167 @@
+---
+title: "Using Statistics In R"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_float: false
+    toc_depth: 4
+    collapsed: true
+vignette: >
+  %\VignetteIndexEntry{Notes 15: Using Statistics In R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+<br>
+
+R was developed as a language for statistical analysis and as such has a **lot** of built-in tools for all kinds of procedures. More are added as they are developed. To describe them all would take a book. This is but a short introduction - not into statistics but rather into the way it is implemented in R.
+
+<br><br><br>
+
+
+## Distributions And Estimations
+
+Functions exist to estimate sample parameters: `mean` for the mean, `median` for the median, `var` for variance, `sd` for standard deviation, `min`, `max` and `range` for the extremities, `quantile` for quantiles, `IQR` for inter-quartile range and many more. Of course, writing functions that compute all these parameters is not especially difficult and the difference between R and other languages in this departament is qualitative rather than quantitative. Don't worry, it gets better.
+
+There are functions that simulate distributions, e.g. `rnorm` generates a random sample from a normal distribution, and `runif` - from a uniform one, etc. See `?distributions` for a full list.
+
+
+<br><br><br>
+
+
+## Hypotheses Testing
+
+A wide range of statistical tests are also implemented in built-in functions. Perhaps the most commonly used statistical test in biology is Student's *t* test. Whether or not that is a proper course of action is another matter. The test performed by the `t.test` function.
+
+`t.test` can compare two sapmles passed as vectors.
+```{r}
+t.test(x = rnorm(100, 0), y = rnorm(100, 1))
+```
+
+It also has a formula interface, in which a column in a data frame is divided according to a factor column with two levels.
+```{r}
+t.test(len ~ supp, data = ToothGrowth)
+```
+
+`t.test` returns is an object of class htest. This is a list that contains all the information about the test and all of its results. The printed information is a complete description of the test, more than sufficient to cite in a publication.
+
+Switching to a non-parametric test like Mann-Whitney-Wilcoxon test is super easy as the function that runs taht test has the same syntax.
+```{r}
+wilcox.test(Sepal.Length ~ Species, data = iris, subset = Species != 'setosa')
+```
+
+The result is also a htest object. Many other functions will return like objects.
+
+
+<br><br><br>
+
+
+## Models
+
+R also contains a number of **modelling** functions. They indentify dependencies between variables in a data set. The simplest model to describe a two-dimensional data set is a straight line, which is most often found by the smallest square method. Briefly, different straight lines are lead throught the scatter and their distances from the actual data on the y axis are squared and summed. The line for which the sum of squarred deviations is the lowest is considered to be the best fit to the data.
+
+#### fitting 
+
+Linear regression is done with the `lm` function. It is called with a formula that has the independent varialbes, or **predictors**, on the rhs and the dependent variable, or **response**, on the lhs. The syntax for `lm` is exactly thes asme as for `plot`:
+```{r}
+plot(eruptions ~ waiting, data = faithful)
+
+lm(eruptions ~ waiting, data = faithful)
+```
+
+`lm` returns an object of class lm, which has a list structure. It contains the original data and all the computed information. It also stores the call used to build the model so it can even be modified afterwards.
+
+What is printed in the console is not the entirety of the model, it is only the most basic information: the formula and the coefficients that can describe the straight line. This is what the `print` method for class `lm` displays. More information can be accessed with `summary`.
+```{r}
+mod <- lm(eruptions ~ waiting, data = faithful)
+summary(mod)
+```
+
+Again, there is the formula and the coefficients. However, now there are also some parameters that help judge their estimation: the `t value` reflects how far from zero the coefficient estimate lies, and `Pr(>|t|)` estimates the probability of obtaining a higher `t value` than obtained in the model.
+
+There is a summary of the **residuals**, *i.e.* the deviations of actual values from the model. Normality of residuals is one of the ke indicators of model quality so it helps to have a look if the quartiles are symmetric at least. Finally, the statistical significance of the model is reported at the bottom, as is r-squared, which corresponds to the fraction of variation in the data explained by the model. This is another indicator of model quality - the closer to 1, the better.
+
+Particular elements of the model can be accessed directly, as list elements. There are also convenience functions for extracting certain elements, like `coef` which extracts model coefficients, or `fitted`, which extracts fitted values.
+```{r}
+mod$coefficients
+
+coef(mod)
+
+coefficients(mod)
+```
+Coefficients can be conveniently passed directly to the `coef` argument in `abline` to add the model to a plot.
+```{r}
+plot(eruptions ~ waiting, data = faithful)
+abline(coef = coef(mod))
+```
+
+A model can be assesed further by plotting it out. The lm method for `plot` creates four diagnostic graphs with outlying observations marked.
+```{r, fig.height = 6, fig.width = 6}
+layout(mat = matrix(1:4, 2, 2))
+plot(mod)
+```
+
+1. residuals plotted along the model
+    The distribution should be random, any tendencies here are cause for worry.
+2. a Q-Q plot of the residuals to further test their normality
+    A comparison of the residual distribution to a simulated normal distribution. Ideally this is a straight line.
+3. scale-location plot
+    This plot shows the extent of residuals in proportion to the predictors. This should also, ideally, display no tendencies.
+4. the **levarage** of individual points
+    This shows the influence of individual points on the fit. If any point falls beyond the dashed line, Cook's distance, it may need to be removed from the fitting process.
+
+As a rule, all modelling functions behave this way: they are called with a formula and they return an object of thier own class, which can be summarized and used for predictions (see below). The built-in `glm` function (for generalized linear models) can transform the data before the fitting so that relationships than linear can be modelled. More functions exist in external packages and they all keep to the same procedure.
+
+#### prediction
+
+Once a model is ready, or **trained**, it can be used to predict the response in other data sets.
+```{r}
+newdata <- data.frame(waiting = runif(25, 40, 100))
+predict(mod, newdata)
+```
+The model describes a linear function. `predict` can access the formula within the model and computes the lhs terms based on the rhs terms. The computed values can, of course be added to the data set.
+```{r}
+newdata$predicted <- predict(mod, newdata)
+plot(eruptions ~ waiting, faithful)
+points(predicted ~ waiting, newdata, col = 'red', pch = 16)
+```
+
+To be fair, linear regression is not the best example of a model - driven prediction, although in principle it can be used to interpolate and extrapolate data, if the model is good enough. Prediction is something we usually do with classifiers: models whose response is to assign observations to two or more categories. Functions that build classifiers operate on the same principles.
+
+
+<br><br><br>
+
+
+## Testing Normality
+
+All statistical methods work on certain assumptions, which should be observed if the method is to produce valid results. Perhaps the most frequent (and frequently ignored) assumption is that of sample normality. There are several methods to find out if a sample comes from a normal distribution.
+
+The first way is to look at the distribution. Granted, the human eye is not very good at noticing details in distributions but gross departures from normality are readily apparent.
+
+A more systematic look can be obtained with a quantile plot. This is a statistical device for comparing distributions. Given two samples, their quantiles are computed and plotted against one another. If the relationship is linear, the two samples can be - to some extent of confidence - be said to come from the same king of distribution.
+
+To test a sample for normality one compares it to a random sample from a normal distribution. The method does not produce a numeric result, at which one can put a cut-off value. The user must make a decision whether the plot is good enough for them. Naturally, real-world data will nearly always show some irregularity, slight departures from perfect normality.
+
+There are also statistical test for data normality. The most common is the Shapiro-Wilk test. The null hypothesis in this test is that the sample **does** come from a normal distribution. If the null hypothesis can be rejected, it can be concluded that the sample is **not** normal.
+```{r}
+shapiro.test(rnorm(1e3))
+
+shapiro.test(runif(1e3))
+```
+
+
+<br><br><br>
+
+
+<h4>
+This is just the beginnig, of course. Learning about the application of statistical methods, building models, etc., is a sicence in its won right. I hope this brief introduction will ease you into using the tools built into R and perhaps help you seek solutions online.
+</h4>
+
+<br>
