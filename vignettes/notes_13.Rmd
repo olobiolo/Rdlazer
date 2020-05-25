@@ -232,7 +232,7 @@ The `n` function returns the number of rows of the data frame in which it is cal
 
 <br><br><br>
 
-<font color = "blue">
+
 #### merging data with `dplyr`
 
 Merging data is a very common operation. It is done to combine data from separate experiments, attach annotations, etc. As a general principle, two data frames are joined **on** one or more variables. These variables are used to determine which rows in the two data frames correspond to the same cases. Columns from one data frame are added to the other. Common rows are extended with new information. Non-common rows are kept or dropped, depending on the type of join desired.
@@ -243,7 +243,7 @@ In base R merging is done with the `merge` function, which covers all ways of co
 - `full_join` keeps all observations from both data frames
 - `left_join` and `right_join` keep all rows from one data frame and the common ones
 - `outer_join` discards the common rows and leaves the differing ones
-</font>
+
 
 <br><br><br>
 
@@ -360,7 +360,6 @@ iris %>%
   summarize_at(.vars = 1:4, .funs = list(mean = mean, error = sd)) %>%
   arrange(desc(Petal.Length_error))
 ```
-<font color = "blue">
 
 
 <br><br><br>
@@ -816,7 +815,8 @@ merge(d1, d2, all = TRUE)
 merge(d1, d2, all = FALSE)
 ```
 - partial joins are done as data table queries
-- you query the dta table that is to be kept with the other data table in `i`
+- you query one data table that with another
+- one table goes into the `i` part of the query and all its rows are kept
 - the joining columns are specified in the `on` argument
 ```{r}
 d1[d2, on = 'x']
@@ -884,7 +884,7 @@ ir[Sepal.Length > 6, mean(Sepal.Length)]
 ir[Sepal.Length > 6][, mean(Sepal.Length)]
 ```
 
-An empty bracket will print a data table. This is often useful when modifyinf by reference:
+An empty bracket will print a data table. This is often useful when modifying by reference:
 ```{r}
 ir[, mSW := mean(Sepal.Width), by = .(Species)]
 
@@ -915,4 +915,5 @@ The Tidyverse and `data.table` both improve on R. <br>
 I recommend the Tidyverse for daily interactive work, especially for non-progammers.<br>
 Large data sets and programming are better served by `data.table`, but the learning curve is admittedtly steeper.
 </h4>
-</font>
+
+<br>

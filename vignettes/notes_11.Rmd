@@ -21,9 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-
-<br><br><br>
-
+![plotting][plottingcat]
 
 ## Plot
 
@@ -439,7 +437,7 @@ levelplot(Sepal.Length ~ Petal.Width * Petal.Length | Species, data = datasets::
 
 
 <br><br><br>
-<font color = 'blue'>
+
 
 ## Saving Plots To Files
 
@@ -461,6 +459,6 @@ Devices are closed with the `dev.off` function. It will close the device specifi
 
 To print a plot to a file open a device with, say, `png`, draw a plot as you normally would in RStudio, and call `dev.off()` to close the file. Unlike in RStudio, past plots are not available for rewinding. Only the last plot is saved to the file. The `pdf` device behaves differently. It has an `onefile` argument, which is set to `TRUE` by default. With the pdf device plots will be added to the file, one plot per page. Again, the graphics cannot be viewed before the device is closed.
 
-Also, .pdf files are saved as vetor graphics rather than rasters.
+Also, .pdf files are saved as vetor graphics rather than rasters. You can open them in Corel or Illustrator and edit partilcular elements there with no loss of quality.
 
-</font>
+[plottingcat]: ../images/plottingcat.png

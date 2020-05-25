@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+![...][thinkingcat]
 
 <br><br><br>
 
@@ -285,3 +286,6 @@ f3(x3 = 'ok', verbose = T, x5 = 'ok5')
 f3(x3 = 'ok', verbose = F, x5 = 'ok5')
 ```
 
+<br>
+
+[thinkingcat]: ../images/thinkingcat.png

@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+![formulas][formulacat]
 
 <br><br><br>
 
@@ -46,3 +47,7 @@ The formula above would be interpreted as "y depends on x (in some way)". In a m
 Formulas are used within functions and it is the calling function that specifies the environment where the formula will be evaluated, i.e. where the terms will be scoped. The environment can also be a list or a data frame (see the vignette on non-standard evaluation for more details).
 
 *WARNING: Formulas are greedy and if they fail to find their terms in the specified frame, they will scope them further up enclosing frames.*
+
+<br>
+
+[formulacat]: ../images/formulas.gif

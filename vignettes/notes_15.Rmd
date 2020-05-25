@@ -19,6 +19,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+![the dangers of statistics][statistics]
+
 <br>
 
 R was developed as a language for statistical analysis and as such has a **lot** of built-in tools for all kinds of procedures. More are added as they are developed. To describe them all would take a book. This is but a short introduction - not into statistics but rather into the way it is implemented in R.
@@ -165,3 +167,6 @@ This is just the beginnig, of course. Learning about the application of statisti
 </h4>
 
 <br>
+
+[statistics]: ../images/statistics.png
+

@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+![modern plotting][readingcat]
+
 ## Introduction To `ggplot2`
 
 The `ggplot` package introduced a new standard in generating plots in R. 
@@ -133,3 +135,5 @@ This is just a primer into `ggplot2`, the subject is far too vast to cover here.
 [STDHA](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization/)
 
 <br>
+
+[readingcat]: ../images/plottingcat.gif

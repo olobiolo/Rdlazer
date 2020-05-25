@@ -176,14 +176,10 @@ help("Rdlazer")
 
 \newline
 
-<font color = 'blue'>
-
 - some functions have a special argument, `...`
 - it is used in two situations:
     - to accept a variable number of arguments
     - to pass arguments to other functions (more on this later)
-
-</font>
 
 -	some functions work as **infix operators**: the call is structured `x op y` rather than `foo(x, y)`
 -	examples of this are: `%in%` or `+` or `<-`
