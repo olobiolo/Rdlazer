@@ -976,4 +976,4 @@ Factors are confusing so it's all right to be confused.
 
 
 [confusedcat]: ../images/confusedcat.jpg
-[picard]: ../images/picard.jpg
+[picard]: ../images/picard_censored.jpg
