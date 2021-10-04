@@ -36,11 +36,11 @@ knitr::opts_chunk$set(
 
 |     *Think of "human" as a class and a person as an object. Some properties of the class human are two paris of limbs, an upright posture and a couple of eyes - these are things all persons share. However, people come with differently colored eyes, so there is variability allowed.*
 
-|     *Humans can be divided into men and women. Every man has all the attributes of a human, as does woman. Man and woman are thus subclasses of human and they both inherit from human. Man and woman each have specific features that are not defined by human like berad and nail polish, respetively. But human is itself a subclass of mammal. Mammal has two pairs of limbs and eyes and these are the features human inherits from mammal. The upright posture is specific to human - but inherited by man and woman.*
+|     *Humans can be divided into men and women. Every man has all the attributes of a human, as does woman. Man and woman are thus subclasses of human and they both inherit from human. Man and woman each have specific features that are not defined by human like beard and nail polish, respectively. But human is itself a subclass of mammal. Mammal has two pairs of limbs and eyes and these are the features human inherits from mammal. The upright posture is specific to human - but inherited by man and woman.*
 
 |     *Class hierarchies can be long but they are always shaped like trees, never networks. When arranged in a bottom-up fashion classes diverge upwards but the branches never cross.*
 
-|     *Behaviors are encoded in methods. Human can be triggered to walk a certain number of steps - this would be implemented in the `walk` method. When we want a human object Aleksander to walk 20 stpes we call something like `Aleksander.walk(20)`. Syntax will vary from language to language but you get the idea. Human also gets hungry: there is a constantly running method `hungry` (it runs an internal  clock, which depends on an external time source) and if it runs uninterrupted for too long it will cause a human object to terminate. When the `hungry` method has run for some time, it triggers another method, `eat`. The `eat` method resets the clock on the `hungry` method, delaying object termination. While walking is a method specific to the human class walking on two legs is different to walking on all fours), the others are inherited from the mammal class, which in turn inherits them from the vertebrate class and so on, all the way up to the animal class.*
+|     *Behaviors are encoded in methods. Human can be triggered to walk a certain number of steps - this would be implemented in the `walk` method. When we want a human object Aleksander to walk 20 steps we call something like `Aleksander.walk(20)`. Syntax will vary from language to language but you get the idea. Human also gets hungry: there is a constantly running method `hungry` (it runs an internal  clock, which depends on an external time source) and if it runs uninterrupted for too long it will cause a human object to terminate. When the `hungry` method has run for some time, it triggers another method, `eat`. The `eat` method resets the clock on the `hungry` method, delaying object termination. While walking is a method specific to the human class (walking on two legs is different to walking on all fours), the others are inherited from the mammal class, which in turn inherits them from the vertebrate class and so on, all the way up to the animal class.*
 
 
 <br><br><br>
@@ -110,5 +110,6 @@ Class is encoded in a special attribute. <br>
 A generic function recognizes an object's class and attemps to find an appropriate method. <br>
 </h4>
 
+<br>
 
 [classy]: ../images/classycat.png

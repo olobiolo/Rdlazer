@@ -55,7 +55,7 @@ knitr::opts_chunk$set(
 - objects that are made accessible to the user are said to be **exported**
 - a namespace also contains names of objects that are **imported** from other packages but that is another story
 - a package can be **attached** to a session with `library`
-- this causes the contents of the namespace to be accessible
+- the contents of the namespace become accessible
 ```{r, error = TRUE}
 hint('0.1.2')
 
@@ -92,5 +92,7 @@ head(lattice::USMortality)
 (.packages())
 ```
 - another way is to view the search list with `search`; check the Environments vignette for an explanation
+
+<br>
 
 [kittens]: ../images/kittenspackage.png

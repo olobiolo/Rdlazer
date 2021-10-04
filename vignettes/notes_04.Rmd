@@ -162,4 +162,6 @@ head(lattice::barley)
 
 *This is by far not comprehensive, just some working knowledge. For more details check out R help pages for `environment`, `search`, `attach`, `library`. Read the Packages vignette before you do.*
 
+<br>
+
 [reds]: ../images/reds.png

@@ -27,7 +27,7 @@ library(Rdlazer)
 <br><br><br>
 
 
-There have been considerable efforts in the R community to change the way data is handled. They were driven by different motivations and utilized different approaches. We will briefly introduce two major branches of developlement.
+There have been considerable efforts in the R community to change the way data is handled. They were driven by different motivations and utilized different approaches. We will briefly introduce two major branches of development.
 
 
 <br><br><br>
@@ -379,7 +379,7 @@ The `data.table` package, created by Matt Dowle, is a package for data processin
 
 #### modification by reference
 
-At the heart of data tables lies **modification by reference** or **in place**. It is a behaviour that is not unknown to R but very uncommon. Normally when an object is modified, whether it is adding or replacing a column, even with a replacement function, the whole object is copied within the execution environment of the function call. This is called a **deep copy**. This copy is modified and then substituted for the original value, bound to the same symbol. Superficaially, the binding is unchanged but the value is written in a different place in memory. The data table class changes this mechanic so that the deep copy is **not** created and the object remains in the same memory location. This saves a lot of time, especially for large objects (think gigabytes of data). *Don't ask me how it handles defragemntation, I have no idea.*
+At the heart of data tables lies **modification by reference** or **in place**. It is a behaviour that is not unknown to R but very uncommon. Normally when an object is modified, whether it is adding or replacing a column, even with a replacement function, the whole object is copied within the execution environment of the function call. This is called a **deep copy**. This copy is modified and then substituted for the original value, bound to the same symbol. Superficially, the binding is unchanged but the value is written in a different place in memory. The data table class changes this mechanic so that the deep copy is **not** created and the object remains in the same memory location. This saves a lot of time, especially for large objects (think gigabytes of data). *Don't ask me how it handles defragmentation, I have no idea.*
 
 <br>
 
@@ -416,7 +416,7 @@ The function `as.data.table` converts a data frame to a data table, thus endowin
 ```{r}
 tables()
 ```
-An attempt at assigning the data table to another varaible will **not** create a copy but rather assign the value to a second name. These two names will be connected as if with an active binding.
+An attempt at assigning the data table to another variable will **not** create a copy but rather assign the value to a second name. These two names will be connected as if with an active binding.
 ```{r}
 IR <- ir
 
@@ -455,7 +455,7 @@ address(IR)
 ```
 Note that the result of the modification was not reassigned. In fact, reassigning back to the `ir` symbol would defeat the purpose.
 
-And so, most modifications to a data table can and should be done **in place**, using `data.table` functions. Many of them will also work on data frames and retain the "in place" functinaly but I can make no guarantees.
+And so, most modifications to a data table can and should be done **by reference**, using `data.table` functions. Many of them will also modify data frames by reference but I can make no guarantees.
 
 An explicit copy of a data table can be created with `copy`.
 ```{r}
@@ -549,7 +549,7 @@ ir[, .N]
 
 2. Renaming columns
 
-- column names can be modified in place with the `setnames` function
+- column names can be modified  with the `setnames` function
 - column to rename can be specified as character string or numeric index
 ```{r}
 names(ir)
@@ -658,7 +658,7 @@ ir[, .(mSL = mean(Sepal.Length), t(median(Sepal.Length)))]
 ir[, lapply(.SD, mean)]
 ```
 - optionally, use the `.SDcols` argument to determine, which columns are considered to be in `.SD`
-- `.SDcols` can be specified with a charatcer vector of column names, an integer vector of indices, a logical vector or regular expressions
+- `.SDcols` can be specified with a character vector of column names, an integer vector of indices, a logical vector or regular expressions
 - regular expressions are handled with the `patterns` function
 ```{r}
 # a character vector
@@ -686,7 +686,7 @@ ir[, .(means = lapply(.SD, mean),
 
 - normally a query returns a value but does not influence the data table
 - adding columns is a **modification**
-- data tables are modified **by reference** or **in place**
+- data tables are modified **by reference** or ****
 - this is done with a special operator, `:=`
 - changes are applied to the original data table
 ```{r}
@@ -906,14 +906,14 @@ ir[Sepal.Length > 6] %>% .[, mean(Sepal.Length)]
 
 #### `data.table` speed
 
-The high performance of data tables is achived in several ways. First, operations in `j` are only applied to the rows defined in `i`. Second, modification by reference with the `set` functions and the `:=` operator does not copyg entire, potentially large, objects, which is much more efficient memory-wise. Third, `data.table` allows **indexing** of rows, which makes identifying rows by `i` faster. We will not cover indexing here. Refer to the vignettes for detailed instructinos.
+The high performance of data tables is achieved in several ways. First, operations in `j` are only applied to the rows defined in `i`. Second, modification by reference with the `set` functions and the `:=` operator does not copy entire, potentially large, objects, which is much more efficient memory-wise. Third, `data.table` allows **indexing** of rows, which makes identifying rows by `i` faster. We will not cover indexing here. Refer to the vignettes for detailed instructions.
 
 <br>
 
 <h4>
 The Tidyverse and `data.table` both improve on R. <br>
-I recommend the Tidyverse for daily interactive work, especially for non-progammers.<br>
-Large data sets and programming are better served by `data.table`, but the learning curve is admittedtly steeper.
+I recommend the Tidyverse for daily interactive work, especially for non-programmers.<br>
+Large data sets and programming are better served by `data.table`, but the learning curve is admittedly steeper.
 </h4>
 
 <br>

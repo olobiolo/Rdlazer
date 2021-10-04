@@ -133,7 +133,7 @@ f2(3)
 \newline
 
 - a function need not be assigned in order to be used
-- this is called an annonymous function
+- this is called an anonymous function
 ```{r}
 function(x, y) {z <- x + y; as.character(z)}(3, 5)
 
@@ -197,7 +197,7 @@ v2 <- v1 < 3
 any(v2)
 isTRUE(v2)
 ```
-- quite often we want to be able to run a fuction on all elements of a vector
+- quite often we want to be able to run a function on all elements of a vector
 
 \newline
 
@@ -205,7 +205,7 @@ isTRUE(v2)
 - the prototype of these functions is `lapply`
     - `lapply` takes a vector and a function
     - it runs the function on every element of the vector
-    - it returns a **list**, where each element is the result of the functino being run on a element of the vector argument
+    - it returns a **list**, where each element is the result of the function being run on a element of the vector argument
     - it can be applied (pun uninteded) to any vector, which includes lists, which includes data frames
     - if the vector is named, the names will be transferred to the resulting list
     - again, it **always** returns a list
@@ -244,7 +244,7 @@ l2
 - `lapply` makes for neater code
 - both of these are more and more true as the operation grows more complex
 ```{r}
-ff <- function(x, text  ='text') {
+ff <- function(x, text = 'text') {
   y <- mean(x)
   y <- round(y, 2)
   ans <- paste0(text, ': ', y)
@@ -268,33 +268,29 @@ lapply(list(iris, mtcars), head, n = 2)
 
 \newline
 
-- finally, `lapply` accepts annonymous functions
+- finally, `lapply` accepts anonymous functions
 - this is where the real flexibility shows
 ```{r}
 # get the mean of each list element
 lapply(l, mean)
 
-# alternative with annonymous function
+# alternative with anonymous function
 lapply(l, function(x) mean(x))
 
 # get the first element of each list item
 lapply(l, function(x) x[1])
 
 # get the first and third element of each list item
-lapply(l, function(x) c(x[1], x[2]))
+lapply(l, function(x) c(x[1], x[3]))
 
 # get the first and last elements
 lapply(l, function(x) c(x[1], x[length(x)]))
-```
-- and it doesn't end there
-```{r}
-iris[, sapply(iris, is.numeric)]
 ```
 
 
 \newline
 
-- using the annonymous function mechanic we can also iterate over other formal arguments rather than the first
+- using the anonymous function mechanic we can also iterate over other formal arguments rather than the first
 ```{r}
 seps <- c(',', ', ', ' - ', '_')
 
@@ -314,7 +310,7 @@ lapply(seps, function(x) paste(l[[1]], collapse = x))
 ### sapply
 
 - `sapply` does basically the same thing with two major differences:
-- it will attempt to simplify the result, *e.g.* turn a list of length 1 vectors into an atomic vector
+- it will attempt to simplify the result, *e.g.* turn a list of vectors of length 1 into an atomic vector
 - it will attempt co construct names for the result based on the contents of the argument
 ```{r}
 lapply(v, identity)
@@ -365,7 +361,7 @@ mapply(paste, l, collapse = seps)
 ### replicate
 
 - `replicate` is a little different
-- it does not iterate over a vecotr
+- it does not iterate over a vecgor
 - it will run an operation a set number of times and simplify the result
 ```{r}
 replicate(5, 1:4)
@@ -421,5 +417,7 @@ p
 `replicate` can be useful for simulations <br>
 
 </h4>
+
+<br>
 
 [droppingcat]: ../images/droppingcat_cropped.gif

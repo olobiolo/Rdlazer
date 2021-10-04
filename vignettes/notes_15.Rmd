@@ -30,7 +30,7 @@ R was developed as a language for statistical analysis and as such has a **lot**
 
 ## Distributions And Estimations
 
-Functions exist to estimate sample parameters: `mean` for the mean, `median` for the median, `var` for variance, `sd` for standard deviation, `min`, `max` and `range` for the extremities, `quantile` for quantiles, `IQR` for inter-quartile range and many more. Of course, writing functions that compute all these parameters is not especially difficult and the difference between R and other languages in this departament is qualitative rather than quantitative. Don't worry, it gets better.
+Functions exist to estimate sample parameters: `mean` for the mean, `median` for the median, `var` for variance, `sd` for standard deviation, `min`, `max` and `range` for the extremities, `quantile` for quantiles, `IQR` for inter-quartile range and many more. Of course, writing functions that compute all these parameters is not especially difficult and the difference between R and other languages in this department is qualitative rather than quantitative. Don't worry, it gets better.
 
 There are functions that simulate distributions, e.g. `rnorm` generates a random sample from a normal distribution, and `runif` - from a uniform one, etc. See `?distributions` for a full list.
 
@@ -54,7 +54,7 @@ t.test(len ~ supp, data = ToothGrowth)
 
 `t.test` returns is an object of class htest. This is a list that contains all the information about the test and all of its results. The printed information is a complete description of the test, more than sufficient to cite in a publication.
 
-Switching to a non-parametric test like Mann-Whitney-Wilcoxon test is super easy as the function that runs taht test has the same syntax.
+Switching to a non-parametric test like Mann-Whitney-Wilcoxon test is super easy as the function that runs that test has the same syntax.
 ```{r}
 wilcox.test(Sepal.Length ~ Species, data = iris, subset = Species != 'setosa')
 ```
@@ -71,7 +71,7 @@ R also contains a number of **modelling** functions. They indentify dependencies
 
 #### fitting 
 
-Linear regression is done with the `lm` function. It is called with a formula that has the independent varialbes, or **predictors**, on the rhs and the dependent variable, or **response**, on the lhs. The syntax for `lm` is exactly thes asme as for `plot`:
+Linear regression is done with the `lm` function. It is called with a formula that has the independent variables, or **predictors**, on the rhs and the dependent variable, or **response**, on the lhs. The syntax for `lm` is exactly the same as for `plot`:
 ```{r}
 plot(eruptions ~ waiting, data = faithful)
 
@@ -104,7 +104,7 @@ plot(eruptions ~ waiting, data = faithful)
 abline(coef = coef(mod))
 ```
 
-A model can be assesed further by plotting it out. The lm method for `plot` creates four diagnostic graphs with outlying observations marked.
+A model can be assessed further by plotting it out. The lm method for `plot` creates four diagnostic graphs with outlying observations marked.
 ```{r, fig.height = 6, fig.width = 6}
 layout(mat = matrix(1:4, 2, 2))
 plot(mod)
@@ -116,10 +116,10 @@ plot(mod)
     A comparison of the residual distribution to a simulated normal distribution. Ideally this is a straight line.
 3. scale-location plot
     This plot shows the extent of residuals in proportion to the predictors. This should also, ideally, display no tendencies.
-4. the **levarage** of individual points
+4. the **leverage** of individual points
     This shows the influence of individual points on the fit. If any point falls beyond the dashed line, Cook's distance, it may need to be removed from the fitting process.
 
-As a rule, all modelling functions behave this way: they are called with a formula and they return an object of thier own class, which can be summarized and used for predictions (see below). The built-in `glm` function (for generalized linear models) can transform the data before the fitting so that relationships than linear can be modelled. More functions exist in external packages and they all keep to the same procedure.
+As a rule, all modelling functions behave this way: they are called with a formula and they return an object of their own class, which can be summarized and used for predictions (see below). The built-in `glm` function (for generalized linear models) can transform the data before the fitting so that relationships than linear can be modeled. More functions exist in external packages and they all keep to the same procedure.
 
 #### prediction
 
@@ -163,7 +163,7 @@ shapiro.test(runif(1e3))
 
 
 <h4>
-This is just the beginnig, of course. Learning about the application of statistical methods, building models, etc., is a sicence in its won right. I hope this brief introduction will ease you into using the tools built into R and perhaps help you seek solutions online.
+This is just the beginning, of course. Learning about the application of statistical methods, building models, etc., is a science in its won right. I hope this brief introduction will ease you into using the tools built into R and perhaps help you seek solutions online.
 </h4>
 
 <br>

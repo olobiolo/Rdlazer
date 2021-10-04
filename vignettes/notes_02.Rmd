@@ -887,7 +887,7 @@ iris
 
 <h4>
 A data frame is a special kind of list made up of atomic vectors. <br>
-Extracting rows and columns is reobust. <br>
+Extracting rows and columns is robust. <br>
 Operations on columns are easy and reliable. <br>
 </h4>
 
@@ -974,6 +974,7 @@ I promise.
 Factors are confusing so it's all right to be confused.
 </h4>
 
+<br>
 
 [confusedcat]: ../images/confusedcat.jpg
 [picard]: ../images/picard_censored.jpg

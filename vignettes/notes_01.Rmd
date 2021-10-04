@@ -326,5 +326,6 @@ c('one', 'two', 'three', 'four')
 3) concatenating strings
 - character strings can be concatenated with the function `paste`
 
+<br>
 
 [typingcat]: ../images/typingcat.gif

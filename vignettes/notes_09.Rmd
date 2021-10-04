@@ -32,9 +32,8 @@ It is the uncommon property of R that a call can be captured and held **before**
 
 Now, recall that an environment contains bindings of names and vaules. This is much like a named list. In fact, one can refer to variables in an environment like to list elements, with the `$` operator.
 
-***(For some reason this does not work properly within the vignette. You have to run the code yourself.)***
 ```{r, error = TRUE}
-evnX <- new.env()
+envX <- new.env()
 assign(x = 'varX', value = 'sometext', envir = envX)
 
 # list environment contents
@@ -47,8 +46,6 @@ envX$varX
 <br>
 
 Not only are environments like lists, lists are like environments and calls can be evaluated within them.
-
-***(Again, run the code yourself.)***
 
 ```{r, error = TRUE}
 l <- list(varA = 1:3, varB = letters[1:3])
@@ -63,7 +60,7 @@ paste(varA, varB, sep = '.')
 eval(substitute(paste(varA, varB, sep = '.')), envir = l)
 ```
 
-Capturing a call and moving it like that is calle **non standard evaluation** (NSE). Don't worry about `substitute` and `eval`, they are not used on a daily basis.
+Capturing a call and moving it like that is called **non standard evaluation** (NSE). Don't worry about `substitute` and `eval`, they are not used on a daily basis.
 
 <br>
 
@@ -71,7 +68,7 @@ Capturing a call and moving it like that is calle **non standard evaluation** (N
 
 Operations on language elements are very common in R but they are always contained in higher level functions and run "under the hood". A non-programmer will hardly have any use for them. Surface uses of non standard evaluation are basically limited to convenience as it can save some typing.
 
-We have already covered cases where NSE is used, most notably in `library`, which accepts the name of the attached package as a character string or as an unquoted symbol. Likewise, `get` can find an object given its name a a string but it can also deal with a bare name. The `$` operator for accessing list elements also runs on NSE, relieving the user of having to use quotes and brackets. The magnitude of those benefits is up to the user to weigh. The one place where this really helps is assignment as it actually makes code easier to read when variable names are unquoted.
+We have already covered cases where NSE is used, most notably in `library`, which accepts the name of the attached package as a character string or as an unquoted symbol. Likewise, `get` can find an object given its name as a string but it can also deal with a bare name. The `$` operator for accessing list elements also runs on NSE, relieving the user of having to use quotes and brackets. The magnitude of those benefits is up to the user to weigh. The one place where this really helps is assignment as it actually makes code easier to read when variable names are unquoted.
 
 Sometimes, though, typing names of data frames can become tedious. There are tools for just this kind of situation.
 
@@ -133,3 +130,5 @@ The lesson is this:
 1. NSE exists and is most often used for convenience.
 
 2. Do not use it in programming unless you want to make usage easier for the user but then beware unforeseen consequences.
+
+<br>

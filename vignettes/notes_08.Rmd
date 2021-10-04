@@ -34,7 +34,7 @@ The usual access path convention applies, so:
 
 *IMPORTANT: Since Windows uses `\` instead of `/`, copying a path from Windows Explorer will cause errors. Always change the separators to `/` or escape the `\` with another `\` (the universal escape character).*
 
-Autofill is supported and triggerred with Tab.
+Autofill is supported and triggered with Tab.
 
 
 #### manipulating files
@@ -63,8 +63,8 @@ In short, `read.delim` is used for tab-delimited files and `read.csv` is used fo
 
 Things to keep in mind:
 
-- The `stringsAsFactors` argument decides whether character columns will be converted to factors upon loading. It defaults to the global option, which is `TRUE` and can be viewed with `.Options$strigsAfFactors`.
-- The `header` argument informs whether the file contains column names in its first row. If set to `FALSE`, column names will be generated automatically (V1, V2 and so on). If the file does contain column names but `header` is set to `FALSE`, the column names will be pushed into the first row of the data frame. This will coerce numeric columns to character (and possibly to factor).
+- The `stringsAsFactors` argument decides whether character columns will be converted to factors upon loading. It defaults to the global option, which can be viewed with `.Options$strigsAfFactors`. It used to be `TRUE` in R 3.0 but has been changed to `FALSE` in R 4.0.
+- The `header` argument specifies whether the file contains column names in its first row. If set to `FALSE`, column names will be generated automatically (V1, V2 and so on). If the file does contain column names but `header` is set to `FALSE`, the column names will be pushed into the first row of the data frame. This will coerce numeric columns to character (and possibly to factor).
 - Row names can be given as a character vector or taken from one of the columns.
 - Column names in a file can be illegal in a data frame context. By default, they will be run through the `make.names` function to replace each illegal characters with a period. This can be changed by setting `check.names` to `FALSE`.
 - The `skip` and `n` arguments allow for omitting top and bottom rows of a file, respectively.
@@ -91,6 +91,8 @@ Wrappers for .csv files exist for convenience.
 
 Data can also be saved in binary files, readable only with R. These are given .Rdata or .rda extensions. A binary file does not hold tabular data in text form but rather a data frame. In fact, it can hold **any object(s)**. Use `save` to save objects to a binary file and `load` to bring the contents of a file into the current session.
 
+Another option is the .rds format, which stores one object per file. Files are saved with `saveRDS` and loaded with `readRDS`.
+
 Between two files with the same informational content, a binary file will be smaller than a text file, which can be useful for very large data sets. It will also load faster.
 
 
@@ -100,3 +102,5 @@ Between two files with the same informational content, a binary file will be sma
 ## Reading files
 
 To read a file that does not contain tabular data use the `readLines` function. It uses end of line (eol) signs to break up the text into character strings and returns the contents of the file as a character vector.
+
+<br>

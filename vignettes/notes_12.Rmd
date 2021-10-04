@@ -282,3 +282,5 @@ sub('(.*)(day)', '\\1DAY', 'Wednesday')
 Regular expressions are a powerful tool for searching patterns within text. <br>
 They also allow for full and partial replacing of the mathcing patterns.
 </h4>
+
+<br>

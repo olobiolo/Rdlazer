@@ -22,11 +22,11 @@ knitr::opts_chunk$set(
 
 The `ggplot` package introduced a new standard in generating plots in R. 
 
-`ggplot` was later superceded by `ggplot2` which introduced a special syntax that made building pltos much more convenient. `ggplot2` is now the gold standard of plotting data in R but naturally it is not the be all and end all. Other packages and more will likely come.
+`ggplot` was later superseded by `ggplot2` which introduced a special syntax that made building plots much more convenient. `ggplot2` is now the gold standard of plotting data in R but naturally it is not the be all and end all. Other packages and more will likely come.
 
 `ggplot2` is now considered a part of the Tidyverse, even though it was created before. Nevertheless, the two go together well. `ggplot2` "likes" tidy data and is easily added to a pipe stream.
 
-Plots are objects so they can be drawn immediately or assigned to a variable. This way they can be held on to or modified down the line. The plot is drawn when the object is **printed**. In an interactive session this is done whenever the plot is put into the console but in a programming context an expcilit call to `print` is necessary. Keep this in mind, it can be quite surprising.
+Plots are objects so they can be drawn immediately or assigned to a variable. This way they can be held on to or modified down the line. The plot is drawn when the object is **printed**. In an interactive session this is done whenever the plot is put into the console but in a programming context an explicit call to `print` is necessary. Keep this in mind, it can be quite surprising.
 
 <br>
 
@@ -63,7 +63,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
 
 |          Geometry functions have `data` and `mappings` arguments like `ggplot` but they can inherit these arguments from the `ggplot` call that initiated the plot. Every geometry has a set of aesthetics it can accept to customize its looks according to the data.
 
-|          The appearance of a gemoetry can be modified outside of the mappings. Some geometries have certain requirements, e.g. `geom_boxplot` expects a discrete variable mapped to one of the axes.
+|          The appearance of a geometry can be modified outside of the mappings. Some geometries have certain requirements, e.g. `geom_boxplot` expects a discrete variable mapped to one of the axes.
 ```{r}
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point(pch = 1)
 ```
@@ -112,13 +112,13 @@ These are not separate plots! They are panels that contain subsets of the data.
 
 #### multiple pltos
 
-Winston Chang has developed a very nice function for putting several ggplot objects on one page. His original post, along with the code, can be found [here](http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/). I have taken the liberty of addind the function to my utilities package `acutils` which can be found on [Github](http://github.com/olobiolo/acutils).
+Winston Chang has developed a very nice function for putting several ggplot objects on one page. His original post, along with the code, can be found [here](http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/). I have taken the liberty of adding the function to my utilities package `acutils` which can be found on [Github](http://github.com/olobiolo/acutils).
 
 <br>
 
 #### exporting plots
 
-To save a plot to a file open a grahpics device, print a plot, and close the device, just as usual. An alternative is to use the `ggsave` function. It takes the last created ggplot object and sends it to a graphical device, which it automatically closes afterwards.
+To save a plot to a file open a graphics device, print a plot, and close the device, just as usual. An alternative is to use the `ggsave` function. It takes the last created ggplot object and sends it to a graphical device, which it automatically closes afterwards.
 
 Unfortunately, `ggsave` will not capture a multiplot, only the last panel. multiplots must be exported normally.
 
