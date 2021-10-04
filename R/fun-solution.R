@@ -1,6 +1,6 @@
 #' solution for dates
 #'
-#' Reproduce a result for excersises 8-11 created by me for comparison.
+#' Reproduce a result for exercises 8-11 created by me for comparison.
 #'
 #' @param skip character vector of dates to skip
 #' @param end character string of date to end on

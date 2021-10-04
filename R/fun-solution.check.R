@@ -8,7 +8,7 @@
 #'
 #' @param result character vector of dates
 #' @param years.incl character vector of years to include in the table
-#' @param months.incl character vector of months to include in the talbe
+#' @param months.incl character vector of months to include in the table
 #'
 #' @export
 solution.check <- function(result, years.incl = NULL, months.incl = NULL) {

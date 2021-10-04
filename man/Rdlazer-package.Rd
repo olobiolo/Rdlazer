@@ -14,9 +14,9 @@ The major feature is the Romani ite domum debacle.
 There are vignettes that contain lecture notes.
 Use \code{browseVignettes("Rdlazer")} to see them.
 
-The \code{foo} function demontrates the workings of functions.
+The \code{foo} function demonstrates the workings of functions.
 
-There are also homeworks: \code{\link[Rdlazer]{homework}}.
+There are also homework assignments: \code{\link[Rdlazer]{homework}}.
 }
 \author{
 \strong{Maintainer}: Aleksander Chlebowski \email{olobiolo@gmail.com}

@@ -19,7 +19,7 @@ The week day is added depending on the \code{weekdays} argument.
 Particular days can be skipped and the whole vector can end at a specific date.
 }
 \description{
-Reproduce a result for excersises 8-11 created by me for comparison.
+Reproduce a result for exercises 8-11 created by me for comparison.
 }
 \seealso{
 \code{\link[Rdlazer]{solution.check}}

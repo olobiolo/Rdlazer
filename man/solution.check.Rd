@@ -11,7 +11,7 @@ solution.check(result, years.incl = NULL, months.incl = NULL)
 
 \item{years.incl}{character vector of years to include in the table}
 
-\item{months.incl}{character vector of months to include in the talbe}
+\item{months.incl}{character vector of months to include in the table}
 }
 \description{
 Create a neat table of the dates you created.
