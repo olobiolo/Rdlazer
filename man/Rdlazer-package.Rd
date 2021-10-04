@@ -17,6 +17,8 @@ Use \code{browseVignettes("Rdlazer")} to see them.
 The \code{foo} function demonstrates the workings of functions.
 
 There are also homework assignments: \code{\link[Rdlazer]{homework}}.
+
+The latest (minor) update was on 4th October 2021.
 }
 \author{
 \strong{Maintainer}: Aleksander Chlebowski \email{olobiolo@gmail.com}

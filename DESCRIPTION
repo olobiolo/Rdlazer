@@ -1,6 +1,6 @@
 Package: Rdlazer
 Title: Resources for Teaching R
-Version: 0.18.2
+Version: 0.18.3
 Authors@R: 
     person(given = "Aleksander",
            family = "Chlebowski",
@@ -18,7 +18,8 @@ Imports:
     dplyr (>= 0.8.5),
     tidyr (>= 1.0.2),
     ggplot2 (>= 3.3.0),
-    data.table (>= 1.12.8)
+    data.table (>= 1.12.8),
+    KernSmooth
 Suggests: 
     rmarkdown,
     testthat (>= 2.1.0)

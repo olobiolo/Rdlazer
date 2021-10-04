@@ -11,5 +11,7 @@
 #'
 #' There are also homework assignments: \code{\link[Rdlazer]{homework}}.
 #'
+#' The latest (minor) update was on 4th October 2021.
+#'
 #' @keywords internal
 "_PACKAGE"
