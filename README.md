@@ -7,7 +7,7 @@
 
 In early 2020 I decided to teach my colleagues to use R. I worked in a molecular biology laboratory where I was the most kwonledgeable person when it came to data processing, etc. I knew I would leave the lab sooner or later and I wanted the others to be able to get by without me. But my main motivation was I was quite fed up with looking at Excel-generated barplots at our weekly meetings.
 
-What was supposed to be three or four small meetings of just a few people escalated into a series of 2-3 hour bi-weekly lectures (four and counting) with well over a dozen participats. We also had to move the lectures online due to the Chinese plague.
+What was supposed to be three or four small meetings of just a few people escalated into a series of 2-3 hour bi-weekly lectures (four and counting) with well over a dozen participats. We also had to move the lectures online due to the plague.
 
 I prepared some materials for demonstrations during the lectures. I also started making notes after each lecture and homework assignments. Creating a package seemed to be the best way of distributing these materials and updating them in time. And so, here we are.
 
